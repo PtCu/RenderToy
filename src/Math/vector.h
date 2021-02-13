@@ -126,10 +126,7 @@ namespace platinum
         return os;
     }
 
-    using Vector2f = Vector2<PFloat>;
-    using Vector2i = Vector2<int>;
-
-        template <typename T>
+    template <typename T>
     class Vector3
     {
     public:
@@ -231,7 +228,6 @@ namespace platinum
         PFloat SquaredLength() const { return x * x + y * y + z * z; }
         PFloat Length() const { return std::sqrt(SquaredLength()); }
 
-        // Vector3 Public Data
         T x, y, z;
     };
 
@@ -242,16 +238,51 @@ namespace platinum
         return os;
     }
 
-    template <typename T,typename U>
+    template <typename T, typename U>
     inline Vector3<T> operator*(U t, const Vector3<T> &v)
     {
         return Vector3<T>(t * v.x, t * v.y, t * v.z);
     }
 
+    template <typename T, typename U>
+    inline Vector2<T> operator*(U f, const Vector2<T> &v)
+    {
+        return v * f;
+    }
+    template <typename T>
+    inline PFloat Dot(const Vector2<T> &v1, const Vector2<T> &v2)
+    {
+        return v1.x * v2.x + v1.y * v2.y;
+    }
+
+    template <typename T>
+    inline PFloat AbsDot(const Vector2<T> &v1, const Vector2<T> &v2)
+    {
+        return std::abs(Dot(v1, v2));
+    }
+
+    template <typename T>
+    inline Vector2<T> Normalize(const Vector2<T> &v)
+    {
+        return v / v.Length();
+    }
+    template <typename T>
+    Vector2<T> Abs(const Vector2<T> &v)
+    {
+        return Vector2<T>(std::abs(v.x), std::abs(v.y));
+    }
+
+    template <typename T>
+    inline Vector3<T> Faceforward(const Vector3<T> &v, const Vector3<T> &v2)
+    {
+        return (Dot(v, v2) < 0.f) ? -v : v;
+    }
+    
+    using Vector2f = Vector2<PFloat>;
+    using Vector2i = Vector2<int>;
     using Vector3f = Vector3<PFloat>;
     using Vector3i = Vector3<int>;
 
-    
 } // namespace platinum
 
 #endif

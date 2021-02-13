@@ -22,26 +22,22 @@
 #ifndef Ray_H
 #define Ray_H
 #include "platinum.h"
-#include"../Math/vector.h"
+#include "../Math/vector.h"
+#include "../Math/point.h"
 namespace platinum
 {
     class Ray
     {
     public:
         Ray() {}
-        Ray(const Vector3f &a, const Vector3f &b, float ti = 0.0)
-        {
-            A = a;
-            B = b;
-            _time = ti;
-        }
-        Vector3f GetOrigin() const { return A; }
-        Vector3f GetDirection() const { return B; }
+        Ray(const Point3f &a, const Vector3f &b, PFloat ti = 0.0) : o(a), d(b), _time(ti) {}
+        Point3f GetOrigin() const { return o; }
+        Vector3f GetDirection() const { return d; }
         PFloat GetTime() const { return _time; }
-        Vector3f point_at_parameter(PFloat t) const { return A + t*B; }
+        Vector3f PointAtT(PFloat t) const { return o + t * d; }
 
-        Vector3f A;
-        Vector3f B;
+        Point3f o;
+        Vector3f d;
         float _time;
     };
 } // namespace platinum

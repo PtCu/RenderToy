@@ -305,6 +305,117 @@ namespace platinum
     using Poinst2i = Point2<int>;
     using Point3f = Point3<PFloat>;
     using Point3i = Point3<int>;
+
+    template <typename T>
+    inline PFloat Distance(const Point3<T> &p1, const Point3<T> &p2)
+    {
+        return (p1 - p2).Length();
+    }
+
+    template <typename T>
+    inline PFloat SquaredDistance(const Point3<T> &p1, const Point3<T> &p2)
+    {
+        return (p1 - p2).SquaredLength();
+    }
+
+    template <typename T, typename U>
+    inline Point3<T> operator*(U f, const Point3<T> &p)
+    {
+        return p * f;
+    }
+
+    template <typename T>
+    Point3<T> Lerp(PFloat t, const Point3<T> &p0, const Point3<T> &p1)
+    {
+        return (1 - t) * p0 + t * p1;
+    }
+
+    template <typename T>
+    Point3<T> Min(const Point3<T> &p1, const Point3<T> &p2)
+    {
+        return Point3<T>(std::min(p1.x, p2.x), std::min(p1.y, p2.y),
+                         std::min(p1.z, p2.z));
+    }
+
+    template <typename T>
+    Point3<T> Max(const Point3<T> &p1, const Point3<T> &p2)
+    {
+        return Point3<T>(std::max(p1.x, p2.x), std::max(p1.y, p2.y),
+                         std::max(p1.z, p2.z));
+    }
+
+    template <typename T>
+    Point3<T> Floor(const Point3<T> &p)
+    {
+        return Point3<T>(std::floor(p.x), std::floor(p.y), std::floor(p.z));
+    }
+
+    template <typename T>
+    Point3<T> Ceil(const Point3<T> &p)
+    {
+        return Point3<T>(std::ceil(p.x), std::ceil(p.y), std::ceil(p.z));
+    }
+
+    template <typename T>
+    Point3<T> Abs(const Point3<T> &p)
+    {
+        return Point3<T>(std::abs(p.x), std::abs(p.y), std::abs(p.z));
+    }
+
+    template <typename T>
+    Point3<T> Permute(const Point3<T> &p, int x, int y, int z)
+    {
+        return Point3<T>(p[x], p[y], p[z]);
+    }
+
+    template <typename T>
+    inline PFloat Distance(const Point2<T> &p1, const Point2<T> &p2)
+    {
+        return (p1 - p2).Length();
+    }
+
+    template <typename T>
+    inline PFloat SquaredDistance(const Point2<T> &p1, const Point2<T> &p2)
+    {
+        return (p1 - p2).SquaredLength();
+    }
+
+    template <typename T, typename U>
+    inline Point2<T> operator*(U f, const Point2<T> &p)
+    {
+        return p * f;
+    }
+
+    template <typename T>
+    Point2<T> Floor(const Point2<T> &p)
+    {
+        return Point2<T>(std::floor(p.x), std::floor(p.y));
+    }
+
+    template <typename T>
+    Point2<T> Ceil(const Point2<T> &p)
+    {
+        return Point2<T>(std::ceil(p.x), std::ceil(p.y));
+    }
+
+    template <typename T>
+    Point2<T> Lerp(PFloat t, const Point2<T> &v0, const Point2<T> &v1)
+    {
+        return (1 - t) * v0 + t * v1;
+    }
+
+    template <typename T>
+    Point2<T> Min(const Point2<T> &pa, const Point2<T> &pb)
+    {
+        return Point2<T>(std::min(pa.x, pb.x), std::min(pa.y, pb.y));
+    }
+
+    template <typename T>
+    Point2<T> Max(const Point2<T> &pa, const Point2<T> &pb)
+    {
+        return Point2<T>(std::max(pa.x, pb.x), std::max(pa.y, pb.y));
+    }
+
 } // namespace platinum
 
 #endif
