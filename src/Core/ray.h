@@ -34,7 +34,7 @@ namespace platinum
         Point3f GetOrigin() const { return o; }
         Vector3f GetDirection() const { return d; }
         PFloat GetTime() const { return _time; }
-        Vector3f PointAtT(PFloat t) const { return o + t * d; }
+        Point3f PointAtT(PFloat t) const { return o + t * d; }
 
         Point3f o;
         Vector3f d;
