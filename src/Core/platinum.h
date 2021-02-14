@@ -19,29 +19,56 @@
 //  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
 //  FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 //  DEALINGS IN THE SOFTWARE.
-#ifndef CORE_RAY_H_
-#define CORE_RAY_H_
 
-#include "platinum.h"
-#include "../Math/vector.h"
-#include "../Math/point.h"
+//Core/
+// Global Include Files
+#include <type_traits>
+#include <algorithm>
+#include <cinttypes>
+#include <cmath>
+#include <iostream>
+#include <limits>
+#include <memory>
+#include <string>
+#include <vector>
+#include <assert.h>
+#include <string.h>
 
-namespace platinum
-{
-    class Ray
-    {
-    public:
-        Ray() {}
-        Ray(const Point3f &a, const Vector3f &b, PFloat ti = 0.0) : o(a), d(b), _time(ti) {}
-        Point3f GetOrigin() const { return o; }
-        Vector3f GetDirection() const { return d; }
-        PFloat GetTime() const { return _time; }
-        Point3f PointAtT(PFloat t) const { return o + t * d; }
 
-        Point3f o;
-        Vector3f d;
-        float _time;
-    };
-} // namespace platinum
-
+// Platform-specific definitions
+#if defined(_WIN32) || defined(_WIN64)
+#define PLT_IS_WINDOWS
 #endif
+
+#ifdef PBRT_FLOAT_AS_DOUBLE
+using PFloat = double;
+#else
+using PFloat = float;
+#endif
+
+#include <stdint.h>
+#include <float.h>
+#include <intrin.h>
+
+
+static constexpr PFloat ShadowEpsilon = 0.0001f;
+static constexpr PFloat Pi = 3.14159265358979323846;
+static constexpr PFloat InvPi = 0.31830988618379067154;
+static constexpr PFloat Inv2Pi = 0.15915494309189533577;
+static constexpr PFloat Inv4Pi = 0.07957747154594766788;
+static constexpr PFloat PiOver2 = 1.57079632679489661923;
+static constexpr PFloat PiOver4 = 0.78539816339744830961;
+static constexpr PFloat Sqrt2 = 1.41421356237309504880;
+
+template<typename T>
+class Vector2;
+template<typename T>
+class Vector3;
+template<typename T>
+class Point2;
+template<typename T>
+class Point3;
+template<typename T>
+class Normal3;
+class Camera;
+class Material;

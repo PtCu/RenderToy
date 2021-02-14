@@ -1,6 +1,6 @@
 // The MIT License (MIT)
 
-// Copyright (c) 2021 PtCu
+// Copyright (c) 2021 PtCU
 
 //  Permission is hereby granted, free of charge, to any person obtaining a
 //  copy of this software and associated documentation files (the "Software"),
@@ -19,14 +19,17 @@
 //  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
 //  FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 //  DEALINGS IN THE SOFTWARE.
-#include "sphere.h"
+
+#include "movingSphere.h"
+
 namespace platinum
 {
-    bool Sphere::Intersect(const Ray &r, PFloat t_min, PFloat t_max, Intersection &rec) const
+
+    bool MovingSphere::Intersect(const Ray &r, PFloat t_min, PFloat t_max, Intersection &rec) const
     {
-        Vector3f oc = r.o - center;
-        PFloat a = Dot(r.d, r.d);
-        PFloat b = Dot(oc, r.d);
+        Vector3f oc = r.GetOrigin() - GetCenter(r.GetTime());
+        PFloat a = Dot(r.GetDirection(), r.GetDirection());
+        PFloat b = Dot(oc, r.GetDirection());
         PFloat c = Dot(oc, oc) - radius * radius;
         PFloat discriminant = b * b - a * c;
         if (discriminant > 0)
@@ -36,7 +39,7 @@ namespace platinum
             {
                 rec.time = temp;
                 rec.point = r.PointAtT(rec.time);
-                rec.normal = Normal3f((rec.point - center) / radius);
+                rec.normal = Normal3f((rec.point - GetCenter(r.GetTime())) / radius);
                 rec.material = material;
                 return true;
             }
@@ -45,7 +48,7 @@ namespace platinum
             {
                 rec.time = temp;
                 rec.point = r.PointAtT(rec.time);
-                rec.normal = Normal3f((rec.point - center) / radius);
+                rec.normal = Normal3f((rec.point - GetCenter(r.GetTime())) / radius);
                 rec.material = material;
                 return true;
             }

@@ -30,11 +30,11 @@ namespace platinum
     {
     public:
         Sphere() {}
-        Sphere(Point3f cen, PFloat r, Material *m) : center(cen), radius(r), mat_ptr(m){};
+        Sphere(Point3f cen, PFloat r, Material *m) : center(cen), radius(r), material(m){};
         virtual bool Intersect(const Ray &r, PFloat t_min, PFloat t_max, Intersection &rec) const;
         Point3f center;
         PFloat radius;
-        Material *mat_ptr;
+        Material *material;
     };
 
 } // namespace platinum

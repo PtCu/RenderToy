@@ -19,37 +19,29 @@
 //  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
 //  FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 //  DEALINGS IN THE SOFTWARE.
-#include "sphere.h"
+#ifndef CORE_RAY_H_
+#define CORE_RAY_H_
+
+#include "platinum.h"
+#include "../Math/vector.h"
+#include "../Math/point.h"
+
 namespace platinum
 {
-    bool Sphere::Intersect(const Ray &r, PFloat t_min, PFloat t_max, Intersection &rec) const
+    class Ray
     {
-        Vector3f oc = r.o - center;
-        PFloat a = Dot(r.d, r.d);
-        PFloat b = Dot(oc, r.d);
-        PFloat c = Dot(oc, oc) - radius * radius;
-        PFloat discriminant = b * b - a * c;
-        if (discriminant > 0)
-        {
-            PFloat temp = (-b - sqrt(discriminant)) / a;
-            if (temp < t_max && temp > t_min)
-            {
-                rec.time = temp;
-                rec.point = r.PointAtT(rec.time);
-                rec.normal = Normal3f((rec.point - center) / radius);
-                rec.material = material;
-                return true;
-            }
-            temp = (-b + sqrt(discriminant)) / a;
-            if (temp < t_max && temp > t_min)
-            {
-                rec.time = temp;
-                rec.point = r.PointAtT(rec.time);
-                rec.normal = Normal3f((rec.point - center) / radius);
-                rec.material = material;
-                return true;
-            }
-        }
-        return false;
-    }
+    public:
+        Ray() {}
+        Ray(const Point3f &a, const Vector3f &b, PFloat ti = 0.0) : o(a), d(b), _time(ti) {}
+        Point3f GetOrigin() const { return o; }
+        Vector3f GetDirection() const { return d; }
+        PFloat GetTime() const { return _time; }
+        Point3f PointAtT(PFloat t) const { return o + t * d; }
+
+        Point3f o;
+        Vector3f d;
+        PFloat _time;
+    };
 } // namespace platinum
+
+#endif
