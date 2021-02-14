@@ -1,6 +1,6 @@
 // The MIT License (MIT)
 
-// Copyright (c) 2021 PtCu
+// Copyright (c) 2021 PtCU
 
 //  Permission is hereby granted, free of charge, to any person obtaining a
 //  copy of this software and associated documentation files (the "Software"),
@@ -20,49 +20,19 @@
 //  FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 //  DEALINGS IN THE SOFTWARE.
 
-//Core/
-// Global Include Files
-#include <type_traits>
-#include <algorithm>
-#include <cinttypes>
-#include <cmath>
-#include <iostream>
-#include <limits>
-#include <memory>
-#include <string>
-#include <vector>
-#include <assert.h>
-#include <string.h>
+#ifndef RAND_H
+#define RAND_H
+
+#include <random>
+
+#include "platinum.h"
+static double drand48()
+{
+	static std::random_device seed_gen;
+	static std::mt19937 engine(seed_gen());
+	static std::uniform_real_distribution<> dist(0.0, 1.0);
+	return dist(engine);
+}
 
 
-// Platform-specific definitions
-#if defined(_WIN32) || defined(_WIN64)
-#define PLT_IS_WINDOWS
 #endif
-
-#ifdef PBRT_FLOAT_AS_DOUBLE
-using PFloat = double;
-#else
-using PFloat = float;
-#endif
-
-#include <stdint.h>
-#include <float.h>
-#include <intrin.h>
-
-class Point3;
-class Point2;
-class Vector2;
-class Vector3;
-class Ray;
-class Object;
-class Material;
-
-static constexpr PFloat ShadowEpsilon = 0.0001f;
-static constexpr PFloat Pi = 3.14159265358979323846;
-static constexpr PFloat InvPi = 0.31830988618379067154;
-static constexpr PFloat Inv2Pi = 0.15915494309189533577;
-static constexpr PFloat Inv4Pi = 0.07957747154594766788;
-static constexpr PFloat PiOver2 = 1.57079632679489661923;
-static constexpr PFloat PiOver4 = 0.78539816339744830961;
-static constexpr PFloat Sqrt2 = 1.41421356237309504880;

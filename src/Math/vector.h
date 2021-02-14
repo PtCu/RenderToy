@@ -24,6 +24,7 @@
 #define VECTOR_H
 
 #include "../Core/platinum.h"
+#include "normal.h"
 namespace platinum
 {
     template <typename T>
@@ -140,6 +141,8 @@ namespace platinum
             y = v.y;
             z = v.z;
         }
+        template <typename T>
+        Vector3(const Normal3<T> &n) : x(n.x), y(n.y), z(n.z) {}
 
         Vector3<T> &operator=(const Vector3<T> &v)
         {
@@ -277,7 +280,84 @@ namespace platinum
     {
         return (Dot(v, v2) < 0.f) ? -v : v;
     }
-    
+
+    template <typename T>
+    inline T Dot(const Normal3<T> &n1, const Vector3<T> &v2)
+    {
+        return n1.x * v2.x + n1.y * v2.y + n1.z * v2.z;
+    }
+
+    template <typename T>
+    inline T Dot(const Vector3<T> &v1, const Normal3<T> &n2)
+    {
+        return v1.x * n2.x + v1.y * n2.y + v1.z * n2.z;
+    }
+    template <typename T>
+    inline T Dot(const Vector3<T> &v1, const Vector3<T> &v2)
+    {
+        return v1.x * v2.x + v1.y * v2.y + v1.z * v2.z;
+    }
+    template <typename T>
+    inline T AbsDot(const Vector3<T> &v1, const Vector3<T> &v2)
+    {
+        return std::abs(Dot(v1, v2));
+    }
+    template <typename T>
+    inline T AbsDot(const Normal3<T> &n1, const Vector3<T> &v2)
+    {
+        return std::abs(n1.x * v2.x + n1.y * v2.y + n1.z * v2.z);
+    }
+
+    template <typename T>
+    inline T AbsDot(const Vector3<T> &v1, const Normal3<T> &n2)
+    {
+        return std::abs(v1.x * n2.x + v1.y * n2.y + v1.z * n2.z);
+    }
+
+    template <typename T>
+    inline Normal3<T> Faceforward(const Normal3<T> &n, const Vector3<T> &v)
+    {
+        return (Dot(n, v) < 0.f) ? -n : n;
+    }
+    template <typename T>
+    inline Vector3<T> Faceforward(const Vector3<T> &v, const Normal3<T> &n2)
+    {
+        return (Dot(v, n2) < 0.f) ? -v : v;
+    }
+
+    template <typename T>
+    inline Vector3<T> Cross(const Vector3<T> &v1, const Vector3<T> &v2)
+    {
+        double v1x = v1.x, v1y = v1.y, v1z = v1.z;
+        double v2x = v2.x, v2y = v2.y, v2z = v2.z;
+        return Vector3<T>((v1y * v2z) - (v1z * v2y), (v1z * v2x) - (v1x * v2z),
+                          (v1x * v2y) - (v1y * v2x));
+    }
+
+    template <typename T>
+    inline Vector3<T> Cross(const Vector3<T> &v1, const Normal3<T> &v2)
+    {
+        double v1x = v1.x, v1y = v1.y, v1z = v1.z;
+        double v2x = v2.x, v2y = v2.y, v2z = v2.z;
+        return Vector3<T>((v1y * v2z) - (v1z * v2y), (v1z * v2x) - (v1x * v2z),
+                          (v1x * v2y) - (v1y * v2x));
+    }
+
+    template <typename T>
+    inline Vector3<T> Cross(const Normal3<T> &v1, const Vector3<T> &v2)
+    {
+        double v1x = v1.x, v1y = v1.y, v1z = v1.z;
+        double v2x = v2.x, v2y = v2.y, v2z = v2.z;
+        return Vector3<T>((v1y * v2z) - (v1z * v2y), (v1z * v2x) - (v1x * v2z),
+                          (v1x * v2y) - (v1y * v2x));
+    }
+
+    template <typename T>
+    inline Vector3<T> Normalize(const Vector3<T> &v)
+    {
+        return v / v.Length();
+    }
+
     using Vector2f = Vector2<PFloat>;
     using Vector2i = Vector2<int>;
     using Vector3f = Vector3<PFloat>;

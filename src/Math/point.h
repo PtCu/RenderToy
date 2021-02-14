@@ -62,7 +62,6 @@ namespace platinum
 
         Point2<T> &operator=(const Point2<T> &p)
         {
-
             x = p.x;
             y = p.y;
             return *this;
@@ -70,7 +69,6 @@ namespace platinum
 
         Point2<T> operator+(const Vector2<T> &v) const
         {
-
             return Point2<T>(x + v.x, y + v.y);
         }
 
@@ -88,27 +86,23 @@ namespace platinum
 
         Point2<T> operator-(const Vector2<T> &v) const
         {
-            DCHECK(!v.HasNaNs());
             return Point2<T>(x - v.x, y - v.y);
         }
         Point2<T> operator-() const { return Point2<T>(-x, -y); }
         Point2<T> &operator-=(const Vector2<T> &v)
         {
-            DCHECK(!v.HasNaNs());
             x -= v.x;
             y -= v.y;
             return *this;
         }
         Point2<T> &operator+=(const Point2<T> &p)
         {
-            DCHECK(!p.HasNaNs());
             x += p.x;
             y += p.y;
             return *this;
         }
         Point2<T> operator+(const Point2<T> &p) const
         {
-            DCHECK(!p.HasNaNs());
             return Point2<T>(x + p.x, y + p.y);
         }
         template <typename U>
@@ -126,22 +120,20 @@ namespace platinum
         template <typename U>
         Point2<T> operator/(U f) const
         {
-            CHECK_NE(f, 0);
-            PPFloat inv = (PPFloat)1 / f;
+            PFloat inv = (PFloat)1 / f;
             return Point2<T>(inv * x, inv * y);
         }
         template <typename U>
         Point2<T> &operator/=(U f)
         {
-            CHECK_NE(f, 0);
-            PPFloat inv = (PPFloat)1 / f;
+
+            PFloat inv = (PFloat)1 / f;
             x *= inv;
             y *= inv;
             return *this;
         }
         T operator[](int i) const
         {
-            DCHECK(i >= 0 && i <= 1);
             if (i == 0)
                 return x;
             return y;
@@ -149,14 +141,12 @@ namespace platinum
 
         T &operator[](int i)
         {
-            DCHECK(i >= 0 && i <= 1);
             if (i == 0)
                 return x;
             return y;
         }
         bool operator==(const Point2<T> &p) const { return x == p.x && y == p.y; }
         bool operator!=(const Point2<T> &p) const { return x != p.x || y != p.y; }
-        bool HasNaNs() const { return isNaN(x) || isNaN(y); }
 
         T x, y;
     };
