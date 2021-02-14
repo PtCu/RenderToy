@@ -31,7 +31,7 @@ namespace platinum
     class Material
     {
     public:
-        virtual bool Scatter(const Ray &r_in, const Intersection &rec, Vector3f &attenuation, Vector3f &scattered) const = 0;
+        virtual bool Scatter(const Ray &r_in, const Intersection &rec, Vector3f &attenuation, Ray &scattered) const = 0;
 
     protected:
         /**

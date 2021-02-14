@@ -60,8 +60,16 @@ static constexpr PFloat PiOver2 = 1.57079632679489661923;
 static constexpr PFloat PiOver4 = 0.78539816339744830961;
 static constexpr PFloat Sqrt2 = 1.41421356237309504880;
 
+template<typename T>
 class Vector2;
+template<typename T>
 class Vector3;
+template<typename T>
 class Point2;
+template<typename T>
 class Point3;
+template<typename T>
 class Normal3;
+class Camera;
+class Material;
+
