@@ -20,47 +20,33 @@
 //  FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 //  DEALINGS IN THE SOFTWARE.
 
-#ifndef CORE_MATERIAL_H_
-#define CORE_MATERIAL_H_
+#ifndef METAL_H
+#define METAL_H
 
-#include "ray.h"
-#include "intersection.h"
-#include "../Math/vector.h"
+#include "../Core/material.h"
+#include "../Math/rand.h"
 namespace platinum
 {
-    class Material
-    {
-    public:
-        virtual bool Scatter(const Ray &r_in, const Intersection &rec, Vector3f &attenuation, Vector3f &scattered) const = 0;
-
-    protected:
-        bool Refract(const Vector3f &v, const Normal3f &n, PFloat ni_over_nt, Vector3f &refracted) const
-        {
-            Vector3f uv = v.Normalized();
-            PFloat dt = Dot(uv, n);
-            PFloat discriminant = 1.0 - ni_over_nt * ni_over_nt * (1 - dt * dt);
-            if (discriminant > 0)
-            {
-                refracted = ni_over_nt * (uv - n * dt) - n * std::sqrt(discriminant);
-                return true;
-            }
-            else
-                return false;
-        }
-
-        Vector3f Reflect(const Vector3f &v, const Normal3f &n) const
-        {
-            return Vector3f(v - 2 * Dot(v, n) * n);
-        }
-
-        PFloat schlick(PFloat cosine, PFloat refIdx) const
-        {
-            PFloat r0 = (1 - refIdx) / (1 + refIdx);
-            r0 = r0 * r0;
-            return r0 + (1 - r0) * pow((1 - cosine), 5);
-        }
-    };
-
+   class Metal : public Material
+   {
+   public:
+      Metal(const Vector3f &a, float f) : albedo(a)
+      {
+         if (f < 1)
+            fuzz = f;
+         else
+            fuzz = 1;
+      }
+      virtual bool scatter(const Ray &r_in, const Intersection &rec, Vector3f &attenuation, Ray &scattered) const
+      {
+         Vector3f reflected = Reflect(r_in.GetDirection(), rec.normal);
+         scattered = Ray(rec.point, reflected + fuzz * Random::RandomInUnitSphere());
+         attenuation = albedo;
+         return (Dot(scattered.GetDirection(), rec.normal) > 0);
+      }
+      Vector3f albedo;
+      PFloat fuzz;
+   };
 } // namespace platinum
 
 #endif

@@ -1,6 +1,6 @@
 // The MIT License (MIT)
 
-// Copyright (c) 2021 PtCU
+// Copyright (c) 2021 PtCu
 
 //  Permission is hereby granted, free of charge, to any person obtaining a
 //  copy of this software and associated documentation files (the "Software"),
@@ -20,19 +20,25 @@
 //  FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 //  DEALINGS IN THE SOFTWARE.
 
-#ifndef RAND_H
-#define RAND_H
-
-#include <random>
-
-#include "platinum.h"
-static double drand48()
+#ifndef LAMBERTIAN_H
+#define LAMBERTIAN_H
+#include "../Core/material.h"
+#include "../Math/rand.h"
+namespace platinum
 {
-	static std::random_device seed_gen;
-	static std::mt19937 engine(seed_gen());
-	static std::uniform_real_distribution<> dist(0.0, 1.0);
-	return dist(engine);
-}
+    class Lambertian : public Material
+    {
+    public:
+        Lambertian(const Vector3f &a) : albedo(a) {}
+        virtual bool Scatter(const Ray &r_in, const Intersection &rec, Vector3f &attenuation, Ray &scattered) const
+        {
+            scattered = Ray(rec.point, Vector3f(rec.normal) + Random::RandomInUnitDisk());
+            attenuation = albedo;
+            return true;
+        }
 
+        Vector3f albedo;
+    };
+} // namespace platinum
 
 #endif

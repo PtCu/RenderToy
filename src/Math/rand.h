@@ -1,6 +1,6 @@
 // The MIT License (MIT)
 
-// Copyright (c) 2021 PtCu
+// Copyright (c) 2021 PtCU
 
 //  Permission is hereby granted, free of charge, to any person obtaining a
 //  copy of this software and associated documentation files (the "Software"),
@@ -20,44 +20,41 @@
 //  FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 //  DEALINGS IN THE SOFTWARE.
 
-#ifndef CORE_MATERIAL_H_
-#define CORE_MATERIAL_H_
+#ifndef CORE_RAND_H_
+#define CORE_RAND_H_
 
-#include "ray.h"
-#include "intersection.h"
-#include "../Math/vector.h"
+#include "vector.h"
+#include <random>
+
 namespace platinum
 {
-    class Material
+    class Random
     {
     public:
-        virtual bool Scatter(const Ray &r_in, const Intersection &rec, Vector3f &attenuation, Vector3f &scattered) const = 0;
-
-    protected:
-        bool Refract(const Vector3f &v, const Normal3f &n, PFloat ni_over_nt, Vector3f &refracted) const
+        static double drand48()
         {
-            Vector3f uv = v.Normalized();
-            PFloat dt = Dot(uv, n);
-            PFloat discriminant = 1.0 - ni_over_nt * ni_over_nt * (1 - dt * dt);
-            if (discriminant > 0)
+            static std::random_device seed_gen;
+            static std::mt19937 engine(seed_gen);
+            static std::uniform_real_distribution<> dist(0.0, 1.0);
+            return dist(engine);
+        }
+        static Vector3f RandomInUnitDisk()
+        {
+            Vector3f p;
+            do
             {
-                refracted = ni_over_nt * (uv - n * dt) - n * std::sqrt(discriminant);
-                return true;
-            }
-            else
-                return false;
+                p = 2.0 * Vector3f(drand48(), drand48(), 0) - Vector3f(1, 1, 0);
+            } while (Dot(p, p) >= 1.0);
+            return p;
         }
-
-        Vector3f Reflect(const Vector3f &v, const Normal3f &n) const
+        static Vector3f RandomInUnitSphere()
         {
-            return Vector3f(v - 2 * Dot(v, n) * n);
-        }
-
-        PFloat schlick(PFloat cosine, PFloat refIdx) const
-        {
-            PFloat r0 = (1 - refIdx) / (1 + refIdx);
-            r0 = r0 * r0;
-            return r0 + (1 - r0) * pow((1 - cosine), 5);
+            Vector3f p;
+            do
+            {
+                p = 2.0 * Vector3f(drand48(), drand48(), drand48()) - Vector3f(1, 1, 1);
+            } while (Dot(p, p) >= 1.0);
+            return p;
         }
     };
 

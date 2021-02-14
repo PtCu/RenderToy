@@ -20,37 +20,9 @@
 //  FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 //  DEALINGS IN THE SOFTWARE.
 
-#include "sphere.h"
-namespace platinum
-{
-    bool Sphere::Intersect(const Ray &r, PFloat t_min, PFloat t_max, Intersection &rec) const
-    {
-        Vector3f oc = r.o - center;
-        PFloat a = Dot(r.d, r.d);
-        PFloat b = Dot(oc, r.d);
-        PFloat c = Dot(oc, oc) - radius * radius;
-        PFloat discriminant = b * b - a * c;
-        if (discriminant > 0)
-        {
-            PFloat temp = (-b - sqrt(discriminant)) / a;
-            if (temp < t_max && temp > t_min)
-            {
-                rec.time = temp;
-                rec.point = r.PointAtT(rec.time);
-                rec.normal = Normal3f((rec.point - center) / radius);
-                rec.material = mat_ptr;
-                return true;
-            }
-            temp = (-b + sqrt(discriminant)) / a;
-            if (temp < t_max && temp > t_min)
-            {
-                rec.time = temp;
-                rec.point = r.PointAtT(rec.time);
-                rec.normal = Normal3f((rec.point - center) / radius);
-                rec.material = mat_ptr;
-                return true;
-            }
-        }
-        return false;
-    }
-} // namespace platinum
+#ifndef MATH_UTILS_H_
+#define MATH_UTILS_H_
+
+
+
+#endif

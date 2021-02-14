@@ -50,13 +50,6 @@ using PFloat = float;
 #include <float.h>
 #include <intrin.h>
 
-class Point3;
-class Point2;
-class Vector2;
-class Vector3;
-class Ray;
-class Object;
-class Material;
 
 static constexpr PFloat ShadowEpsilon = 0.0001f;
 static constexpr PFloat Pi = 3.14159265358979323846;
@@ -66,3 +59,9 @@ static constexpr PFloat Inv4Pi = 0.07957747154594766788;
 static constexpr PFloat PiOver2 = 1.57079632679489661923;
 static constexpr PFloat PiOver4 = 0.78539816339744830961;
 static constexpr PFloat Sqrt2 = 1.41421356237309504880;
+
+class Vector2;
+class Vector3;
+class Point2;
+class Point3;
+class Normal3;

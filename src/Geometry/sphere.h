@@ -20,8 +20,9 @@
 //  FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 //  DEALINGS IN THE SOFTWARE.
 
-#ifndef SPHERE_H
-#define SPHERE_H
+#ifndef GEOMETRY_SPHERE_H_
+#define GEOMETRY_SPHERE_H_
+
 #include "../Core/object.h"
 namespace platinum
 {

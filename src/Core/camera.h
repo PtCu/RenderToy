@@ -20,13 +20,15 @@
 //  FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 //  DEALINGS IN THE SOFTWARE.
 
-#ifndef CAMERA_H
-#define CAMERA_H
+#ifndef CORE_CAMERA_H_
+#define CORE_CAMERA_H_
+
 #include "platinum.h"
 #include "../Math/point.h"
 #include "../Math/vector.h"
+#include "../Math/rand.h"
 #include "material.h"
-#include "rand.h"
+
 namespace platinum
 {
     class Camera
@@ -48,8 +50,8 @@ namespace platinum
             PFloat half_height = tan(theta / 2);
             PFloat half_width = aspect * half_height;
             origin = lookfrom;
-            w = Normalize(Vector3f(lookfrom - lookat));
-            u = Normalize(Cross(vup, w));
+            w = Vector3f(lookfrom - lookat).Normalized();
+            u = Cross(vup, w).Normalized();
             v = Cross(w, u);
             lower_left_corner = origin - half_width * focusDist * u - half_height * focusDist * v - focusDist * w;
             horizontal = 2 * half_width * focusDist * u;
@@ -60,9 +62,9 @@ namespace platinum
         {
             if (isMotionBlur)
             {
-                Vector3f rd = lens_radius * random_in_unit_disk();
+                Vector3f rd = lens_radius * Random::RandomInUnitDisk();
                 Vector3f offset = u * rd.x + v * rd.y;
-                float time = time0 + drand48() * (time1 - time0);
+                float time = time0 + Random::drand48() * (time1 - time0);
                 return Ray(origin + offset, lower_left_corner + s * horizontal + t * vertical - origin - offset, time);
             }
             return Ray(origin,
@@ -77,15 +79,7 @@ namespace platinum
         PFloat lens_radius;
         PFloat time0, time1; // new variables for shutter open/close times
     };
-    Vector3f random_in_unit_disk()
-    {
-        Vector3f p;
-        do
-        {
-            p = 2.0 * Vector3f(drand48(), drand48(), 0) - Vector3f(1, 1, 0);
-        } while (Dot(p, p) >= 1.0);
-        return p;
-    }
+    
 } // namespace platinum
 
 #endif

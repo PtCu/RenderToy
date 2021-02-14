@@ -19,11 +19,13 @@
 //  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
 //  FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 //  DEALINGS IN THE SOFTWARE.
-#ifndef Ray_H
-#define Ray_H
+#ifndef CORE_RAY_H_
+#define CORE_RAY_H_
+
 #include "platinum.h"
 #include "../Math/vector.h"
 #include "../Math/point.h"
+
 namespace platinum
 {
     class Ray

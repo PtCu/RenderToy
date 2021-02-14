@@ -20,8 +20,11 @@
 //  FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 //  DEALINGS IN THE SOFTWARE.
 
-#ifndef INTERSECTION_H
-#define INTERSECTION_H
+#ifndef CORE_INTERSECTION_H_
+#define CORE_INTERSECTION_H_
+
+
+
 #include "platinum.h"
 #include "../Math/point.h"
 #include "../Math/vector.h"

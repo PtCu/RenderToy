@@ -25,6 +25,7 @@
 
 #include "../Core/platinum.h"
 #include "normal.h"
+
 namespace platinum
 {
     template <typename T>
@@ -116,7 +117,12 @@ namespace platinum
         }
         PFloat SquaredLength() const { return x * x + y * y; }
         PFloat Length() const { return std::sqrt(SquaredLength()); }
-
+        //A copy of normalized v
+        Vector2<T> Normalized() const
+        {
+            PFloat l = Length();
+            return Vector2f(x / l, y / l);
+        }
         T x, y;
     };
 
@@ -230,7 +236,12 @@ namespace platinum
         Vector3<T> operator-() const { return Vector3<T>(-x, -y, -z); }
         PFloat SquaredLength() const { return x * x + y * y + z * z; }
         PFloat Length() const { return std::sqrt(SquaredLength()); }
-
+        //A copy of normalized v
+        Vector3<T> Normalized() const
+        {
+            PFloat l = Length();
+            return Vector3f(x / l, y / l, z / l);
+        }
         T x, y, z;
     };
 

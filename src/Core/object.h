@@ -20,11 +20,13 @@
 //  FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 //  DEALINGS IN THE SOFTWARE.
 
-#ifndef OBJECT_H
-#define OBJECT_H
+#ifndef CORE_OBJECT_H_
+#define CORE_OBJECT_H_
+
 #include "platinum.h"
 #include "../Math/point.h"
 #include "../Math/vector.h"
+#include "../Math/normal.h"
 #include "ray.h"
 #include "intersection.h"
 namespace platinum
@@ -35,7 +37,6 @@ namespace platinum
         Object() {}
         virtual ~Object() {}
         virtual bool Intersect(const Ray &r, PFloat t_min, PFloat t_max, Intersection &rec) const = 0;
-      
     };
 } // namespace platinum
 
