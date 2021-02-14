@@ -55,7 +55,7 @@ public:
          cosine = -Dot(r_in.GetDirection(), rec.normal) / r_in.GetDirection().Length();
       }
       if (Refract(r_in.GetDirection(), outward_normal, ni_over_nt, refracted))
-         reflect_prob = schlick(cosine, ref_idx);
+         reflect_prob = Schlick(cosine, ref_idx);
       else
          reflect_prob = 1.0;
       if (Random::drand48() < reflect_prob)

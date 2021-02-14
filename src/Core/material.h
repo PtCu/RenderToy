@@ -34,6 +34,15 @@ namespace platinum
         virtual bool Scatter(const Ray &r_in, const Intersection &rec, Vector3f &attenuation, Vector3f &scattered) const = 0;
 
     protected:
+        /**
+         * @brief 
+         * @param  v                Incident light. 
+         * @param  n                Normal.
+         * @param  ni_over_nt       Refractive index, 
+         * @param  refracted        Emergent light.
+         * @return true 
+         * @return false 
+         */
         bool Refract(const Vector3f &v, const Normal3f &n, PFloat ni_over_nt, Vector3f &refracted) const
         {
             Vector3f uv = v.Normalized();
@@ -53,7 +62,7 @@ namespace platinum
             return Vector3f(v - 2 * Dot(v, n) * n);
         }
 
-        PFloat schlick(PFloat cosine, PFloat refIdx) const
+        PFloat Schlick(PFloat cosine, PFloat refIdx) const
         {
             PFloat r0 = (1 - refIdx) / (1 + refIdx);
             r0 = r0 * r0;
