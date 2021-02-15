@@ -29,15 +29,15 @@ namespace platinum
     class Lambertian : public Material
     {
     public:
-        Lambertian(const Vector3f &a) : albedo(a) {}
-        virtual bool Scatter(const Ray &r_in, const Intersection &rec, Vector3f &attenuation, Ray &scattered) const
+        Lambertian(const glm::vec3 &a) : albedo(a) {}
+        virtual bool Scatter(const Ray &r_in, const Intersection &rec, glm::vec3 &attenuation, Ray &scattered) const
         {
-            scattered = Ray(rec.point, Vector3f(rec.normal) + Random::RandomInUnitDisk());
+            scattered = Ray(rec.point, glm::vec3(rec.normal) + Random::RandomInUnitDisk());
             attenuation = albedo;
             return true;
         }
 
-        Vector3f albedo;
+        glm::vec3 albedo;
     };
 } // namespace platinum
 

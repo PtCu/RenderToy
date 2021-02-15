@@ -24,7 +24,7 @@ namespace platinum
 {
     bool Sphere::Intersect(const Ray &r, PFloat t_min, PFloat t_max, Intersection &rec) const
     {
-        Vector3f oc = r.o - center;
+        glm::vec3 oc = r.o - center;
         PFloat a = Dot(r.d, r.d);
         PFloat b = Dot(oc, r.d);
         PFloat c = Dot(oc, oc) - radius * radius;
@@ -36,7 +36,7 @@ namespace platinum
             {
                 rec.time = temp;
                 rec.point = r.PointAtT(rec.time);
-                rec.normal = Normal3f((rec.point - center) / radius);
+                rec.normal = glm::vec3((rec.point - center) / radius);
                 rec.material = material;
                 return true;
             }
@@ -45,7 +45,7 @@ namespace platinum
             {
                 rec.time = temp;
                 rec.point = r.PointAtT(rec.time);
-                rec.normal = Normal3f((rec.point - center) / radius);
+                rec.normal = glm::vec3((rec.point - center) / radius);
                 rec.material = material;
                 return true;
             }

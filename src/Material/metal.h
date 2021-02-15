@@ -30,18 +30,18 @@ namespace platinum
    class Metal : public Material
    {
    public:
-      Metal(const Vector3f &a, PFloat f) : albedo(a)
+      Metal(const glm::vec3 &a, PFloat f) : albedo(a)
       {
          f < 1 ? fuzz = f : fuzz = 1;
       }
-      virtual bool scatter(const Ray &r_in, const Intersection &rec, Vector3f &attenuation, Ray &scattered) const
+      virtual bool scatter(const Ray &r_in, const Intersection &rec, glm::vec3 &attenuation, Ray &scattered) const
       {
-         Vector3f reflected = Reflect(r_in.GetDirection(), rec.normal);
+         glm::vec3 reflected = Reflect(r_in.GetDirection(), rec.normal);
          scattered = Ray(rec.point, reflected + fuzz * Random::RandomInUnitSphere());
          attenuation = albedo;
          return (Dot(scattered.GetDirection(), rec.normal) > 0);
       }
-      Vector3f albedo;
+      glm::vec3 albedo;
       PFloat fuzz; //Zero is no perturbation
    };
 } // namespace platinum

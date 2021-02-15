@@ -60,6 +60,12 @@ cmake_minimum_required (VERSION 3.2)
 cmake_policy(VERSION 3.2)
 project (${PROJECT_NAME})
 
+include_directories (
+	${PROJECT_SOURCE_DIR}/include
+	# $ENV{XXX_INCLUDE_PATH}
+	# ...
+)
+
 # The version number.
 set (${PROJECT_NAME}_VERSION_MAJOR 1)
 set (${PROJECT_NAME}_VERSION_MINOR 0)

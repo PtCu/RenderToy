@@ -23,8 +23,6 @@
 #ifndef CORE_INTERSECTION_H_
 #define CORE_INTERSECTION_H_
 
-
-
 #include "platinum.h"
 #include "../Math/point.h"
 #include "../Math/vector.h"
@@ -33,8 +31,8 @@ namespace platinum
 {
     struct Intersection
     {
-        Point3f point;
-        Normal3f normal;
+        glm::vec3 point;
+        glm::vec3 normal;
         PFloat time;
         Material *material;
     };

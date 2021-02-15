@@ -32,14 +32,14 @@ namespace platinum
     {
     public:
         Ray() {}
-        Ray(const Point3f &a, const Vector3f &b, PFloat ti = 0.0) : o(a), d(b), _time(ti) {}
-        Point3f GetOrigin() const { return o; }
-        Vector3f GetDirection() const { return d; }
+        Ray(const glm::vec3 &a, const glm::vec3 &b, PFloat ti = 0.0) : o(a), d(b), _time(ti) {}
+        glm::vec3 GetOrigin() const { return o; }
+        glm::vec3 GetDirection() const { return d; }
         PFloat GetTime() const { return _time; }
-        Point3f PointAtT(PFloat t) const { return o + t * d; }
+        glm::vec3 PointAtT(PFloat t) const { return o + t * d; }
 
-        Point3f o;
-        Vector3f d;
+        glm::vec3 o;
+        glm::vec3 d;
         PFloat _time;
     };
 } // namespace platinum

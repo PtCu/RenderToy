@@ -31,7 +31,7 @@ namespace platinum
     class Material
     {
     public:
-        virtual bool Scatter(const Ray &r_in, const Intersection &rec, Vector3f &attenuation, Ray &scattered) const = 0;
+        virtual bool Scatter(const Ray &r_in, const Intersection &rec, glm::vec3 &attenuation, Ray &scattered) const = 0;
 
     protected:
         /**
@@ -43,9 +43,9 @@ namespace platinum
          * @return true 
          * @return false 
          */
-        bool Refract(const Vector3f &v, const Normal3f &n, PFloat ni_over_nt, Vector3f &refracted) const
+        bool Refract(const glm::vec3 &v, const glm::vec3 &n, PFloat ni_over_nt, glm::vec3 &refracted) const
         {
-            Vector3f uv = v.Normalized();
+            glm::vec3 uv = v.Normalized();
             PFloat dt = Dot(uv, n);
             PFloat discriminant = 1.0 - ni_over_nt * ni_over_nt * (1 - dt * dt);
             if (discriminant > 0)
@@ -57,9 +57,9 @@ namespace platinum
                 return false;
         }
 
-        Vector3f Reflect(const Vector3f &v, const Normal3f &n) const
+        glm::vec3 Reflect(const glm::vec3 &v, const glm::vec3 &n) const
         {
-            return Vector3f(v - 2 * Dot(v, n) * n);
+            return glm::vec3(v - 2 * Dot(v, n) * n);
         }
 
         PFloat Schlick(PFloat cosine, PFloat refIdx) const

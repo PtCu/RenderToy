@@ -24,8 +24,7 @@
 #define CORE_CAMERA_H_
 
 #include "platinum.h"
-#include "../Math/point.h"
-#include "../Math/vector.h"
+#include <glm/glm.hpp>
 #include "../Math/rand.h"
 #include "material.h"
 
@@ -43,14 +42,14 @@ namespace platinum
          * @param  aperture         Size of aperture.
          * @param  focusDist       My Param doc
          */
-        Camera(Point3f lookfrom, Vector3f lookat, Vector3f vup, PFloat vfov, PFloat aspect, PFloat aperture, PFloat focusDist)
+        Camera(glm::vec3 lookfrom, glm::vec3 lookat, glm::vec3 vup, PFloat vfov, PFloat aspect, PFloat aperture, PFloat focusDist)
         {
             lens_radius = aperture / 2;
             PFloat theta = vfov * Pi / 180;
             PFloat half_height = tan(theta / 2);
             PFloat half_width = aspect * half_height;
             origin = lookfrom;
-            w = Vector3f(lookfrom - lookat).Normalized();
+            w = glm::vec3(lookfrom - lookat).Normalized();
             u = Cross(vup, w).Normalized();
             v = Cross(w, u);
             lower_left_corner = origin - half_width * focusDist * u - half_height * focusDist * v - focusDist * w;
@@ -62,8 +61,8 @@ namespace platinum
         {
             if (isMotionBlur)
             {
-                Vector3f rd = lens_radius * Random::RandomInUnitDisk();
-                Vector3f offset = u * rd.x + v * rd.y;
+                glm::vec3 rd = lens_radius * Random::RandomInUnitDisk();
+                glm::vec3 offset = u * rd.x + v * rd.y;
                 float time = time0 + Random::drand48() * (time1 - time0);
                 return Ray(origin + offset, lower_left_corner + s * horizontal + t * vertical - origin - offset, time);
             }
@@ -71,15 +70,15 @@ namespace platinum
                        lower_left_corner + s * horizontal + t * vertical - origin);
         }
 
-        Point3f origin;
-        Point3f lower_left_corner;
-        Vector3f horizontal;
-        Vector3f vertical;
-        Vector3f u, v, w; //A set of orthonormal basis, to describe orentation of camera.
+        glm::vec3 origin;
+        glm::vec3 lower_left_corner;
+        glm::vec3 horizontal;
+        glm::vec3 vertical;
+        glm::vec3 u, v, w; //A set of orthonormal basis, to describe orentation of camera.
         PFloat lens_radius;
         PFloat time0, time1; // new variables for shutter open/close times
     };
-    
+
 } // namespace platinum
 
 #endif

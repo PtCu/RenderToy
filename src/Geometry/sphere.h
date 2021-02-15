@@ -30,9 +30,9 @@ namespace platinum
     {
     public:
         Sphere() {}
-        Sphere(Point3f cen, PFloat r, Material *m) : center(cen), radius(r), material(m){};
+        Sphere(glm::vec3 cen, PFloat r, Material *m) : center(cen), radius(r), material(m){};
         virtual bool Intersect(const Ray &r, PFloat t_min, PFloat t_max, Intersection &rec) const;
-        Point3f center;
+        glm::vec3 center;
         PFloat radius;
         Material *material;
     };

@@ -27,7 +27,7 @@ namespace platinum
 
     bool MovingSphere::Intersect(const Ray &r, PFloat t_min, PFloat t_max, Intersection &rec) const
     {
-        Vector3f oc = r.GetOrigin() - GetCenter(r.GetTime());
+        glm::vec3 oc = r.GetOrigin() - GetCenter(r.GetTime());
         PFloat a = Dot(r.GetDirection(), r.GetDirection());
         PFloat b = Dot(oc, r.GetDirection());
         PFloat c = Dot(oc, oc) - radius * radius;
@@ -39,7 +39,7 @@ namespace platinum
             {
                 rec.time = temp;
                 rec.point = r.PointAtT(rec.time);
-                rec.normal = Normal3f((rec.point - GetCenter(r.GetTime())) / radius);
+                rec.normal = glm::vec3((rec.point - GetCenter(r.GetTime())) / radius);
                 rec.material = material;
                 return true;
             }
@@ -48,7 +48,7 @@ namespace platinum
             {
                 rec.time = temp;
                 rec.point = r.PointAtT(rec.time);
-                rec.normal = Normal3f((rec.point - GetCenter(r.GetTime())) / radius);
+                rec.normal = glm::vec3((rec.point - GetCenter(r.GetTime())) / radius);
                 rec.material = material;
                 return true;
             }

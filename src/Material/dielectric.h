@@ -31,13 +31,13 @@ namespace platinum
    {
    public:
       Dielectric(PFloat ri) : ref_idx(ri) {}
-      virtual bool scatter(const Ray &r_in, const Intersection &rec, Vector3f &attenuation, Ray &scattered) const
+      virtual bool scatter(const Ray &r_in, const Intersection &rec, glm::vec3 &attenuation, Ray &scattered) const
       {
-         Normal3f outward_normal;
-         Vector3f reflected = Reflect(r_in.GetDirection(), rec.normal);
+         glm::vec3 outward_normal;
+         glm::vec3 reflected = Reflect(r_in.GetDirection(), rec.normal);
          PFloat ni_over_nt;
-         attenuation = Vector3f(1.0, 1.0, 1.0);
-         Vector3f refracted;
+         attenuation = glm::vec3(1.0, 1.0, 1.0);
+         glm::vec3 refracted;
          PFloat reflect_prob;
          PFloat cosine;
          if (Dot(r_in.GetDirection(), rec.normal) > 0)

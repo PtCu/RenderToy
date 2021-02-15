@@ -31,18 +31,18 @@ namespace platinum
     {
     public:
         MovingSphere() {}
-        MovingSphere(Vector3f cen0, Vector3f cen1, PFloat t0, PFloat t1, PFloat r, Material *m)
+        MovingSphere(glm::vec3 cen0, glm::vec3 cen1, PFloat t0, PFloat t1, PFloat r, Material *m)
             : center0(cen0), center1(cen1), time0(t0), time1(t1), radius(r), mat_ptr(m){};
         virtual bool Intersect(const Ray &r, PFloat tmin, PFloat tmax, Intersection &rec) const;
         virtual bool BoundingBox(PFloat t0, PFloat t1, aabb &box) const;
-        Point3f GetCenter(PFloat time) const;
-        Vector3f center0, center1;
+        glm::vec3 GetCenter(PFloat time) const;
+        glm::vec3 center0, center1;
         PFloat time0, time1;
         PFloat radius;
         material *material;
     };
 
-    Point3f MovingSphere::GetCenter(PFloat time) const
+    glm::vec3 MovingSphere::GetCenter(PFloat time) const
     {
         return center0 + ((time - time0) / (time1 - time0)) * (center1 - center0);
     }

@@ -38,21 +38,21 @@ namespace platinum
             static std::uniform_real_distribution<> dist(0.0, 1.0);
             return dist(engine);
         }
-        static Vector3f RandomInUnitDisk()
+        static glm::vec3 RandomInUnitDisk()
         {
-            Vector3f p;
+            glm::vec3 p;
             do
             {
-                p = 2.0 * Vector3f(drand48(), drand48(), 0) - Vector3f(1, 1, 0);
+                p = 2.0 * glm::vec3(drand48(), drand48(), 0) - glm::vec3(1, 1, 0);
             } while (Dot(p, p) >= 1.0);
             return p;
         }
-        static Vector3f RandomInUnitSphere()
+        static glm::vec3 RandomInUnitSphere()
         {
-            Vector3f p;
+            glm::vec3 p;
             do
             {
-                p = 2.0 * Vector3f(drand48(), drand48(), drand48()) - Vector3f(1, 1, 1);
+                p = 2.0 * glm::vec3(drand48(), drand48(), drand48()) - glm::vec3(1, 1, 1);
             } while (Dot(p, p) >= 1.0);
             return p;
         }
