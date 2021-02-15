@@ -34,7 +34,7 @@ namespace platinum
       {
          f < 1 ? fuzz = f : fuzz = 1;
       }
-      virtual bool scatter(const Ray &r_in, const Intersection &rec, glm::vec3 &attenuation, Ray &scattered) const
+      virtual bool Scatter(const Ray &r_in, const Intersection &rec, glm::vec3 &attenuation, Ray &scattered) const
       {
          glm::vec3 reflected = Reflect(r_in.GetDirection(), rec.normal);
          scattered = Ray(rec.point, reflected + fuzz * Random::RandomInUnitSphere());

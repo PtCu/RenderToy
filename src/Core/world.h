@@ -1,6 +1,6 @@
 // The MIT License (MIT)
 
-// Copyright (c) 2021 PtCU
+// Copyright (c) 2021 PtCu
 
 //  Permission is hereby granted, free of charge, to any person obtaining a
 //  copy of this software and associated documentation files (the "Software"),
@@ -20,43 +20,24 @@
 //  FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 //  DEALINGS IN THE SOFTWARE.
 
-#ifndef CORE_RAND_H_
-#define CORE_RAND_H_
+#ifndef CORE_WORLD_H_
+#define CORE_WORLD_H_
 
-#include <random>
-#include "../Core/defines.h"
+#include "Object.h"
 #include <glm/glm.hpp>
-
+#include "defines.h"
+#include "ray.h"
+#include "intersection.h"
 namespace platinum
 {
-    class Random
+    class World
     {
     public:
-        static PFloat RandomInUnitFloat()
-        {
-            static std::random_device seed_gen;
-            static std::mt19937 engine(seed_gen());
-            static std::uniform_real_distribution<> dist(0.0, 1.0);
-            return dist(engine);
-        }
-        static glm::vec3 RandomInUnitDisk()
-        {
-            glm::vec3 p;
-            do
-            {
-                p = 2.0f * glm::vec3(RandomInUnitFloat(), RandomInUnitFloat(), 0) - glm::vec3(1, 1, 0);
-            } while (glm::dot(p, p) >= 1.0);
-            return p;
-        }
-        static glm::vec3 RandomInUnitSphere()
-        {
-            glm::vec3 p;
-            do
-            {
-                p = 2.0f * glm::vec3(RandomInUnitFloat(), RandomInUnitFloat(), RandomInUnitFloat()) - glm::vec3(1, 1, 1);
-            } while (glm::dot(p, p) >= 1.0);
-            return p;
-        }
+        World() {}
+        virtual bool IntersectAll(const Ray &r, PFloat tmin, PFloat tmax, Intersection &rec) const;
+        void AddObject(const Object &obj);
+        std::vector<std::shared_ptr<Object>> list;
+        size_t list_size;
     };
 
 } // namespace platinum

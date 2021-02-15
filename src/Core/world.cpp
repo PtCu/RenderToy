@@ -20,45 +20,29 @@
 //  FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 //  DEALINGS IN THE SOFTWARE.
 
-#ifndef CORE_RAND_H_
-#define CORE_RAND_H_
-
-#include <random>
-#include "../Core/defines.h"
-#include <glm/glm.hpp>
+#include "world.h"
 
 namespace platinum
 {
-    class Random
+    void World::AddObject(const Object &obj)
     {
-    public:
-        static PFloat RandomInUnitFloat()
+        this->list.push_back(std::make_shared<Object>(obj));
+        ++list_size;
+    }
+    bool World::IntersectAll(const Ray &r, PFloat t_min, PFloat t_max, Intersection &rec) const
+    {
+        Intersection temp_rec;
+        bool hit_anything = false;
+        PFloat closest_so_far = t_max;
+        for (int i = 0; i < list_size; i++)
         {
-            static std::random_device seed_gen;
-            static std::mt19937 engine(seed_gen());
-            static std::uniform_real_distribution<> dist(0.0, 1.0);
-            return dist(engine);
-        }
-        static glm::vec3 RandomInUnitDisk()
-        {
-            glm::vec3 p;
-            do
+            if (list[i]->Intersect(r, t_min, closest_so_far, temp_rec))
             {
-                p = 2.0f * glm::vec3(RandomInUnitFloat(), RandomInUnitFloat(), 0) - glm::vec3(1, 1, 0);
-            } while (glm::dot(p, p) >= 1.0);
-            return p;
+                hit_anything = true;
+                closest_so_far = temp_rec.t;
+                rec = temp_rec;
+            }
         }
-        static glm::vec3 RandomInUnitSphere()
-        {
-            glm::vec3 p;
-            do
-            {
-                p = 2.0f * glm::vec3(RandomInUnitFloat(), RandomInUnitFloat(), RandomInUnitFloat()) - glm::vec3(1, 1, 1);
-            } while (glm::dot(p, p) >= 1.0);
-            return p;
-        }
-    };
-
+        return hit_anything;
+    }
 } // namespace platinum
-
-#endif

@@ -32,6 +32,7 @@ namespace platinum
 {
     class Camera
     {
+        public:
         /**
          * @brief Construct a new Camera object
          * @param  lookfrom         The position camera is.
@@ -49,9 +50,9 @@ namespace platinum
             PFloat half_height = tan(theta / 2);
             PFloat half_width = aspect * half_height;
             origin = lookfrom;
-            w = glm::vec3(lookfrom - lookat).Normalized();
-            u = Cross(vup, w).Normalized();
-            v = Cross(w, u);
+            w = glm::normalize(glm::vec3(lookfrom - lookat));
+            u = glm::normalize(glm::cross(vup, w));
+            v = glm::cross(w, u);
             lower_left_corner = origin - half_width * focusDist * u - half_height * focusDist * v - focusDist * w;
             horizontal = 2 * half_width * focusDist * u;
             vertical = 2 * half_height * focusDist * v;
@@ -63,7 +64,7 @@ namespace platinum
             {
                 glm::vec3 rd = lens_radius * Random::RandomInUnitDisk();
                 glm::vec3 offset = u * rd.x + v * rd.y;
-                float time = time0 + Random::drand48() * (time1 - time0);
+                float time = time0 + Random::RandomInUnitFloat() * (time1 - time0);
                 return Ray(origin + offset, lower_left_corner + s * horizontal + t * vertical - origin - offset, time);
             }
             return Ray(origin,
