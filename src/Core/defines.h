@@ -78,6 +78,7 @@ namespace platinum
     class Camera;
     class Material;
     struct Intersection;
+    class World;
 
 } // namespace platinum
 #endif

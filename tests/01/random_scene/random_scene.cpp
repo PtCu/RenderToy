@@ -3,12 +3,12 @@
 #include "../src/Core/ray.h"
 #include "../src/Core/camera.h"
 #include "../src/Core/object.h"
-#include "../src/Core/world.h"
 #include "../src/Material/dielectric.h"
 #include "../src/Material/lambertian.h"
 #include "../src/Material/metal.h"
 #include "../src/Math/rand.h"
 #include "../src/Geometry/sphere.h"
+#include "../src/Core/world.h"
 
 using namespace platinum;
 using namespace glm;
@@ -43,7 +43,7 @@ World random_scene()
     int n = 500;
     World world;
     Sphere *sph = new Sphere(vec3(0, -1000, 0), 1000, new Lambertian(vec3(0.5, 0.5, 0.5)));
-    world.AddObject(*sph);
+    world.AddObject(sph);
     int i = 1;
     for (int a = -11; a < 11; a++)
     {
@@ -74,14 +74,14 @@ World random_scene()
                 { // glass
                     sph = new Sphere(center, 0.2f, new Dielectric(1.5));
                 }
-                world.AddObject(*sph);
+                world.AddObject(sph);
             }
         }
     }
 
-    world.AddObject(*(new Sphere(vec3(0, 1, 0), 1.0, new Dielectric(1.5))));
-    world.AddObject(*(new Sphere(vec3(-4, 1, 0), 1.0, new Lambertian(vec3(0.4, 0.2, 0.1)))));
-    world.AddObject(*(new Sphere(vec3(4, 1, 0), 1.0, new Metal(vec3(0.7, 0.6, 0.5), 0.0))));
+    world.AddObject((new Sphere(vec3(0, 1, 0), 1.0, new Dielectric(1.5))));
+    world.AddObject((new Sphere(vec3(-4, 1, 0), 1.0, new Lambertian(vec3(0.4, 0.2, 0.1)))));
+    world.AddObject((new Sphere(vec3(4, 1, 0), 1.0, new Metal(vec3(0.7, 0.6, 0.5), 0.0))));
 
     return world;
 }

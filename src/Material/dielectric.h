@@ -31,39 +31,7 @@ namespace platinum
    {
    public:
       Dielectric(PFloat ri) : ref_idx(ri) {}
-      virtual bool Scatter(const Ray &r_in, const Intersection &rec, glm::vec3 &attenuation, Ray &scattered) const
-      {
-         glm::vec3 outward_normal;
-         glm::vec3 reflected = Reflect(r_in.GetDirection(), rec.normal);
-         PFloat ni_over_nt;
-         attenuation = glm::vec3(1.0, 1.0, 1.0);
-         glm::vec3 refracted;
-         PFloat reflect_prob;
-         PFloat cosine;
-         if (glm::dot(r_in.GetDirection(), rec.normal) > 0)
-         {
-            outward_normal = -rec.normal;
-            ni_over_nt = ref_idx;
-            // cosine = ref_idx * glm::dot(r_in.GetDirection(), rec.normal) / r_in.GetDirection().length();
-            cosine = glm::dot(r_in.GetDirection(), rec.normal) / r_in.GetDirection().length();
-            cosine = std::sqrt(1 - ref_idx * ref_idx * (1 - cosine * cosine));
-         }
-         else
-         {
-            outward_normal = rec.normal;
-            ni_over_nt = 1.0 / ref_idx;
-            cosine = -glm::dot(r_in.GetDirection(), rec.normal) / r_in.GetDirection().length();
-         }
-         if (Refract(r_in.GetDirection(), outward_normal, ni_over_nt, refracted))
-            reflect_prob = Schlick(cosine, ref_idx);
-         else
-            reflect_prob = 1.0;
-         if (Random::RandomInUnitFloat() < reflect_prob)
-            scattered = Ray(rec.point, reflected);
-         else
-            scattered = Ray(rec.point, refracted);
-         return true;
-      }
+      virtual bool Scatter(const Ray &r_in, const Intersection &rec, glm::vec3 &attenuation, Ray &scattered) const;
 
       PFloat ref_idx;
    };
