@@ -22,10 +22,10 @@
 
 #ifndef CORE_MATERIAL_H_
 #define CORE_MATERIAL_H_
-
+#include <glm/glm.hpp>
 #include "ray.h"
 #include "intersection.h"
-#include "../Math/vector.h"
+#include "defines.h"
 namespace platinum
 {
     class Material
@@ -45,9 +45,9 @@ namespace platinum
          */
         bool Refract(const glm::vec3 &v, const glm::vec3 &n, PFloat ni_over_nt, glm::vec3 &refracted) const
         {
-            glm::vec3 uv = v.Normalized();
-            PFloat dt = Dot(uv, n);
-            PFloat discriminant = 1.0 - ni_over_nt * ni_over_nt * (1 - dt * dt);
+            glm::vec3 uv = glm::normalize(v);
+            PFloat dt = glm::dot(uv, n);
+            PFloat discriminant = 1.0f - ni_over_nt * ni_over_nt * (1.0f - dt * dt);
             if (discriminant > 0)
             {
                 refracted = ni_over_nt * (uv - n * dt) - n * std::sqrt(discriminant);
@@ -59,14 +59,14 @@ namespace platinum
 
         glm::vec3 Reflect(const glm::vec3 &v, const glm::vec3 &n) const
         {
-            return glm::vec3(v - 2 * Dot(v, n) * n);
+            return glm::vec3(v - 2.0f * glm::dot(v, n) * n);
         }
 
         PFloat Schlick(PFloat cosine, PFloat refIdx) const
         {
-            PFloat r0 = (1 - refIdx) / (1 + refIdx);
+            PFloat r0 = (1.0f - refIdx) / (1.0f + refIdx);
             r0 = r0 * r0;
-            return r0 + (1 - r0) * pow((1 - cosine), 5);
+            return r0 + (1.0f - r0) * pow((1.0f - cosine), 5.0f);
         }
     };
 

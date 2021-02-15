@@ -9,7 +9,7 @@
 ///
 /// Include <glm/gtx/normalized_dot.hpp> to use the features of this extension.
 ///
-/// Dot product of vectors that need to be normalize with a single square root.
+/// glm::dot product of vectors that need to be normalize with a single square root.
 
 #pragma once
 

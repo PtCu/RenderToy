@@ -21,10 +21,8 @@
 //  DEALINGS IN THE SOFTWARE.
 #ifndef CORE_RAY_H_
 #define CORE_RAY_H_
-
-#include "platinum.h"
-#include "../Math/vector.h"
-#include "../Math/point.h"
+#include <glm/glm.hpp>
+#include "defines.h"
 
 namespace platinum
 {

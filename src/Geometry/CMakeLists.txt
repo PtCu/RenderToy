@@ -1,10 +1,12 @@
+#生成 exe 就 "EXE"，生成 lib 就 "LIB"
+set(MODE "LIB")
 
 GET_DIR_NAME(DIRNAME)
 set(FOLDER_NAME ${DIRNAME})
 
 #项目名，默认为目录名
 GET_DIR_NAME(DIRNAME)
-set(TARGET_NAME "PT_${DIRNAME}")
+set(TARGET_NAME ${DIRNAME})
 #多个源文件用 [空格] 分隔
 #如：set(STR_TARGET_SOURCES "main.cpp src_2.cpp")
 file(GLOB ALL_SOURCES

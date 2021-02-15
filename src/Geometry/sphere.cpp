@@ -25,9 +25,9 @@ namespace platinum
     bool Sphere::Intersect(const Ray &r, PFloat t_min, PFloat t_max, Intersection &rec) const
     {
         glm::vec3 oc = r.o - center;
-        PFloat a = Dot(r.d, r.d);
-        PFloat b = Dot(oc, r.d);
-        PFloat c = Dot(oc, oc) - radius * radius;
+        PFloat a = glm::dot(r.d, r.d);
+        PFloat b = glm::dot(oc, r.d);
+        PFloat c = glm::dot(oc, oc) - radius * radius;
         PFloat discriminant = b * b - a * c;
         if (discriminant > 0)
         {

@@ -22,10 +22,8 @@
 
 #ifndef CORE_INTERSECTION_H_
 #define CORE_INTERSECTION_H_
-
-#include "platinum.h"
-#include "../Math/point.h"
-#include "../Math/vector.h"
+#include <glm/glm.hpp>
+#include "defines.h"
 #include "material.h"
 namespace platinum
 {

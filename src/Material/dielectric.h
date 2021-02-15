@@ -40,19 +40,19 @@ namespace platinum
          glm::vec3 refracted;
          PFloat reflect_prob;
          PFloat cosine;
-         if (Dot(r_in.GetDirection(), rec.normal) > 0)
+         if (glm::dot(r_in.GetDirection(), rec.normal) > 0)
          {
             outward_normal = -rec.normal;
             ni_over_nt = ref_idx;
-            // cosine = ref_idx * Dot(r_in.GetDirection(), rec.normal) / r_in.GetDirection().length();
-            cosine = Dot(r_in.GetDirection(), rec.normal) / r_in.GetDirection().Length();
+            // cosine = ref_idx * glm::dot(r_in.GetDirection(), rec.normal) / r_in.GetDirection().length();
+            cosine = glm::dot(r_in.GetDirection(), rec.normal) / r_in.GetDirection().Length();
             cosine = std::sqrt(1 - ref_idx * ref_idx * (1 - cosine * cosine));
          }
          else
          {
             outward_normal = rec.normal;
             ni_over_nt = 1.0 / ref_idx;
-            cosine = -Dot(r_in.GetDirection(), rec.normal) / r_in.GetDirection().Length();
+            cosine = -glm::dot(r_in.GetDirection(), rec.normal) / r_in.GetDirection().Length();
          }
          if (Refract(r_in.GetDirection(), outward_normal, ni_over_nt, refracted))
             reflect_prob = Schlick(cosine, ref_idx);

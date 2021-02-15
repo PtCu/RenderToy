@@ -23,18 +23,18 @@
 #ifndef CORE_RAND_H_
 #define CORE_RAND_H_
 
-#include "vector.h"
 #include <random>
+#include "../Core/defines.h"
 
 namespace platinum
 {
     class Random
     {
     public:
-        static double drand48()
+        static PFloat drand48()
         {
             static std::random_device seed_gen;
-            static std::mt19937 engine(seed_gen);
+            static std::mt19937 engine(seed_gen());
             static std::uniform_real_distribution<> dist(0.0, 1.0);
             return dist(engine);
         }
@@ -43,8 +43,8 @@ namespace platinum
             glm::vec3 p;
             do
             {
-                p = 2.0 * glm::vec3(drand48(), drand48(), 0) - glm::vec3(1, 1, 0);
-            } while (Dot(p, p) >= 1.0);
+                p = 2.0f * glm::vec3(drand48(), drand48(), 0) - glm::vec3(1, 1, 0);
+            } while (glm::dot(p, p) >= 1.0);
             return p;
         }
         static glm::vec3 RandomInUnitSphere()
@@ -52,8 +52,8 @@ namespace platinum
             glm::vec3 p;
             do
             {
-                p = 2.0 * glm::vec3(drand48(), drand48(), drand48()) - glm::vec3(1, 1, 1);
-            } while (Dot(p, p) >= 1.0);
+                p = 2.0f*glm::vec3(drand48(), drand48(), drand48()) - glm::vec3(1, 1, 1);
+            } while (glm::dot(p, p) >= 1.0);
             return p;
         }
     };

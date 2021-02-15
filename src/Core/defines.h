@@ -22,6 +22,10 @@
 
 //Core/
 // Global Include Files
+
+#ifndef CORE_DEFINES_H_
+#define CORE_DEFINES_H_
+
 #include <type_traits>
 #include <algorithm>
 #include <cinttypes>
@@ -51,6 +55,7 @@ namespace platinum
     using PFloat = float;
 #endif
 
+
     static constexpr PFloat ShadowEpsilon = 0.0001f;
     static constexpr PFloat Pi = 3.14159265358979323846;
     static constexpr PFloat InvPi = 0.31830988618379067154;
@@ -72,5 +77,7 @@ namespace platinum
     class Normal3;
     class Camera;
     class Material;
+    struct Intersection;
 
 } // namespace platinum
+#endif

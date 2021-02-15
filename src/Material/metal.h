@@ -39,7 +39,7 @@ namespace platinum
          glm::vec3 reflected = Reflect(r_in.GetDirection(), rec.normal);
          scattered = Ray(rec.point, reflected + fuzz * Random::RandomInUnitSphere());
          attenuation = albedo;
-         return (Dot(scattered.GetDirection(), rec.normal) > 0);
+         return (glm::dot(scattered.GetDirection(), rec.normal) > 0);
       }
       glm::vec3 albedo;
       PFloat fuzz; //Zero is no perturbation

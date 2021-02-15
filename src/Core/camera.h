@@ -23,7 +23,7 @@
 #ifndef CORE_CAMERA_H_
 #define CORE_CAMERA_H_
 
-#include "platinum.h"
+#include "defines.h"
 #include <glm/glm.hpp>
 #include "../Math/rand.h"
 #include "material.h"

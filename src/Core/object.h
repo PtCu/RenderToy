@@ -23,10 +23,8 @@
 #ifndef CORE_OBJECT_H_
 #define CORE_OBJECT_H_
 
-#include "platinum.h"
-#include "../Math/point.h"
-#include "../Math/vector.h"
-#include "../Math/normal.h"
+#include <glm/glm.hpp>
+#include "defines.h"
 #include "ray.h"
 #include "intersection.h"
 namespace platinum
