@@ -1,2 +1,2 @@
 # RenderToy
-Ray tracing exercise 
+Ray tracing renderer toy.

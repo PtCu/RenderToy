@@ -13,11 +13,11 @@
 using namespace platinum;
 using namespace glm;
 
-const float MAXFLOAT = 10.0f;
+
 vec3 color(const Ray &r, World &world, int depth)
 {
     Intersection rec;
-    if (world.IntersectAll(r, 0.001f, MAXFLOAT, rec))
+    if (world.IntersectAll(r, 0.001f, std::numeric_limits<float>::max(), rec))
     {
         Ray scattered;
         vec3 attenuation;
@@ -91,8 +91,7 @@ int main()
     int nx = 1200;
     int ny = 800;
     int ns = 10;
-    std::cout << "P3\n"
-              << nx << " " << ny << "\n255\n";
+    std::cout << "Start rendering..." << std::endl;
     World world = random_scene();
 
     vec3 lookfrom(13, 2, 3);
@@ -100,11 +99,11 @@ int main()
     float dist_to_focus = 10.0f;
     float aperture = 0.1f;
 
-    Camera cam(lookfrom, lookat, vec3(0, 1, 0), 20, float(nx) / float(ny), aperture, dist_to_focus);
-    Image img(1200, 800,4);
-    for (int j = ny - 1; j >= 0; j--)
+    Camera cam(lookfrom, lookat, vec3(0, -1, 0), 20, float(nx) / float(ny), aperture, dist_to_focus);
+    Image img(1200, 800, 3);
+    for (int j = 0; j < ny; ++j)
     {
-        for (int i = 0; i < nx; i++)
+        for (int i = 0; i < nx; ++i)
         {
             vec3 col(0, 0, 0);
             for (int s = 0; s < ns; s++)
@@ -116,12 +115,12 @@ int main()
             }
             col /= float(ns);
             col = vec3(sqrt(col[0]), sqrt(col[1]), sqrt(col[2]));
-            int ir = int(255.99 * col[0]);
-            int ig = int(255.99 * col[1]);
-            int ib = int(255.99 * col[2]);
-            img.SetPixel(i, j, Image::Pixel<float>(ir, ig, ib));
+            img.SetPixel(i, j, Image::Pixel<unsigned char>((int)255.99f * col.x, (int)255.99f * col.y, (int)255.99f * col.z));
         }
     }
     img.SaveAsPNG("random_scene.png");
+    std::cout << "Rendering finished" << std::endl;
+    world.DestroyAll();
     return 0;
+
 }

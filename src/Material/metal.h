@@ -36,12 +36,12 @@ namespace platinum
       }
       virtual bool Scatter(const Ray &r_in, const Intersection &rec, glm::vec3 &attenuation, Ray &scattered) const
       {
-         glm::vec3 reflected = Reflect(r_in.GetDirection(), rec.normal);
+         glm::vec3 reflected = glm::reflect(r_in.GetDirection(), rec.normal);
          scattered = Ray(rec.point, reflected + fuzz * Random::RandomInUnitSphere());
          attenuation = albedo;
          return (glm::dot(scattered.GetDirection(), rec.normal) > 0);
       }
-      glm::vec3 albedo;
+      glm::vec3 albedo; //Attenuation in three channel.
       PFloat fuzz; //Zero is no perturbation
    };
 } // namespace platinum
