@@ -23,7 +23,7 @@
 #ifndef CORE_WORLD_H_
 #define CORE_WORLD_H_
 
-#include "Object.h"
+#include "object.h"
 #include <glm/glm.hpp>
 #include "defines.h"
 #include "ray.h"
