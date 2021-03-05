@@ -37,10 +37,10 @@
 #include <vector>
 #include <assert.h>
 #include <string.h>
-
 #include <stdint.h>
 #include <float.h>
-#include <intrin.h>
+
+// #include <intrin.h>
 
 namespace platinum
 {
@@ -54,7 +54,6 @@ namespace platinum
 #else
     using PFloat = float;
 #endif
-
 
     static constexpr PFloat ShadowEpsilon = 0.0001f;
     static constexpr PFloat Pi = 3.14159265358979323846;
