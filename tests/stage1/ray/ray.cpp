@@ -24,8 +24,8 @@ int main()
     {
         for (int i = 0; i < nx; ++i)
         {
-            float u = static_cast<float>(i) / static_cast<float>(nx);
-            float v = static_cast<float>(j) / static_cast<float>(ny);
+            u = static_cast<float>(i) / static_cast<float>(nx);
+            v = static_cast<float>(j) / static_cast<float>(ny);
             Ray r(origin, lower_left_corner + u * horizontal + v * vertical);
             vec3 col = color(r);
             img.SetPixel(i, j, Image::Pixel<unsigned char>(static_cast<int>(255.99f * col.x), static_cast<int>(255.99f * col.y), static_cast<int>(255.99f * col.z)));
