@@ -20,15 +20,15 @@ int main()
     vec3 origin(0.0, 0.0, 0.0);
     float u, v;
     Image img(200, 100, 3);
-    for (int j = 0; j <ny; ++j)
+    for (int j = 0; j < ny; ++j)
     {
         for (int i = 0; i < nx; ++i)
         {
-            u = float(i) / float(nx);
-            v = float(j) / float(ny);
+            float u = static_cast<float>(i) / static_cast<float>(nx);
+            float v = static_cast<float>(j) / static_cast<float>(ny);
             Ray r(origin, lower_left_corner + u * horizontal + v * vertical);
             vec3 col = color(r);
-            img.SetPixel(i, j, Image::Pixel<unsigned char>((int)255.99*col.x, (int)255.99*col.y, (int)255.99*col.z));
+            img.SetPixel(i, j, Image::Pixel<unsigned char>(static_cast<int>(255.99f * col.x), static_cast<int>(255.99f * col.y), static_cast<int>(255.99f * col.z)));
         }
     }
     img.SaveAsPNG("ray.png");

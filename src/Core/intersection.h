@@ -32,7 +32,7 @@ namespace platinum
         glm::vec3 point;
         glm::vec3 normal;
         PFloat time;
-        Material *material;
+        std::shared_ptr<Material> material;
     };
 } // namespace platinum
 

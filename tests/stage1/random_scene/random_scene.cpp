@@ -12,7 +12,7 @@
 
 using namespace platinum;
 using namespace glm;
-
+using namespace std;
 
 vec3 color(const Ray &r, World &world, int depth)
 {
@@ -42,7 +42,7 @@ World random_scene()
 {
     int n = 500;
     World world;
-    Sphere *sph = new Sphere(vec3(0, -1000, 0), 1000, new Lambertian(vec3(0.5, 0.5, 0.5)));
+    auto sph = make_shared<Sphere>(vec3(0, -1000, 0), 1000, make_shared<Lambertian>(vec3(0.5, 0.5, 0.5)));
     world.AddObject(sph);
     int i = 1;
     for (int a = -11; a < 11; a++)
@@ -55,33 +55,33 @@ World random_scene()
             {
                 if (choose_mat < 0.8)
                 { // diffuse
-                    sph = new Sphere(
+                    sph.reset(new Sphere(
                         center, 0.2,
-                        new Lambertian(vec3(Random::RandomInUnitFloat() * Random::RandomInUnitFloat(),
-                                            Random::RandomInUnitFloat() * Random::RandomInUnitFloat(),
-                                            Random::RandomInUnitFloat() * Random::RandomInUnitFloat())));
+                        make_shared<Lambertian>(vec3(Random::RandomInUnitFloat() * Random::RandomInUnitFloat(),
+                                                     Random::RandomInUnitFloat() * Random::RandomInUnitFloat(),
+                                                     Random::RandomInUnitFloat() * Random::RandomInUnitFloat()))));
                 }
                 else if (choose_mat < 0.95)
                 { // metal
-                    sph = new Sphere(
+                    sph.reset(new Sphere(
                         center, 0.2,
-                        new Metal(vec3(0.5 * (1 + Random::RandomInUnitFloat()),
-                                       0.5 * (1 + Random::RandomInUnitFloat()),
-                                       0.5 * (1 + Random::RandomInUnitFloat())),
-                                  0.5 * Random::RandomInUnitFloat()));
+                        make_shared<Metal>(vec3(0.5 * (1 + Random::RandomInUnitFloat()),
+                                                0.5 * (1 + Random::RandomInUnitFloat()),
+                                                0.5 * (1 + Random::RandomInUnitFloat())),
+                                           0.5 * Random::RandomInUnitFloat())));
                 }
                 else
                 { // glass
-                    sph = new Sphere(center, 0.2f, new Dielectric(1.5));
+                    sph.reset(new Sphere(center, 0.2f, make_shared<Dielectric>(1.5)));
                 }
                 world.AddObject(sph);
             }
         }
     }
 
-    world.AddObject((new Sphere(vec3(0, 1, 0), 1.0, new Dielectric(1.5))));
-    world.AddObject((new Sphere(vec3(-4, 1, 0), 1.0, new Lambertian(vec3(0.4, 0.2, 0.1)))));
-    world.AddObject((new Sphere(vec3(4, 1, 0), 1.0, new Metal(vec3(0.7, 0.6, 0.5), 0.0))));
+    world.AddObject(make_shared<Sphere>(vec3(0, 1, 0), 1.0, make_shared<Dielectric>(1.5)));
+    world.AddObject(make_shared<Sphere>(vec3(-4, 1, 0), 1.0, make_shared<Lambertian>(vec3(0.4, 0.2, 0.1))));
+    world.AddObject(make_shared<Sphere>(vec3(4, 1, 0), 1.0, make_shared<Metal>(vec3(0.7, 0.6, 0.5), 0.0)));
 
     return world;
 }
@@ -108,19 +108,18 @@ int main()
             vec3 col(0, 0, 0);
             for (int s = 0; s < ns; s++)
             {
-                float u = float(i + Random::RandomInUnitFloat()) / float(nx);
-                float v = float(j + Random::RandomInUnitFloat()) / float(ny);
+                float u = static_cast<float>(i) / static_cast<float>(nx);
+                float v = static_cast<float>(j) / static_cast<float>(ny);
                 Ray r = cam.GetRay(u, v);
                 col += color(r, world, 0);
             }
-            col /= float(ns);
+            col /= static_cast<float>(ns);
             col = vec3(sqrt(col[0]), sqrt(col[1]), sqrt(col[2]));
-            img.SetPixel(i, j, Image::Pixel<unsigned char>((int)255.99f * col.x, (int)255.99f * col.y, (int)255.99f * col.z));
+            img.SetPixel(i, j, Image::Pixel<unsigned char>(static_cast<int>(255.99f * col.x), static_cast<int>(255.99f * col.y), static_cast<int>(255.99f * col.z)));
         }
     }
     img.SaveAsPNG("random_scene.png");
     std::cout << "Rendering finished" << std::endl;
     world.DestroyAll();
     return 0;
-
 }

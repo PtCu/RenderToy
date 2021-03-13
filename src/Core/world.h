@@ -35,12 +35,11 @@ namespace platinum
     public:
         World() : list_size(0) {}
         bool IntersectAll(const Ray &r, PFloat tmin, PFloat tmax, Intersection &rec) const;
-        void AddObject(Object *obj);
+        void AddObject(std::shared_ptr<Object> obj);
         void DestroyAll();
-        std::vector<Object *> list;
+        std::vector<std::shared_ptr<Object>> list;
         size_t list_size;
     };
-   
 
 } // namespace platinum
 

@@ -24,18 +24,18 @@
 
 namespace platinum
 {
-    void World::AddObject(Object *obj)
+    void World::AddObject(std::shared_ptr<Object> obj)
     {
         this->list.push_back(obj);
         ++list_size;
     }
     void World::DestroyAll()
     {
-        for (auto obj : list)
-        {
-            delete obj;
-            obj = NULL;
-        }
+        // for (auto obj : list)
+        // {
+        //     delete obj;
+        //     obj = NULL;
+        // }
         list.clear();
         list_size = 0;
     }

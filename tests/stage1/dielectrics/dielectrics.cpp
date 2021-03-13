@@ -9,6 +9,7 @@
 #include <limits>
 using namespace platinum;
 using namespace glm;
+using namespace std;
 
 vec3 color(const Ray &r, World &world, int depth)
 {
@@ -39,12 +40,12 @@ int main()
     int ns = 100;
     float u, v;
     World world;
-    Object *sph1 = new Sphere(vec3(0, 0, -1), 0.5, new Lambertian(vec3(0.1, 0.2, 0.5)));
+    auto sph1 = make_shared<Sphere>(vec3(0, 0, -1), 0.5, make_shared<Lambertian>(vec3(0.1, 0.2, 0.5)));
     world.AddObject(sph1);
-    Object *sph2 = new Sphere(vec3(0, -100.5, -1), 100, new Lambertian(vec3(0.8, 0.8, 0.0)));
+    auto sph2 = make_shared<Sphere>(vec3(0, -100.5, -1), 100, make_shared<Lambertian>(vec3(0.8, 0.8, 0.0)));
     world.AddObject(sph2);
-    world.AddObject(new Sphere(vec3(1, 0, -1), 0.5, new Metal(vec3(0.8, 0.6, 0.2), 0.3)));
-    world.AddObject(new Sphere(vec3(-1, 0, -1), 0.5, new Dielectric(1.5)));
+    world.AddObject(make_shared<Sphere>(vec3(1, 0, -1), 0.5, make_shared<Metal>(vec3(0.8, 0.6, 0.2), 0.3)));
+    world.AddObject(make_shared<Sphere>(vec3(-1, 0, -1), 0.5, make_shared<Dielectric>(1.5)));
     Image img(200, 100, 3);
     Camera cam;
     for (int j = 0; j < ny; ++j)
@@ -54,14 +55,14 @@ int main()
             vec3 col(0, 0, 0);
             for (int s = 0; s < ns; ++s)
             {
-                u = float(i + Random::RandomInUnitFloat()) / float(nx);
-                v = float(j + Random::RandomInUnitFloat()) / float(ny);
+                u = static_cast<float>(i + Random::RandomInUnitFloat()) / static_cast<float>(nx);
+                v = static_cast<float>(j + Random::RandomInUnitFloat()) / static_cast<float>(ny);
                 Ray r = cam.GetRay(u, v);
                 col += color(r, world, 0);
             }
-            col /= float(ns);
+            col /= static_cast<float>(ns);
             col = vec3(sqrt(col[0]), sqrt(col[1]), sqrt(col[2]));
-            img.SetPixel(i, j, Image::Pixel<unsigned char>((int)255.99f * col.x, (int)255.99f * col.y, (int)255.99f * col.z));
+            img.SetPixel(i, j, Image::Pixel<unsigned char>(static_cast<int>(255.99f * col.x), static_cast<int>(255.99f * col.y), static_cast<int>(255.99f * col.z)));
         }
     }
     img.SaveAsPNG("dielectrics.png");

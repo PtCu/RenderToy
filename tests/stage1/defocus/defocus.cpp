@@ -9,6 +9,7 @@
 #include <limits>
 using namespace platinum;
 using namespace glm;
+using namespace std;
 
 vec3 color(const Ray &r, World &world, int depth)
 {
@@ -39,19 +40,20 @@ int main()
     int ns = 100;
     float u, v;
     World world;
-    Object *sph1 = new Sphere(vec3(0, 0, -1), 0.5, new Lambertian(vec3(0.1, 0.2, 0.5)));
+
+    auto sph1 = make_shared<Sphere>(vec3(0, 0, -1), 0.5, make_shared<Lambertian>(vec3(0.1, 0.2, 0.5)));
     world.AddObject(sph1);
-    Object *sph2 = new Sphere(vec3(0, -100.5, -1), 100, new Lambertian(vec3(0.8, 0.8, 0.0)));
+    auto sph2 = make_shared<Sphere>(vec3(0, -100.5, -1), 100, make_shared<Lambertian>(vec3(0.8, 0.8, 0.0)));
     world.AddObject(sph2);
-    world.AddObject(new Sphere(vec3(1, 0, -1), 0.5, new Metal(vec3(0.8, 0.6, 0.2), 0.3)));
-    world.AddObject(new Sphere(vec3(-1, 0, -1), 0.5, new Dielectric(1.5)));
+    world.AddObject(make_shared<Sphere>(vec3(1, 0, -1), 0.5, make_shared<Metal>(vec3(0.8, 0.6, 0.2), 0.3)));
+    world.AddObject(make_shared<Sphere>(vec3(-1, 0, -1), 0.5, make_shared<Dielectric>(1.5)));
     Image img(200, 100, 3);
     vec3 lookfrom(3, 3, 2);
     vec3 lookat(0, 0, -1);
     float dist_to_focus = (lookfrom - lookat).length();
     float aperture = 2.0;
     Camera cam(lookfrom, lookat, vec3(0, -1, 0), 20, float(nx) / float(ny), aperture, dist_to_focus);
-    for (int j = ny-1; j >=0; --j)
+    for (int j = ny - 1; j >= 0; --j)
     {
         for (int i = 0; i < nx; ++i)
         {

@@ -5,7 +5,7 @@
 #include <limits>
 using namespace platinum;
 using namespace glm;
-
+using namespace std;
 
 vec3 color(const Ray &r, World &world)
 {
@@ -32,20 +32,20 @@ int main()
     vec3 origin(0.0, 0.0, 0.0);
     float u, v;
     World world;
-    Object *sph1 = new Sphere(vec3(0, 0, -1), 0.5);
+    auto sph1 = make_shared<Sphere>(vec3(0, 0, -1), 0.5);
     world.AddObject(sph1);
-    Object *sph2 = new Sphere(vec3(0, -100.5, -1), 100);
+    auto sph2 = make_shared<Sphere>(vec3(0, -100.5, -1), 100);
     world.AddObject(sph2);
     Image img(200, 100, 3);
     for (int j = 0; j < ny; ++j)
     {
         for (int i = 0; i < nx; ++i)
         {
-            u = float(i) / float(nx);
-            v = float(j) / float(ny);
+            u = static_cast<float>(i) / static_cast<float>(nx);
+            v = static_cast<float>(j) / static_cast<float>(ny);
             Ray r(origin, lower_left_corner + u * horizontal + v * vertical);
             vec3 col = color(r, world);
-            img.SetPixel(i, j, Image::Pixel<unsigned char>((int)255.99 * col.x, (int)255.99 * col.y, (int)255.99 * col.z));
+            img.SetPixel(i, j, Image::Pixel<unsigned char>(static_cast<int>(255.99f * col.x), static_cast<int>(255.99f * col.y), static_cast<int>(255.99f * col.z)));
         }
     }
     img.SaveAsPNG("multi_object.png");

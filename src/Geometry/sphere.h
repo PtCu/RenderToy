@@ -30,16 +30,12 @@ namespace platinum
     {
     public:
         Sphere() {}
-        Sphere(glm::vec3 cen, PFloat r, Material *m = NULL) : center(cen), radius(r), material(m){};
-        ~Sphere()
-        {
-            delete material;
-            material = NULL;
-        }
+        Sphere(glm::vec3 cen, PFloat r, std::shared_ptr<Material> m = nullptr) : center(cen), radius(r), material(m){};
+        ~Sphere() = default;
         virtual bool Intersect(const Ray &r, PFloat t_min, PFloat t_max, Intersection &rec) const;
         glm::vec3 center;
         PFloat radius;
-        Material *material;
+        std::shared_ptr<Material> material;
     };
 
 } // namespace platinum
