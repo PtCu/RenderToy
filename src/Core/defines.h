@@ -78,6 +78,7 @@ namespace platinum
     class Material;
     struct Intersection;
     class World;
+    class Ray;
 
 } // namespace platinum
 #endif
