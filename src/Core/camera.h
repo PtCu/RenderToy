@@ -82,7 +82,7 @@ namespace platinum
             vertical = glm::vec3(0.0, 2.0, 0.0);
             origin = glm::vec3(0.0, 0.0, 0.0);
         }
-        Ray GetRay(float s, float t, bool isMotionBlur = false)
+        Ray GetRay(float s, float t, bool isMotionBlur = false) const
         {
             if (isMotionBlur)
             {
@@ -94,7 +94,7 @@ namespace platinum
             return Ray(origin,
                        lower_left_corner + s * horizontal + t * vertical - origin);
         }
-
+        
         glm::vec3 origin;
         glm::vec3 lower_left_corner;
         glm::vec3 horizontal;

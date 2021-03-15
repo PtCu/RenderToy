@@ -55,7 +55,7 @@ World random_scene()
             {
                 if (choose_mat < 0.8)
                 { // diffuse
-                    sph = make_shared<Sphere>(center, 0.2,
+                    sph = make_shared<Sphere>(center, 0.2f,
                                               make_shared<Lambertian>(vec3(Random::RandomInUnitFloat() * Random::RandomInUnitFloat(),
                                                                            Random::RandomInUnitFloat() * Random::RandomInUnitFloat(),
                                                                            Random::RandomInUnitFloat() * Random::RandomInUnitFloat())));
@@ -67,7 +67,7 @@ World random_scene()
                 }
                 else if (choose_mat < 0.95)
                 { // metal
-                    sph = make_shared<Sphere>(center, 0.2,
+                    sph = make_shared<Sphere>(center, 0.2f,
                                               make_shared<Metal>(vec3(0.5 * (1 + Random::RandomInUnitFloat()),
                                                                       0.5 * (1 + Random::RandomInUnitFloat()),
                                                                       0.5 * (1 + Random::RandomInUnitFloat())),

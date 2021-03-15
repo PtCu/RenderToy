@@ -32,7 +32,7 @@ namespace platinum
     class Renderer
     {
     public:
-        Renderer(int img_h, int img_w, int channel, const std::string &fname, int iters);
+        Renderer(int img_w, int img_h, int channel, const std::string &fname, int iters);
         void Render(const World &scene, const Camera &cam);
 
     private:

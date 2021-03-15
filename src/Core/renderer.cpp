@@ -24,8 +24,8 @@
 
 namespace platinum
 {
-    Renderer::Renderer(int img_h, int img_w, int channel, const std::string &fname, int iters)
-        : img(Image(img_h, img_w, channel)), filename(fname), iterations(iters)
+    Renderer::Renderer(int img_w, int img_h, int channel, const std::string &fname, int iters)
+        : img(Image(img_w, img_h, channel)), filename(fname), iterations(iters)
     {
     }
 
@@ -47,7 +47,7 @@ namespace platinum
                     col += scene.CastRay(r, 0);
                 }
                 col /= static_cast<float>(iterations);
-                col = vec3(sqrt(col[0]), sqrt(col[1]), sqrt(col[2]));
+                col = glm::vec3(sqrt(col[0]), sqrt(col[1]), sqrt(col[2]));
                 img.SetPixel(i, j, Image::Pixel<unsigned char>(static_cast<int>(255.99f * col.x), static_cast<int>(255.99f * col.y), static_cast<int>(255.99f * col.z)));
             }
         }

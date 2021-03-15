@@ -79,7 +79,7 @@ BVHAccel::BVHAccel(vector<shared_ptr<Object>>::iterator &begin, vector<shared_pt
         hrs, mins, secs);
 }
 
-shared_ptr<BVH_Node> BVHAccel::recursiveBuild(vector<shared_ptr<Object>>::iterator &begin, vector<shared_ptr<Object>>::iterator &end)
+shared_ptr<BVH_Node> BVHAccel::recursiveBuild(vector<shared_ptr<Object>>::iterator begin, vector<shared_ptr<Object>>::iterator end)
 {
     size_t num = end - begin;
     auto node = make_shared<BVH_Node>();
@@ -169,7 +169,7 @@ Intersection BVHAccel::getIntersection(const Ray &ray) const
                 inter = std::move(tmp_inter);
         }
         s.push(p->left);
-        s.push(p->left);
+        s.push(p->right);
     }
     return inter;
 }
