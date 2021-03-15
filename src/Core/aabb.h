@@ -24,7 +24,6 @@
 #define CORE_AABB_H_
 
 #include "defines.h"
-#include <glm/glm.hpp>
 #include "ray.h"
 
 namespace platinum
@@ -56,6 +55,7 @@ namespace platinum
 
         bool Inside(const glm::vec3 &p) const;
 
+        //For best partition when building BVH tree.
         int MaxExtent() const;
 
         bool IsHit(const Ray &r) const;
@@ -68,7 +68,7 @@ namespace platinum
 
         glm::vec3 Centroid() const { return 0.5f * p_min + 0.5f * p_max; }
 
-        PFloat SurfaceArea() const
+        float SurfaceArea() const
         {
             auto d = Diagonal();
             return 2 * (d.x * d.y + d.x * d.z + d.y * d.z);
@@ -81,9 +81,8 @@ namespace platinum
     protected:
         glm::vec3 p_min;
         glm::vec3 p_max;
-
-        //For best partition when building BVH tree.
     };
+
     inline AABB Union(const AABB &b1, const AABB &b2)
     {
         glm::vec3 min_p = glm::min(b1.GetMin(), b2.GetMin());
@@ -97,4 +96,5 @@ namespace platinum
         return AABB(min_p, max_p);
     }
 }
+
 #endif

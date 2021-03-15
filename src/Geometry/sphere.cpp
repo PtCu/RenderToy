@@ -23,18 +23,26 @@
 #include "sphere.h"
 namespace platinum
 {
+    Sphere::Sphere(glm::vec3 cen, float r, std::shared_ptr<Material> m)
+        : center(cen), radius(r), material(std::move(m))
+    {
+        glm::vec3 minP = center - glm::vec3(radius);
+        glm::vec3 maxP = center + glm::vec3(radius);
+        bounding_box = AABB(minP, maxP);
+    };
+
     Intersection Sphere::Intersect(const Ray &r) const
     {
         Intersection rec;
         rec.happened = false;
         glm::vec3 oc = r.GetOrigin() - center;
-        PFloat a = glm::dot(r.GetDirection(), r.GetDirection());
-        PFloat b = glm::dot(oc, r.GetDirection());
-        PFloat c = glm::dot(oc, oc) - radius * radius;
-        PFloat discriminant = b * b - a * c;
+        float a = glm::dot(r.GetDirection(), r.GetDirection());
+        float b = glm::dot(oc, r.GetDirection());
+        float c = glm::dot(oc, oc) - radius * radius;
+        float discriminant = b * b - a * c;
         if (discriminant > 0)
         {
-            PFloat temp = (-b - sqrt(discriminant)) / a;
+            float temp = (-b - sqrt(discriminant)) / a;
             if (temp < r.GetMaxTime() && temp > r.GetMinTime())
             {
                 rec.time = temp;
@@ -57,6 +65,5 @@ namespace platinum
         }
         return rec;
     }
-   
-    
+
 } // namespace platinum

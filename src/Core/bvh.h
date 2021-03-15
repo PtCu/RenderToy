@@ -25,7 +25,6 @@
 
 #include "defines.h"
 #include "object.h"
-#include "ray.h"
 #include "intersection.h"
 #include "aabb.h"
 
@@ -38,6 +37,7 @@ namespace platinum
         std::shared_ptr<Object> object;
         BVH_Node() : bounding_box(AABB()), left(NULL), right(NULL), object(NULL) {}
     };
+
     class BVHAccel
     {
     public: // BVHAccel Public Types
@@ -48,27 +48,26 @@ namespace platinum
             HLBVH
         };
         // BVHAccel Public Methods
-        BVHAccel(std::vector<shared_ptr<Object>> &p, int maxPrimsInNode = 1, SplitMethod splitMethod = SplitMethod::MIDDLE);
+        BVHAccel(std::vector<std::shared_ptr<Object>> &p, int maxPrimsInNode = 1, SplitMethod splitMethod = SplitMethod::MIDDLE);
 
-        BVHAccel(std::vector<shared_ptr<Object>>::iterator &begin, std::vector<shared_ptr<Object>>::iterator &end, int maxPrimsInNode = 1, SplitMethod splitMethod = SplitMethod::MIDDLE);
+        BVHAccel(std::vector<std::shared_ptr<Object>>::iterator &begin, std::vector<std::shared_ptr<Object>>::iterator &end, int maxPrimsInNode = 1, SplitMethod splitMethod = SplitMethod::MIDDLE);
 
-        ~BVHAccel();
+        ~BVHAccel() = default;
 
         Intersection RayCast(const Ray &ray) const;
 
-        shared_ptr<BVH_Node> GetRoot() { return root; }
+        std::shared_ptr<BVH_Node> GetRoot() { return root; }
 
     protected:
         // BVHAccel Private Methods
-        shared_ptr<BVH_Node> recursiveBuild(std::vector<shared_ptr<Object>>::iterator &begin, std::vector<shared_ptr<Object>>::iterator &end);
+        std::shared_ptr<BVH_Node> recursiveBuild(std::vector<std::shared_ptr<Object>>::iterator &begin, std::vector<std::shared_ptr<Object>>::iterator &end);
 
         Intersection getIntersection(const Ray &ray) const;
         // BVHAccel Private Data
         const int maxPrimsInNode;
         const SplitMethod splitMethod;
-        shared_ptr<BVH_Node> root;
+        std::shared_ptr<BVH_Node> root;
     };
 
 }
-
 #endif

@@ -30,7 +30,7 @@ namespace platinum
    class Metal : public Material
    {
    public:
-      Metal(const glm::vec3 &a, PFloat f) : albedo(a)
+      Metal(const glm::vec3 &a, float f) : albedo(a)
       {
          f < 1 ? fuzz = f : fuzz = 1;
       }
@@ -42,7 +42,7 @@ namespace platinum
          return (glm::dot(scattered.GetDirection(), rec.normal) > 0);
       }
       glm::vec3 albedo; //Attenuation in three channel.
-      PFloat fuzz; //Zero is no perturbation
+      float fuzz; //Zero is no perturbation
    };
 } // namespace platinum
 

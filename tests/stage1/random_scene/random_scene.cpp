@@ -55,20 +55,23 @@ World random_scene()
             {
                 if (choose_mat < 0.8)
                 { // diffuse
-                    sph.reset(new Sphere(
-                        center, 0.2,
-                        make_shared<Lambertian>(vec3(Random::RandomInUnitFloat() * Random::RandomInUnitFloat(),
-                                                     Random::RandomInUnitFloat() * Random::RandomInUnitFloat(),
-                                                     Random::RandomInUnitFloat() * Random::RandomInUnitFloat()))));
+                    sph = make_shared<Sphere>(center, 0.2,
+                                              make_shared<Lambertian>(vec3(Random::RandomInUnitFloat() * Random::RandomInUnitFloat(),
+                                                                           Random::RandomInUnitFloat() * Random::RandomInUnitFloat(),
+                                                                           Random::RandomInUnitFloat() * Random::RandomInUnitFloat())));
+                    //     sph.reset(new Sphere(
+                    //         center, 0.2,
+                    //         make_shared<Lambertian>(vec3(Random::RandomInUnitFloat() * Random::RandomInUnitFloat(),
+                    //                                      Random::RandomInUnitFloat() * Random::RandomInUnitFloat(),
+                    //                                      Random::RandomInUnitFloat() * Random::RandomInUnitFloat()))));
                 }
                 else if (choose_mat < 0.95)
                 { // metal
-                    sph.reset(new Sphere(
-                        center, 0.2,
-                        make_shared<Metal>(vec3(0.5 * (1 + Random::RandomInUnitFloat()),
-                                                0.5 * (1 + Random::RandomInUnitFloat()),
-                                                0.5 * (1 + Random::RandomInUnitFloat())),
-                                           0.5 * Random::RandomInUnitFloat())));
+                    sph = make_shared<Sphere>(center, 0.2,
+                                              make_shared<Metal>(vec3(0.5 * (1 + Random::RandomInUnitFloat()),
+                                                                      0.5 * (1 + Random::RandomInUnitFloat()),
+                                                                      0.5 * (1 + Random::RandomInUnitFloat())),
+                                                                 0.5 * Random::RandomInUnitFloat()));
                 }
                 else
                 { // glass
@@ -85,7 +88,6 @@ World random_scene()
 
     return world;
 }
-
 int main()
 {
     int nx = 1200;

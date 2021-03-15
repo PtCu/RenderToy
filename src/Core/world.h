@@ -28,17 +28,26 @@
 #include "defines.h"
 #include "ray.h"
 #include "intersection.h"
+#include "bvh.h"
+
 namespace platinum
 {
     class World
     {
     public:
-        World() : list_size(0) {}
-        bool IntersectAll(const Ray &r, Intersection &rec) const;
+        World() {}
+        bool IntersectAll(const Ray &r, Intersection &rec) const;  //Brute method for stage 1
         void AddObject(std::shared_ptr<Object> obj);
         void DestroyAll();
-        std::vector<std::shared_ptr<Object>> list;
-        size_t list_size;
+        void BuildBVH();
+        glm::vec3 CastRay(const Ray &ray,int depth) const; //Using BVH tree to accelerate.
+        const std::vector<std::shared_ptr<Object>> &GetObjects() const { return objects; }
+
+    private:
+        int max_depth = 10;
+        Intersection intersectAll(const Ray &ray) const;
+        std::unique_ptr<BVHAccel> bvh_accel;
+        std::vector<std::shared_ptr<Object>> objects;
     };
 
 } // namespace platinum

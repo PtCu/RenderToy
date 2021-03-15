@@ -31,7 +31,7 @@ namespace platinum
     {
         glm::vec3 point;
         glm::vec3 normal;
-        PFloat time;
+        float time;
         std::shared_ptr<Material> material;
         bool happened;
         Intersection()
@@ -42,6 +42,6 @@ namespace platinum
             material = NULL;
             happened = false;
         };
-    } // namespace platinum
-
+    }; // namespace platinum
+}
 #endif

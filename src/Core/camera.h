@@ -43,12 +43,12 @@ namespace platinum
          * @param  aperture         Size of aperture.
          * @param  focusDist       My Param doc
          */
-        Camera(glm::vec3 lookfrom, glm::vec3 lookat, glm::vec3 vup, PFloat vfov, PFloat aspect, PFloat aperture, PFloat focusDist)
+        Camera(glm::vec3 lookfrom, glm::vec3 lookat, glm::vec3 vup, float vfov, float aspect, float aperture, float focusDist)
         {
             lens_radius = aperture / 2;
-            PFloat theta = vfov * Pi / 180;
-            PFloat half_height = tan(theta / 2);
-            PFloat half_width = aspect * half_height;
+            float theta = vfov * Pi / 180;
+            float half_height = tan(theta / 2);
+            float half_width = aspect * half_height;
             origin = lookfrom;
             w = glm::normalize(glm::vec3(lookfrom - lookat));
             u = glm::normalize(glm::cross(vup, w));
@@ -58,6 +58,23 @@ namespace platinum
             vertical = 2 * half_height * focusDist * v;
         }
 
+        Camera(glm::vec3 lookfrom, glm::vec3 lookat, glm::vec3 vup, float vfov, float aspect, float aperture, float focusDist, float t0, float t1)
+        {
+            time0 = t0;
+            time1 = t1;
+            lens_radius = aperture / 2;
+            float theta = vfov * Pi / 180;
+            float half_height = tan(theta / 2);
+            float half_width = aspect * half_height;
+            origin = lookfrom;
+            w = glm::normalize(glm::vec3(lookfrom - lookat));
+            u = glm::normalize(glm::cross(vup, w));
+            v = glm::cross(w, u);
+            lower_left_corner = origin - half_width * focusDist * u - half_height * focusDist * v - focusDist * w;
+            horizontal = 2 * half_width * focusDist * u;
+            vertical = 2 * half_height * focusDist * v;
+        }
+        //For test
         Camera()
         {
             lower_left_corner = glm::vec3(-2.0, -1.0, -1.0);
@@ -65,7 +82,7 @@ namespace platinum
             vertical = glm::vec3(0.0, 2.0, 0.0);
             origin = glm::vec3(0.0, 0.0, 0.0);
         }
-        Ray GetRay(PFloat s, PFloat t, bool isMotionBlur = false)
+        Ray GetRay(float s, float t, bool isMotionBlur = false)
         {
             if (isMotionBlur)
             {
@@ -83,8 +100,8 @@ namespace platinum
         glm::vec3 horizontal;
         glm::vec3 vertical;
         glm::vec3 u, v, w; //A set of orthonormal basis, to describe orentation of camera.
-        PFloat lens_radius;
-        PFloat time0, time1; // new variables for shutter open/close times
+        float lens_radius;
+        float time0, time1; // new variables for shutter open/close times
     };
 
 } // namespace platinum

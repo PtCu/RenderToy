@@ -32,12 +32,12 @@ namespace platinum
     class Random
     {
     public:
-        static PFloat RandomInUnitFloat()
+        static float RandomInUnitFloat()
         {
             static std::random_device seed_gen;
             static std::mt19937 engine(seed_gen());
             static std::uniform_real_distribution<> dist(0.0, 1.0);
-            return dist(engine);
+            return static_cast<float>(dist(engine));
         }
         static glm::vec3 RandomInUnitDisk()
         {

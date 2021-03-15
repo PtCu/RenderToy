@@ -27,8 +27,6 @@
 #define CORE_DEFINES_H_
 
 #include <type_traits>
-#include  <array>
-#include <stack>
 #include <algorithm>
 #include <cinttypes>
 #include <cmath>
@@ -37,6 +35,8 @@
 #include <memory>
 #include <string>
 #include <vector>
+#include <array>
+#include <stack>
 #include <assert.h>
 #include <string.h>
 #include <stdint.h>
@@ -51,20 +51,14 @@ namespace platinum
 #define PLT_IS_WINDOWS
 #endif
 
-#ifdef PBRT_FLOAT_AS_DOUBLE
-    using PFloat = double;
-#else
-    using PFloat = float;
-#endif
-
-    static constexpr PFloat ShadowEpsilon = 0.0001f;
-    static constexpr PFloat Pi = 3.14159265358979323846;
-    static constexpr PFloat InvPi = 0.31830988618379067154;
-    static constexpr PFloat Inv2Pi = 0.15915494309189533577;
-    static constexpr PFloat Inv4Pi = 0.07957747154594766788;
-    static constexpr PFloat PiOver2 = 1.57079632679489661923;
-    static constexpr PFloat PiOver4 = 0.78539816339744830961;
-    static constexpr PFloat Sqrt2 = 1.41421356237309504880;
+    static constexpr float ShadowEpsilon = 0.0001f;
+    static constexpr float Pi = 3.14159265358979323846f;
+    static constexpr float InvPi = 0.31830988618379067154f;
+    static constexpr float Inv2Pi = 0.15915494309189533577f;
+    static constexpr float Inv4Pi = 0.07957747154594766788f;
+    static constexpr float PiOver2 = 1.57079632679489661923f;
+    static constexpr float PiOver4 = 0.78539816339744830961f;
+    static constexpr float Sqrt2 = 1.41421356237309504880f;
 
     template <typename T>
     class Vector2;

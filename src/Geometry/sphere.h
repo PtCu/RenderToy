@@ -24,18 +24,27 @@
 #define GEOMETRY_SPHERE_H_
 
 #include "../Core/object.h"
+#include "../Core/ray.h"
+#include "../Core/intersection.h"
+#include "../Core/aabb.h"
+
 namespace platinum
 {
     class Sphere : public Object
     {
     public:
         Sphere() {}
-        Sphere(glm::vec3 cen, PFloat r, std::shared_ptr<Material> m = nullptr) : center(cen), radius(r), material(m){};
+        Sphere(glm::vec3 cen, float r, std::shared_ptr<Material> m = nullptr);
+
         ~Sphere() = default;
         virtual Intersection Intersect(const Ray &r) const;
+        virtual AABB GetBoundingBox() const { return bounding_box; }
+
+    private:
         glm::vec3 center;
-        PFloat radius;
+        float radius;
         std::shared_ptr<Material> material;
+        AABB bounding_box;
     };
 
 } // namespace platinum

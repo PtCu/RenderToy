@@ -34,7 +34,7 @@ namespace platinum
         Object() {}
         virtual ~Object() {}
         virtual Intersection Intersect(const Ray &r) const = 0;
-        virtual const AABB GetBoundingBox() const = 0;
+        virtual AABB GetBoundingBox() const = 0;
     };
 } // namespace platinum
 

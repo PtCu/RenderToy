@@ -27,11 +27,11 @@ namespace platinum{
       {
          glm::vec3 outward_normal;
          glm::vec3 reflected = Reflect(r_in.GetDirection(), rec.normal);
-         PFloat ni_over_nt;
+         float ni_over_nt;
          attenuation = glm::vec3(1.0, 1.0, 1.0);
          glm::vec3 refracted;
-         PFloat reflect_prob;
-         PFloat cosine;
+         float reflect_prob;
+         float cosine;
          if (glm::dot(r_in.GetDirection(), rec.normal) > 0)
          {
             outward_normal = -rec.normal;
@@ -43,7 +43,7 @@ namespace platinum{
          else
          {
             outward_normal = rec.normal;
-            ni_over_nt = 1.0 / ref_idx;
+            ni_over_nt = 1.0f / ref_idx;
             cosine = -glm::dot(r_in.GetDirection(), rec.normal) / r_in.GetDirection().length();
          }
          if (Refract(r_in.GetDirection(), outward_normal, ni_over_nt, refracted))

@@ -30,10 +30,10 @@ namespace platinum
    class Dielectric : public Material
    {
    public:
-      Dielectric(PFloat ri) : ref_idx(ri) {}
+      Dielectric(float ri) : ref_idx(ri) {}
       virtual bool Scatter(const Ray &r_in, const Intersection &rec, glm::vec3 &attenuation, Ray &scattered) const;
 
-      PFloat ref_idx;
+      float ref_idx;
    };
 
 } // namespace platinum

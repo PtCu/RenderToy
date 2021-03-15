@@ -28,7 +28,7 @@ vec3 color(const Ray &r, World &world, int depth)
     else
     {
         vec3 unit_direction = normalize(r.GetDirection());
-        float t = 0.5 * (unit_direction.y + 1.0);
+        float t = 0.5f * (unit_direction.y + 1.0);
         return (1.0f - t) * vec3(1.0, 1.0, 1.0) + t * vec3(0.5, 0.7, 1.0);
     }
 }
@@ -50,8 +50,8 @@ int main()
     Image img(200, 100, 3);
     vec3 lookfrom(3, 3, 2);
     vec3 lookat(0, 0, -1);
-    float dist_to_focus = (lookfrom - lookat).length();
-    float aperture = 2.0;
+    float dist_to_focus = (lookfrom - lookat).length() * 1.0f;
+    float aperture = 2.0f;
     Camera cam(lookfrom, lookat, vec3(0, -1, 0), 20, float(nx) / float(ny), aperture, dist_to_focus);
     for (int j = ny - 1; j >= 0; --j)
     {
@@ -67,7 +67,7 @@ int main()
             }
             col /= float(ns);
             col = vec3(sqrt(col[0]), sqrt(col[1]), sqrt(col[2]));
-            img.SetPixel(i, j, Image::Pixel<unsigned char>((int)255.99f * col.x, (int)255.99f * col.y, (int)255.99f * col.z));
+            img.SetPixel(i, j, Image::Pixel<unsigned char>(static_cast<int>(255.99f * col.x), static_cast<int>(255.99f * col.y), static_cast<int>(255.99f * col.z)));
         }
     }
     img.SaveAsPNG("defocus.png");

@@ -24,10 +24,13 @@
 
 namespace platinum
 {
+    void World::BuildBVH()
+    {
+        this->bvh_accel = std::unique_ptr<BVHAccel>(new BVHAccel(objects));
+    }
     void World::AddObject(std::shared_ptr<Object> obj)
     {
-        this->list.push_back(obj);
-        ++list_size;
+        this->objects.push_back(obj);
     }
     void World::DestroyAll()
     {
@@ -36,18 +39,46 @@ namespace platinum
         //     delete obj;
         //     obj = NULL;
         // }
-        list.clear();
-        list_size = 0;
+        objects.clear();
+    }
+    Intersection World ::intersectAll(const Ray &ray) const
+    {
+        return this->bvh_accel->RayCast(ray);
+    }
+    glm::vec3 World::CastRay(const Ray &ray, int depth) const
+    {
+        if (depth > max_depth)
+        {
+            return glm::vec3(0, 0, 0);
+        }
+        auto rec = intersectAll(ray);
+        if (rec.happened)
+        {
+            glm::vec3 attenuation;
+            Ray scattered;
+            if (rec.material->Scatter(ray, rec, attenuation, scattered))
+            {
+                return attenuation * CastRay(scattered, depth + 1);
+            }
+            return glm::vec3(0, 0, 0);
+        }
+        else
+        {
+            //TODO: Make it configurable
+            glm::vec3 unit_direction = glm::normalize(ray.GetDirection());
+            float t = 0.5f * (unit_direction.y + 1.0f);
+            return (1.0f - t) * glm::vec3(1.0, 1.0, 1.0) + t * glm::vec3(0.5, 0.7, 1.0);
+        }
     }
     bool World::IntersectAll(const Ray &r, Intersection &rec) const
     {
         Intersection temp_rec;
         bool hit_anything = false;
-        PFloat closest_so_far = std::numeric_limits<float>::max();
-        for (int i = 0; i < list_size; i++)
+        float closest_so_far = std::numeric_limits<float>::max();
+        for (int i = 0; i < objects.size(); i++)
         {
-            temp_rec = list[i]->Intersect(r);
-            if (temp_rec.happened&&temp_rec.time<closest_so_far)
+            temp_rec = objects[i]->Intersect(r);
+            if (temp_rec.happened && temp_rec.time < closest_so_far)
             {
                 hit_anything = true;
                 closest_so_far = temp_rec.time;
