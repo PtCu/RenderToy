@@ -25,8 +25,7 @@
 
 #include <glm/glm.hpp>
 #include "defines.h"
-#include "ray.h"
-#include "intersection.h"
+
 namespace platinum
 {
     class Object
@@ -34,7 +33,8 @@ namespace platinum
     public:
         Object() {}
         virtual ~Object() {}
-        virtual bool Intersect(const Ray &r, PFloat t_min, PFloat t_max, Intersection &rec) const = 0;
+        virtual Intersection Intersect(const Ray &r) const = 0;
+        virtual const AABB GetBoundingBox() const = 0;
     };
 } // namespace platinum
 

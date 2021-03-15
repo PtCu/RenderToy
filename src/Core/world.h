@@ -34,7 +34,7 @@ namespace platinum
     {
     public:
         World() : list_size(0) {}
-        bool IntersectAll(const Ray &r, PFloat tmin, PFloat tmax, Intersection &rec) const;
+        bool IntersectAll(const Ray &r, Intersection &rec) const;
         void AddObject(std::shared_ptr<Object> obj);
         void DestroyAll();
         std::vector<std::shared_ptr<Object>> list;

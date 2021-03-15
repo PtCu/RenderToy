@@ -39,14 +39,15 @@ namespace platinum
         list.clear();
         list_size = 0;
     }
-    bool World::IntersectAll(const Ray &r, PFloat t_min, PFloat t_max, Intersection &rec) const
+    bool World::IntersectAll(const Ray &r, Intersection &rec) const
     {
         Intersection temp_rec;
         bool hit_anything = false;
-        PFloat closest_so_far = t_max;
+        PFloat closest_so_far = std::numeric_limits<float>::max();
         for (int i = 0; i < list_size; i++)
         {
-            if (list[i]->Intersect(r, t_min, closest_so_far, temp_rec))
+            temp_rec = list[i]->Intersect(r);
+            if (temp_rec.happened&&temp_rec.time<closest_so_far)
             {
                 hit_anything = true;
                 closest_so_far = temp_rec.time;

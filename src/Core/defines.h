@@ -27,6 +27,8 @@
 #define CORE_DEFINES_H_
 
 #include <type_traits>
+#include  <array>
+#include <stack>
 #include <algorithm>
 #include <cinttypes>
 #include <cmath>
@@ -79,6 +81,8 @@ namespace platinum
     struct Intersection;
     class World;
     class Ray;
+    class Object;
+    class AABB;
 
 } // namespace platinum
 #endif

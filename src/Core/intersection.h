@@ -33,7 +33,15 @@ namespace platinum
         glm::vec3 normal;
         PFloat time;
         std::shared_ptr<Material> material;
-    };
-} // namespace platinum
+        bool happened;
+        Intersection()
+        {
+            point = {0, 0, 0};
+            normal = {0, 0, 0};
+            time = std::numeric_limits<float>::max();
+            material = NULL;
+            happened = false;
+        };
+    } // namespace platinum
 
 #endif

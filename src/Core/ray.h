@@ -30,15 +30,28 @@ namespace platinum
     {
     public:
         Ray() {}
-        Ray(const glm::vec3 &a, const glm::vec3 &b, PFloat ti = 0.0) : o(a), d(b), _time(ti) {}
+        Ray(const glm::vec3 &a, const glm::vec3 &b, PFloat ti = 0.0) : o(a), d(b), _time(ti)
+        {
+            t_min = 0.0;
+            t_max = std::numeric_limits<double>::max();
+            inv_d = {1.0f / d.x, 1.0f / d.y, 1.0f / d.z};
+            dirIsNeg = {d.x < 0, d.y < 0, d.z < 0};
+        }
         glm::vec3 GetOrigin() const { return o; }
         glm::vec3 GetDirection() const { return d; }
+        glm::vec3 GetInvDirection() const { return inv_d; }
         PFloat GetTime() const { return _time; }
+        PFloat GetMinTime() const { return t_min; }
+        PFloat GetMaxTime() const { return t_max; }
         glm::vec3 PointAtT(PFloat t) const { return o + t * d; }
+        size_t IsDirNeg(size_t i) const { return dirIsNeg[i]; }
 
+    private:
         glm::vec3 o;
-        glm::vec3 d;
+        glm::vec3 d, inv_d;
         PFloat _time;
+        PFloat t_min, t_max;
+        std::array<size_t, 3> dirIsNeg;
     };
 } // namespace platinum
 

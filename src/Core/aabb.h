@@ -46,6 +46,8 @@ namespace platinum
         }
         AABB Intersect(const AABB &b) const;
 
+        void Expand(const glm::vec3 &p);
+
         void Expand(const AABB &aabb);
 
         glm::vec3 Offset(const glm::vec3 &p) const;
@@ -54,28 +56,44 @@ namespace platinum
 
         bool Inside(const glm::vec3 &p) const;
 
-        int maxExtent() const;
+        int MaxExtent() const;
 
-        bool Hit(const Ray &r, float tmin, float tmax) const;
-       
-        inline const glm::vec3 operator[](int i) const
+        bool IsHit(const Ray &r) const;
+
+        const glm::vec3 operator[](int i) const
         {
             return i == 0 ? p_min : p_max;
         }
-        inline glm::vec3 Diagonal() const { return p_max - p_min; }
-        inline float SurfaceArea() const {}
-        inline glm::vec3 Centroid() { return 0.5f * p_min + 0.5f * p_max; }
-        inline glm::vec3 GetMin() const { return p_min; }
-        inline glm::vec3 GetMax() const { return p_max; }
+        glm::vec3 Diagonal() const { return p_max - p_min; }
 
-    private:
+        glm::vec3 Centroid() const { return 0.5f * p_min + 0.5f * p_max; }
+
+        PFloat SurfaceArea() const
+        {
+            auto d = Diagonal();
+            return 2 * (d.x * d.y + d.x * d.z + d.y * d.z);
+        }
+
+        glm::vec3 GetMin() const { return p_min; }
+
+        glm::vec3 GetMax() const { return p_max; }
+
+    protected:
         glm::vec3 p_min;
         glm::vec3 p_max;
+
+        //For best partition when building BVH tree.
     };
     inline AABB Union(const AABB &b1, const AABB &b2)
     {
         glm::vec3 min_p = glm::min(b1.GetMin(), b2.GetMin());
         glm::vec3 max_p = glm::max(b1.GetMax(), b2.GetMax());
+        return AABB(min_p, max_p);
+    }
+    inline AABB Union(const AABB &b1, const glm::vec3 &b2)
+    {
+        glm::vec3 min_p = glm::min(b1.GetMin(), b2);
+        glm::vec3 max_p = glm::max(b1.GetMax(), b2);
         return AABB(min_p, max_p);
     }
 }

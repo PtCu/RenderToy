@@ -11,7 +11,7 @@ using namespace std;
 vec3 color(const Ray &r, World &world)
 {
     Intersection rec;
-    if (world.IntersectAll(r, 0.0f, std::numeric_limits<float>::max(), rec))
+    if (world.IntersectAll(r,  rec))
     {
         return 0.5f * vec3(rec.normal.x + 1.0f, rec.normal.y + 1.0f, rec.normal.z + 1.0f);
     }

@@ -23,21 +23,35 @@
 
 namespace platinum
 {
-    bool AABB::Hit(const Ray &r, float tmin, float tmax) const
+    bool AABB::IsHit(const Ray &r) const
     {
-        for (int i = 0; i < 3; i++)
-        {
-            float t0 = glm::min((p_min[i] - r.GetOrigin()[i]) / r.GetDirection()[i],
-                                (p_max[i] - r.GetOrigin()[i]) / r.GetDirection()[i]);
-            float t1 = glm::max((p_min[i] - r.GetOrigin()[i]) / r.GetDirection()[i],
-                                (p_max[i] - r.GetOrigin()[i]) / r.GetDirection()[i]);
+        const glm::vec3 invDir = r.GetInvDirection();
+        const AABB &bounds = *this;
+        // Check for ray intersection against $x$ and $y$ slabs
+        auto tMin = (bounds[r.IsDirNeg(0)].x - r.GetOrigin().x) * invDir.x;
+        auto tMax = (bounds[1 - r.IsDirNeg(0)].x - r.GetOrigin().x) * invDir.x;
+        auto tyMin = (bounds[r.IsDirNeg(1)].y - r.GetOrigin().y) * invDir.y;
+        auto tyMax = (bounds[1 - r.IsDirNeg(1)].y - r.GetOrigin().y) * invDir.y;
 
-            tmin = glm::max(t0, tmin);
-            tmax = glm::min(t1, tmax);
-            if (tmax <= tmin)
-                return false;
-        }
-        return true;
+        if (tMin > tyMax || tyMin > tMax)
+            return false;
+        if (tyMin > tMin)
+            tMin = tyMin;
+        if (tyMax < tMax)
+            tMax = tyMax;
+
+        // Check for ray intersection against $z$ slab
+        auto tzMin = (bounds[r.IsDirNeg(2)].z - r.GetOrigin().z) * invDir.z;
+        auto tzMax = (bounds[1 - r.IsDirNeg(2)].z - r.GetOrigin().z) * invDir.z;
+
+        if (tMin > tzMax || tzMin > tMax)
+            return false;
+        if (tzMin > tMin)
+            tMin = tzMin;
+        if (tzMax < tMax)
+            tMax = tzMax;
+
+        return (tMin < r.GetTime()) && (tMax > 0);
     }
     AABB AABB::Intersect(const AABB &b) const
     {
@@ -47,6 +61,11 @@ namespace platinum
     {
         p_min = glm::min(p_min, aabb.p_min);
         p_max = glm::max(p_max, aabb.p_max);
+    }
+    void AABB::Expand(const glm::vec3 &p)
+    {
+        p_min = glm::min(p_min, p);
+        p_max = glm::max(p_max, p);
     }
     glm::vec3 AABB::Offset(const glm::vec3 &p) const
     {
@@ -71,7 +90,7 @@ namespace platinum
                p.z >= p_min.z && p.z <= p_max.z;
     }
 
-    int AABB::maxExtent() const
+    int AABB::MaxExtent() const
     {
         glm::vec3 d = Diagonal();
         if (d.x > d.y && d.x > d.z)

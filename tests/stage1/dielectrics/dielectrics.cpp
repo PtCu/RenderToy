@@ -15,7 +15,7 @@ vec3 color(const Ray &r, World &world, int depth)
 {
     Intersection rec;
 
-    if (world.IntersectAll(r, 0.0f, std::numeric_limits<float>::max(), rec))
+    if (world.IntersectAll(r,  rec))
     {
         vec3 attenuation;
         Ray scattered;

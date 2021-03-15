@@ -23,34 +23,40 @@
 #include "sphere.h"
 namespace platinum
 {
-    bool Sphere::Intersect(const Ray &r, PFloat t_min, PFloat t_max, Intersection &rec) const
+    Intersection Sphere::Intersect(const Ray &r) const
     {
-        glm::vec3 oc = r.o - center;
-        PFloat a = glm::dot(r.d, r.d);
-        PFloat b = glm::dot(oc, r.d);
+        Intersection rec;
+        rec.happened = false;
+        glm::vec3 oc = r.GetOrigin() - center;
+        PFloat a = glm::dot(r.GetDirection(), r.GetDirection());
+        PFloat b = glm::dot(oc, r.GetDirection());
         PFloat c = glm::dot(oc, oc) - radius * radius;
         PFloat discriminant = b * b - a * c;
         if (discriminant > 0)
         {
             PFloat temp = (-b - sqrt(discriminant)) / a;
-            if (temp < t_max && temp > t_min)
+            if (temp < r.GetMaxTime() && temp > r.GetMinTime())
             {
                 rec.time = temp;
                 rec.point = r.PointAtT(rec.time);
                 rec.normal = glm::vec3((rec.point - center) / radius);
                 rec.material = material;
-                return true;
+                rec.happened = true;
+                return rec;
             }
             temp = (-b + sqrt(discriminant)) / a;
-            if (temp < t_max && temp > t_min)
+            if (temp < r.GetMaxTime() && temp > r.GetMinTime())
             {
                 rec.time = temp;
                 rec.point = r.PointAtT(rec.time);
                 rec.normal = glm::vec3((rec.point - center) / radius);
                 rec.material = material;
-                return true;
+                rec.happened = true;
+                return rec;
             }
         }
-        return false;
+        return rec;
     }
+   
+    
 } // namespace platinum
