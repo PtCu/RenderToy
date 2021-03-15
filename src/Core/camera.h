@@ -58,22 +58,6 @@ namespace platinum
             vertical = 2 * half_height * focusDist * v;
         }
 
-        Camera(glm::vec3 lookfrom, glm::vec3 lookat, glm::vec3 vup, float vfov, float aspect, float aperture, float focusDist, float t0, float t1)
-        {
-            time0 = t0;
-            time1 = t1;
-            lens_radius = aperture / 2;
-            float theta = vfov * Pi / 180;
-            float half_height = tan(theta / 2);
-            float half_width = aspect * half_height;
-            origin = lookfrom;
-            w = glm::normalize(glm::vec3(lookfrom - lookat));
-            u = glm::normalize(glm::cross(vup, w));
-            v = glm::cross(w, u);
-            lower_left_corner = origin - half_width * focusDist * u - half_height * focusDist * v - focusDist * w;
-            horizontal = 2 * half_width * focusDist * u;
-            vertical = 2 * half_height * focusDist * v;
-        }
         //For test
         Camera()
         {
@@ -82,26 +66,21 @@ namespace platinum
             vertical = glm::vec3(0.0, 2.0, 0.0);
             origin = glm::vec3(0.0, 0.0, 0.0);
         }
-        Ray GetRay(float s, float t, bool isMotionBlur = false) const
+        virtual Ray GetRay(float s, float t) const
         {
-            if (isMotionBlur)
-            {
-                glm::vec3 rd = lens_radius * Random::RandomInUnitDisk();
-                glm::vec3 offset = u * rd.x + v * rd.y;
-                float time = time0 + Random::RandomInUnitFloat() * (time1 - time0);
-                return Ray(origin + offset, lower_left_corner + s * horizontal + t * vertical - origin - offset, time);
-            }
             return Ray(origin,
                        lower_left_corner + s * horizontal + t * vertical - origin);
         }
-        
+
+
+    private:
         glm::vec3 origin;
         glm::vec3 lower_left_corner;
         glm::vec3 horizontal;
         glm::vec3 vertical;
         glm::vec3 u, v, w; //A set of orthonormal basis, to describe orentation of camera.
         float lens_radius;
-        float time0, time1; // new variables for shutter open/close times
+        
     };
 
 } // namespace platinum

@@ -36,16 +36,16 @@ namespace platinum
     {
     public:
         World() {}
-        bool IntersectAll(const Ray &r, Intersection &rec) const;  //Brute method for stage 1
+        bool IntersectAll(const std::shared_ptr<Ray>& r, Intersection &rec) const;  //Brute method for stage 1
         void AddObject(std::shared_ptr<Object> obj);
         void DestroyAll();
         void BuildBVH();
-        glm::vec3 CastRay(const Ray &ray,int depth) const; //Using BVH tree to accelerate.
+        glm::vec3 CastRay(const std::shared_ptr<Ray> &r,int depth) const; //Using BVH tree to accelerate.
         const std::vector<std::shared_ptr<Object>> &GetObjects() const { return objects; }
 
     private:
         int max_depth = 10;
-        Intersection intersectAll(const Ray &ray) const;
+        Intersection intersectAll(const std::shared_ptr<Ray> &r) const;
         std::unique_ptr<BVHAccel> bvh_accel;
         std::vector<std::shared_ptr<Object>> objects;
     };

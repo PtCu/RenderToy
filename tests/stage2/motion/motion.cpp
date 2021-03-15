@@ -1,7 +1,7 @@
 
 #include "../src/Core/image.h"
 #include "../src/Core/ray.h"
-#include "../src/Core/camera.h"
+#include "../src/Core/tCamera.h"
 #include "../src/Core/object.h"
 #include "../src/Material/dielectric.h"
 #include "../src/Material/lambertian.h"
@@ -43,7 +43,7 @@ World random_scene()
 {
     int n = 500;
     World world;
-     shared_ptr<Object> sph;
+    shared_ptr<Object> sph;
     sph = make_shared<Sphere>(vec3(0, -1000, 0), 1000, make_shared<Lambertian>(vec3(0.5, 0.5, 0.5)));
     world.AddObject(sph);
     int i = 1;
@@ -63,7 +63,7 @@ World random_scene()
                                                     make_shared<Lambertian>(vec3(Random::RandomInUnitFloat() * Random::RandomInUnitFloat(),
                                                                                  Random::RandomInUnitFloat() * Random::RandomInUnitFloat(),
                                                                                  Random::RandomInUnitFloat() * Random::RandomInUnitFloat())));
-                                }
+                }
                 else if (choose_mat < 0.95)
                 { // metal
                     sph = make_shared<Sphere>(center, 0.2f,
@@ -94,7 +94,7 @@ int main()
 {
     int nx = 1200;
     int ny = 800;
-    int ns = 10;
+    int ns = 20;
     std::cout << "Start rendering..." << std::endl;
     World world = random_scene();
 
@@ -103,7 +103,7 @@ int main()
     float dist_to_focus = 10.0f;
     float aperture = 0.1f;
 
-    Camera cam(lookfrom, lookat, vec3(0, -1, 0), 20, float(nx) / float(ny), aperture, dist_to_focus);
+    TCamera cam(lookfrom, lookat, vec3(0, -1, 0), 20, float(nx) / float(ny), aperture, dist_to_focus, 0.f, 1.f);
     Image img(1200, 800, 3);
     for (int j = 0; j < ny; ++j)
     {
@@ -122,7 +122,7 @@ int main()
             img.SetPixel(i, j, Image::Pixel<unsigned char>(static_cast<int>(255.99f * col.x), static_cast<int>(255.99f * col.y), static_cast<int>(255.99f * col.z)));
         }
     }
-    img.SaveAsPNG("random_scene.png");
+    img.SaveAsPNG("motion_sphere.png");
     std::cout << "Rendering finished" << std::endl;
     world.DestroyAll();
     return 0;

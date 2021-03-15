@@ -31,31 +31,32 @@ namespace platinum
         glm::vec3 maxP = glm::max(center0 + glm::vec3(radius), center1 + glm::vec3(radius));
         bounding_box = AABB(minP, maxP);
     };
-    Intersection MovingSphere::Intersect(const Ray &r) const
+    Intersection MovingSphere::Intersect(const std::shared_ptr<Ray> &r) const
     {
+        std::shared_ptr<TRay> tRay = std::dynamic_pointer_cast<TRay>(r);
         Intersection rec;
-        glm::vec3 oc = r.GetOrigin() - GetCenter(r.GetTime());
-        float a = glm::dot(r.GetDirection(), r.GetDirection());
-        float b = glm::dot(oc, r.GetDirection());
+        glm::vec3 oc = tRay->GetOrigin() - GetCenter(tRay->GetTime());
+        float a = glm::dot(tRay->GetDirection(), tRay->GetDirection());
+        float b = glm::dot(oc, tRay->GetDirection());
         float c = glm::dot(oc, oc) - radius * radius;
         float discriminant = b * b - a * c;
         if (discriminant > 0)
         {
             float temp = (-b - sqrt(discriminant)) / a;
-            if (temp < r.GetMaxTime() && temp > r.GetMinTime())
+            if (temp < tRay->GetMaxTime() && temp > tRay->GetMinTime())
             {
                 rec.time = temp;
-                rec.point = r.PointAtT(rec.time);
-                rec.normal = glm::vec3((rec.point - GetCenter(r.GetTime())) / radius);
+                rec.point = tRay->PointAtT(rec.time);
+                rec.normal = glm::vec3((rec.point - GetCenter(tRay->GetTime())) / radius);
                 rec.material = material;
                 return rec;
             }
             temp = (-b + sqrt(discriminant)) / a;
-            if (temp < r.GetMaxTime() && temp > r.GetMinTime())
+            if (temp < tRay->GetMaxTime() && temp > tRay->GetMinTime())
             {
                 rec.time = temp;
-                rec.point = r.PointAtT(rec.time);
-                rec.normal = glm::vec3((rec.point - GetCenter(r.GetTime())) / radius);
+                rec.point = tRay->PointAtT(rec.time);
+                rec.normal = glm::vec3((rec.point - GetCenter(tRay->GetTime())) / radius);
                 rec.material = material;
                 return rec;
             }

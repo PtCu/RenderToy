@@ -139,19 +139,19 @@ shared_ptr<BVH_Node> BVHAccel::recursiveBuild(vector<shared_ptr<Object>>::iterat
     return node;
 }
 
-Intersection BVHAccel::RayCast(const Ray &ray) const
+Intersection BVHAccel::RayCast(const std::shared_ptr<Ray> &r) const
 {
     Intersection isect;
     if (!root)
         return isect;
-    isect = BVHAccel::getIntersection(ray);
+    isect = BVHAccel::getIntersection(r);
     return isect;
 }
 
-Intersection BVHAccel::getIntersection(const Ray &ray) const
+Intersection BVHAccel::getIntersection(const std::shared_ptr<Ray> &r) const
 {
     // TODO Traverse the BVH to find intersection
-    if (!root->bounding_box.IsHit(ray))
+    if (!root->bounding_box.IsHit(r))
         return Intersection();
     Intersection inter, tmp_inter;
     stack<shared_ptr<BVH_Node>> s;
@@ -160,11 +160,11 @@ Intersection BVHAccel::getIntersection(const Ray &ray) const
     {
         auto p = s.top();
         s.pop();
-        if (!p->bounding_box.IsHit(ray))
+        if (!p->bounding_box.IsHit(r))
             continue;
         if (p->left == NULL && p->right == NULL)
         {
-            tmp_inter = p->object->Intersect(ray);
+            tmp_inter = p->object->Intersect(r);
             if (tmp_inter.time < inter.time)
                 inter = std::move(tmp_inter);
         }

@@ -92,7 +92,7 @@ int main()
 {
     int nx = 1200;
     int ny = 800;
-    int ns = 10;
+    int ns = 20;
     std::cout << "Start rendering..." << std::endl;
     World world = random_scene();
 

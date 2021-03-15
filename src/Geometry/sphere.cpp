@@ -31,32 +31,32 @@ namespace platinum
         bounding_box = AABB(minP, maxP);
     };
 
-    Intersection Sphere::Intersect(const Ray &r) const
+    Intersection Sphere::Intersect(const std::shared_ptr<Ray>& r) const
     {
         Intersection rec;
         rec.happened = false;
-        glm::vec3 oc = r.GetOrigin() - center;
-        float a = glm::dot(r.GetDirection(), r.GetDirection());
-        float b = glm::dot(oc, r.GetDirection());
+        glm::vec3 oc = r->GetOrigin() - center;
+        float a = glm::dot(r->GetDirection(), r->GetDirection());
+        float b = glm::dot(oc, r->GetDirection());
         float c = glm::dot(oc, oc) - radius * radius;
         float discriminant = b * b - a * c;
         if (discriminant > 0)
         {
             float temp = (-b - sqrt(discriminant)) / a;
-            if (temp < r.GetMaxTime() && temp > r.GetMinTime())
+            if (temp < r->GetMaxTime() && temp > r->GetMinTime())
             {
                 rec.time = temp;
-                rec.point = r.PointAtT(rec.time);
+                rec.point = r->PointAtT(rec.time);
                 rec.normal = glm::vec3((rec.point - center) / radius);
                 rec.material = material;
                 rec.happened = true;
                 return rec;
             }
             temp = (-b + sqrt(discriminant)) / a;
-            if (temp < r.GetMaxTime() && temp > r.GetMinTime())
+            if (temp < r->GetMaxTime() && temp > r->GetMinTime())
             {
                 rec.time = temp;
-                rec.point = r.PointAtT(rec.time);
+                rec.point = r->PointAtT(rec.time);
                 rec.normal = glm::vec3((rec.point - center) / radius);
                 rec.material = material;
                 rec.happened = true;

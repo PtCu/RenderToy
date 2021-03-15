@@ -19,39 +19,25 @@
 //  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
 //  FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 //  DEALINGS IN THE SOFTWARE.
-#ifndef CORE_RAY_H_
-#define CORE_RAY_H_
-#include <glm/glm.hpp>
-#include "defines.h"
+
+#ifndef CORE_TRAY_H_
+#define CORE_TRAY_H_
+
+#include "ray.h"
 
 namespace platinum
 {
-    class Ray
+    class TRay : public Ray
     {
     public:
-        Ray() {}
-        Ray(const glm::vec3 &a, const glm::vec3 &b, float ti = 0.0) : o(a), d(b)
-        {
-            t_min = 0.0;
-            t_max = std::numeric_limits<float>::max();
-            inv_d = {1.0f / d.x, 1.0f / d.y, 1.0f / d.z};
-            dirIsNeg = {d.x < 0, d.y < 0, d.z < 0};
-        }
-        glm::vec3 GetOrigin() const { return o; }
-        glm::vec3 GetDirection() const { return d; }
-        glm::vec3 GetInvDirection() const { return inv_d; }
-       
-        float GetMinTime() const { return t_min; }
-        float GetMaxTime() const { return t_max; }
-        glm::vec3 PointAtT(float t) const { return o + t * d; }
-        int IsDirNeg(size_t i) const { return dirIsNeg[i]; }
+        TRay(const glm::vec3 &o, const glm::vec3 &d, float ti = 0.0) : Ray(o, d), _time(ti){}
+
+        void SetTime(float t) { _time = t; }
+        float GetTime() const { return _time; }
 
     private:
-        glm::vec3 o;
-        glm::vec3 d, inv_d;
-        float t_min, t_max;
-        std::array<int, 3> dirIsNeg;
+        float _time;
     };
-} // namespace platinum
+}
 
 #endif

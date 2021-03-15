@@ -54,7 +54,7 @@ namespace platinum
 
         ~BVHAccel() = default;
 
-        Intersection RayCast(const Ray &ray) const;
+        Intersection RayCast(const std::shared_ptr<Ray> &r) const;
 
         std::shared_ptr<BVH_Node> GetRoot() { return root; }
 
@@ -62,7 +62,7 @@ namespace platinum
         // BVHAccel Private Methods
         std::shared_ptr<BVH_Node> recursiveBuild(std::vector<std::shared_ptr<Object>>::iterator begin, std::vector<std::shared_ptr<Object>>::iterator end);
 
-        Intersection getIntersection(const Ray &ray) const;
+        Intersection getIntersection(const std::shared_ptr<Ray> &r) const;
         // BVHAccel Private Data
         const int maxPrimsInNode;
         const SplitMethod splitMethod;

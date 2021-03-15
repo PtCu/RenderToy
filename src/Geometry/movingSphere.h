@@ -24,7 +24,7 @@
 #define GEOMETRY_MOVESPHERE_H_
 
 #include "../Core/object.h"
-#include "../Core/ray.h"
+#include "../Core/tRay.h"
 #include "../Core/intersection.h"
 #include "../Core/aabb.h"
 
@@ -35,7 +35,7 @@ namespace platinum
     public:
         MovingSphere() {}
         MovingSphere(glm::vec3 cen0, glm::vec3 cen1, float t0, float t1, float r, std::shared_ptr<Material> m = nullptr);
-        virtual Intersection Intersect(const Ray &r) const;
+        virtual Intersection Intersect(const std::shared_ptr<Ray> &r) const;
         virtual AABB GetBoundingBox() const { return bounding_box; }
         glm::vec3 GetCenter(float time) const { return center0 + ((time - time0) / (time1 - time0)) * (center1 - center0); };
 

@@ -29,8 +29,9 @@ namespace platinum
     {
     }
 
-    void Renderer::Render(const World &scene, const Camera &cam)
+    void Renderer::Render(const World &scene, const std::shared_ptr<Camera> &cam)
     {
+        std::shared_ptr<Ray> r;
         size_t ny = img.GetHeight();
         size_t nx = img.GetWidth();
         float u, v;
@@ -43,7 +44,7 @@ namespace platinum
                 {
                     u = static_cast<float>(i + Random::RandomInUnitFloat()) / static_cast<float>(nx);
                     v = static_cast<float>(j + Random::RandomInUnitFloat()) / static_cast<float>(ny);
-                    Ray r = cam.GetRay(u, v);
+                    r = std::make_shared<Ray>(std::move(cam->GetRay(u, v)));
                     col += scene.CastRay(r, 0);
                 }
                 col /= static_cast<float>(iterations);
