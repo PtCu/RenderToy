@@ -71,6 +71,7 @@ namespace platinum
     template <typename T>
     class Normal3;
     class Camera;
+    class TCamera;
     class Material;
     struct Intersection;
     class World;

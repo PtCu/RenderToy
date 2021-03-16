@@ -36,7 +36,7 @@ namespace platinum
         void Render(const World &scene, const std::shared_ptr<Camera> &cam);
 
     private:
-        inline void UpdateProgress(float progress);
+        void UpdateProgress(float progress);
         Image img;
         std::string filename;
         int iterations;

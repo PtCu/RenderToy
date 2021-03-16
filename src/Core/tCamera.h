@@ -24,6 +24,7 @@
 #define CORE_TCAMERA_H_
 
 #include "camera.h"
+#include "tRay.h"
 
 namespace platinum
 {
@@ -35,13 +36,13 @@ namespace platinum
 
         float GetT0() const { return time0; }
         float GetT1() const { return time1; }
-        virtual Ray GetRay(float s, float t) const
+        virtual std::shared_ptr<Ray> GetRay(float s, float t) const
         {
             glm::vec3 rd = lens_radius * Random::RandomInUnitDisk();
             glm::vec3 offset = u * rd.x + v * rd.y;
             float time = time0 + Random::RandomInUnitFloat() * (time1 - time0);
-
-            return Ray(origin + offset, lower_left_corner + s * horizontal + t * vertical - origin - offset, time);
+            auto ray = std::make_shared<TRay>(origin + offset, lower_left_corner + s * horizontal + t * vertical - origin - offset, time);
+            return ray;
         }
 
     private:

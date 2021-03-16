@@ -11,7 +11,6 @@ using namespace platinum;
 using namespace glm;
 using namespace std;
 
-
 vec3 color(shared_ptr<Ray> &ray, World &world, int dep)
 {
     if (dep == 0)
@@ -37,7 +36,6 @@ vec3 color(shared_ptr<Ray> &ray, World &world, int dep)
     }
 }
 
-
 int main()
 {
     int nx = 200;
@@ -62,7 +60,7 @@ int main()
             {
                 u = static_cast<float>(i + Random::RandomInUnitFloat()) / static_cast<float>(nx);
                 v = static_cast<float>(j + Random::RandomInUnitFloat()) / static_cast<float>(ny);
-               auto r = std::make_shared<Ray>(std::move(cam.GetRay(u, v)));
+                auto r = cam.GetRay(u, v);
                 col += color(r, world, 50);
             }
             col /= static_cast<float>(ns);

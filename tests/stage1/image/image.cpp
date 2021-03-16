@@ -13,7 +13,7 @@ int main(int argc, char **argv)
             color.r = float(i) / float(nx);
             color.g = float(j) / float(ny);
             color.b = 0.5f;
-             img.SetPixel(i, j, Image::Pixel<unsigned char>(static_cast<int>(255.99f * color.x), static_cast<int>(255.99f * color.y), static_cast<int>(255.99f * color.z)));
+            img.SetPixel(i, j, Image::Pixel<unsigned char>(static_cast<int>(255.99f * color.x), static_cast<int>(255.99f * color.y), static_cast<int>(255.99f * color.z)));
         }
     }
     img.SaveAsPNG("image_test.png");

@@ -65,7 +65,7 @@ int main()
             {
                 u = float(i + Random::RandomInUnitFloat()) / float(nx);
                 v = float(j + Random::RandomInUnitFloat()) / float(ny);
-                auto r = std::make_shared<Ray>(std::move(cam.GetRay(u, v)));
+                auto r = cam.GetRay(u, v);
                 col += color(r, world, 50);
             }
             col /= float(ns);

@@ -28,12 +28,12 @@ namespace platinum
         : img(Image(img_w, img_h, channel)), filename(fname), iterations(iters)
     {
     }
-    inline void Renderer::UpdateProgress(float progress)
+    void Renderer::UpdateProgress(float progress)
     {
         int barWidth = 70;
 
         std::cout << "[";
-        int pos = barWidth * progress;
+        int pos = static_cast<int>(barWidth * progress);
         for (int i = 0; i < barWidth; ++i)
         {
             if (i < pos)
@@ -61,7 +61,7 @@ namespace platinum
                 {
                     u = static_cast<float>(i + Random::RandomInUnitFloat()) / static_cast<float>(nx);
                     v = static_cast<float>(j + Random::RandomInUnitFloat()) / static_cast<float>(ny);
-                    r = std::make_shared<Ray>(std::move(cam->GetRay(u, v)));
+                    r = cam->GetRay(u, v);
                     col += scene.CastRay(r);
                 }
                 col /= static_cast<float>(iterations);

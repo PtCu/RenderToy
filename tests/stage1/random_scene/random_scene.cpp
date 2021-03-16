@@ -113,7 +113,7 @@ int main()
             {
                 float u = static_cast<float>(i) / static_cast<float>(nx);
                 float v = static_cast<float>(j) / static_cast<float>(ny);
-                auto r = std::make_shared<Ray>(std::move(cam.GetRay(u, v)));
+                auto r = cam.GetRay(u, v);
                 col += color(r, world, 50);
             }
             col /= static_cast<float>(ns);

@@ -45,7 +45,7 @@ namespace platinum
         glm::vec3 GetDirection() const { return direction; }
 
         glm::vec3 GetInvDirection() const { return inv_d; }
-        
+
         float GetMinTime() const { return t_min; }
 
         float GetMaxTime() const { return t_max; }
@@ -53,10 +53,13 @@ namespace platinum
         glm::vec3 GetColor() const { return color; }
 
         glm::vec3 PointAtT(float t) const { return origin + t * direction; }
-        
+
         int IsDirNeg(size_t i) const { return dirIsNeg[i]; }
 
-        void SetColor(const glm::vec3& c);
+        void SetColor(const glm::vec3 &c);
+
+    protected:
+        virtual void DoNothing(){}
 
     private:
         glm::vec3 origin;

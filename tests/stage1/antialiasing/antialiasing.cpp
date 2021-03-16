@@ -47,7 +47,7 @@ int main()
             {
                 u = static_cast<float>(i + Random::RandomInUnitFloat()) / static_cast<float>(nx);
                 v = static_cast<float>(j + Random::RandomInUnitFloat()) / static_cast<float>(ny);
-                auto r = std::make_shared<Ray>(std::move(cam.GetRay(u, v)));
+                auto r = cam.GetRay(u, v);
                 col += color(r, world);
             }
             col /= static_cast<float>(ns);

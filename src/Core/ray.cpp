@@ -27,7 +27,9 @@ namespace platinum
     void Ray::Update(const glm::vec3 &o, const glm::vec3 &d, const glm::vec3 &a)
     {
         this->origin = o;
-        this->direction=d;
+        this->direction = d;
+        this->inv_d = {1.0f / d.x, 1.0f / d.y, 1.0f / d.z};
+        this->dirIsNeg = {d.x < 0, d.y < 0, d.z < 0};
         this->color *= a;
         this->t_max = std::numeric_limits<float>::max();
     }

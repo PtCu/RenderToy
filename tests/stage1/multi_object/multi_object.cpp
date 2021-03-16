@@ -44,9 +44,9 @@ int main()
     vec3 origin(0.0, 0.0, 0.0);
     float u, v;
     World world;
-    auto sph1 = make_shared<Sphere>(vec3(0, 0, -1), 0.5,make_shared<Lambertian>(vec3(0.1, 0.2, 0.5)));
+    auto sph1 = make_shared<Sphere>(vec3(0, 0, -1), 0.5, make_shared<Lambertian>(vec3(0.1, 0.2, 0.5)));
     world.AddObject(sph1);
-    auto sph2 = make_shared<Sphere>(vec3(0, -100.5, -1), 100,make_shared<Lambertian>(vec3(0.5, 0.2, 0.1)));
+    auto sph2 = make_shared<Sphere>(vec3(0, -100.5, -1), 100, make_shared<Lambertian>(vec3(0.5, 0.2, 0.1)));
     world.AddObject(sph2);
     Image img(200, 100, 3);
     Camera cam;
@@ -56,7 +56,7 @@ int main()
         {
             u = static_cast<float>(i) / static_cast<float>(nx);
             v = static_cast<float>(j) / static_cast<float>(ny);
-            auto r = std::make_shared<Ray>(std::move(cam.GetRay(u, v)));
+            auto r = cam.GetRay(u, v);
             vec3 col = color(r, world, 50);
             img.SetPixel(i, j, Image::Pixel<unsigned char>(static_cast<int>(255.99f * col.x), static_cast<int>(255.99f * col.y), static_cast<int>(255.99f * col.z)));
         }

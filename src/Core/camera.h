@@ -33,16 +33,14 @@ namespace platinum
     class Camera
     {
     public:
-        /**
-         * @brief Construct a new Camera object
-         * @param  lookfrom         The position camera is.
-         * @param  lookat           The direction camera looking at.
-         * @param  vup              View up vector, specifying the extent of sideways tilt.
-         * @param  vfov             Field of view, top to bottom in degrees.
-         * @param  aspect           The ratio of fov in width to fov in height.
-         * @param  aperture         Size of aperture.
-         * @param  focusDist       My Param doc
-         */
+        //For test
+        Camera()
+        {
+            lower_left_corner = glm::vec3(-2.0, -1.0, -1.0);
+            horizontal = glm::vec3(4.0, 0.0, 0.0);
+            vertical = glm::vec3(0.0, 2.0, 0.0);
+            origin = glm::vec3(0.0, 0.0, 0.0);
+        }
         Camera(glm::vec3 lookfrom, glm::vec3 lookat, glm::vec3 vup, float vfov, float aspect, float aperture, float focusDist)
         {
             lens_radius = aperture / 2;
@@ -58,29 +56,20 @@ namespace platinum
             vertical = 2 * half_height * focusDist * v;
         }
 
-        //For test
-        Camera()
+        virtual std::shared_ptr<Ray> GetRay(float s, float t) const
         {
-            lower_left_corner = glm::vec3(-2.0, -1.0, -1.0);
-            horizontal = glm::vec3(4.0, 0.0, 0.0);
-            vertical = glm::vec3(0.0, 2.0, 0.0);
-            origin = glm::vec3(0.0, 0.0, 0.0);
-        }
-        virtual Ray GetRay(float s, float t) const
-        {
-            return Ray(origin,
-                       lower_left_corner + s * horizontal + t * vertical - origin);
+            auto ray = std::make_shared<Ray>(origin,
+                                        lower_left_corner + s * horizontal + t * vertical - origin);
+            return ray;
         }
 
-
-    private:
+    protected:
         glm::vec3 origin;
         glm::vec3 lower_left_corner;
         glm::vec3 horizontal;
         glm::vec3 vertical;
         glm::vec3 u, v, w; //A set of orthonormal basis, to describe orentation of camera.
         float lens_radius;
-        
     };
 
 } // namespace platinum
