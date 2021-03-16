@@ -30,13 +30,8 @@ namespace platinum
     {
     public:
         Lambertian(const glm::vec3 &a) : albedo(a) {}
-        virtual bool Scatter(const Ray &r_in, const Intersection &rec, glm::vec3 &attenuation, Ray &scattered) const
-        {
-            scattered = Ray(rec.point, glm::vec3(rec.normal) + Random::RandomInUnitDisk());
-            attenuation = albedo;
-            return true;
-        }
-
+        virtual bool Scatter(Intersection &rec) const;   
+    private:
         glm::vec3 albedo;
     };
 } // namespace platinum

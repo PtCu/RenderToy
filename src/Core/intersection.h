@@ -25,6 +25,7 @@
 #include <glm/glm.hpp>
 #include "defines.h"
 #include "material.h"
+#include "ray.h"
 namespace platinum
 {
     struct Intersection
@@ -33,6 +34,7 @@ namespace platinum
         glm::vec3 normal;
         float time;
         std::shared_ptr<Material> material;
+        std::shared_ptr<Ray> ray;
         bool happened;
         Intersection()
         {
@@ -40,6 +42,7 @@ namespace platinum
             normal = {0, 0, 0};
             time = std::numeric_limits<float>::max();
             material = NULL;
+            ray = NULL;
             happened = false;
         };
     }; // namespace platinum

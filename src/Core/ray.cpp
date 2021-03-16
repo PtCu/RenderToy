@@ -20,27 +20,19 @@
 //  FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 //  DEALINGS IN THE SOFTWARE.
 
-#ifndef CORE_RENDER_H_
-#define CORE_RENDER_H_
-
-#include "world.h"
-#include "camera.h"
-#include "image.h"
+#include "ray.h"
 
 namespace platinum
 {
-    class Renderer
+    void Ray::Update(const glm::vec3 &o, const glm::vec3 &d, const glm::vec3 &a)
     {
-    public:
-        Renderer(int img_w, int img_h, int channel, const std::string &fname, int iters);
-        void Render(const World &scene, const std::shared_ptr<Camera> &cam);
-
-    private:
-        inline void UpdateProgress(float progress);
-        Image img;
-        std::string filename;
-        int iterations;
-    };
+        this->origin = o;
+        this->direction=d;
+        this->color *= a;
+        this->t_max = std::numeric_limits<float>::max();
+    }
+    void Ray::SetColor(const glm::vec3 &c)
+    {
+        this->color = c;
+    }
 }
-
-#endif

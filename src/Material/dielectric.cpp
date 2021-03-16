@@ -22,38 +22,42 @@
 
 #include "dielectric.h"
 
-namespace platinum{
-    bool Dielectric:: Scatter(const Ray &r_in, const Intersection &rec, glm::vec3 &attenuation, Ray &scattered) const
+namespace platinum
+{
+   bool Dielectric::Scatter(Intersection &rec) const
+   {
+      glm::vec3 outward_normal;
+      auto r_in = rec.ray;
+      glm::vec3 reflected = Reflect(r_in->GetDirection(), rec.normal);
+      float ni_over_nt;
+      auto attenuation = glm::vec3(1.0, 1.0, 1.0);
+      glm::vec3 refracted;
+      float reflect_prob;
+      float cosine;
+      if (glm::dot(r_in->GetDirection(), rec.normal) > 0)
       {
-         glm::vec3 outward_normal;
-         glm::vec3 reflected = Reflect(r_in.GetDirection(), rec.normal);
-         float ni_over_nt;
-         attenuation = glm::vec3(1.0, 1.0, 1.0);
-         glm::vec3 refracted;
-         float reflect_prob;
-         float cosine;
-         if (glm::dot(r_in.GetDirection(), rec.normal) > 0)
-         {
-            outward_normal = -rec.normal;
-            ni_over_nt = ref_idx;
-            // cosine = ref_idx * glm::dot(r_in.GetDirection(), rec.normal) / r_in.GetDirection().length();
-            cosine = glm::dot(r_in.GetDirection(), rec.normal) / r_in.GetDirection().length();
-            cosine = std::sqrt(1 - ref_idx * ref_idx * (1 - cosine * cosine));
-         }
-         else
-         {
-            outward_normal = rec.normal;
-            ni_over_nt = 1.0f / ref_idx;
-            cosine = -glm::dot(r_in.GetDirection(), rec.normal) / r_in.GetDirection().length();
-         }
-         if (Refract(r_in.GetDirection(), outward_normal, ni_over_nt, refracted))
-            reflect_prob = Schlick(cosine, ref_idx);
-         else
-            reflect_prob = 1.0;
-         if (Random::RandomInUnitFloat() < reflect_prob)
-            scattered = Ray(rec.point, reflected);
-         else
-            scattered = Ray(rec.point, refracted);
-         return true;
+         outward_normal = -rec.normal;
+         ni_over_nt = ref_idx;
+         // cosine = ref_idx * glm::dot(r_in.GetDirection(), rec.normal) / r_in.GetDirection().length();
+         cosine = glm::dot(r_in->GetDirection(), rec.normal) / r_in->GetDirection().length();
+         cosine = std::sqrt(1 - ref_idx * ref_idx * (1 - cosine * cosine));
       }
+      else
+      {
+         outward_normal = rec.normal;
+         ni_over_nt = 1.0f / ref_idx;
+         cosine = -glm::dot(r_in->GetDirection(), rec.normal) / r_in->GetDirection().length();
+      }
+      if (Refract(r_in->GetDirection(), outward_normal, ni_over_nt, refracted))
+         reflect_prob = Schlick(cosine, ref_idx);
+      else
+         reflect_prob = 1.0;
+
+      if (Random::RandomInUnitFloat() < reflect_prob)
+         r_in->Update(rec.point, reflected, attenuation);
+      else
+         r_in->Update(rec.point, refracted, attenuation);
+
+      return true;
+   }
 }

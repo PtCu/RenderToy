@@ -34,33 +34,32 @@ namespace platinum
     }
     void World::DestroyAll()
     {
-        // for (auto obj : list)
-        // {
-        //     delete obj;
-        //     obj = NULL;
-        // }
         objects.clear();
     }
     Intersection World ::intersectAll(const std::shared_ptr<Ray> &r) const
     {
         return this->bvh_accel->RayCast(r);
     }
-    glm::vec3 World::CastRay(const std::shared_ptr<Ray> &ray, int depth) const
+    glm::vec3 World::CastRay(std::shared_ptr<Ray> &r) const
     {
-        if (depth > max_depth)
+        return CastRay(r, max_depth);
+    }
+    glm::vec3 World::CastRay(std::shared_ptr<Ray> &ray, int dep) const
+    {
+        if (dep == 0)
         {
             return glm::vec3(0, 0, 0);
         }
         auto rec = intersectAll(ray);
         if (rec.happened)
         {
-            glm::vec3 attenuation;
-            Ray scattered;
-            if (rec.material->Scatter(ray, rec, attenuation, scattered))
-            {
-                return attenuation * CastRay(scattered, depth + 1);
-            }
-            return glm::vec3(0, 0, 0);
+            if (rec.material == NULL)
+                return glm::vec3(0, 1, 0);
+            if (rec.material->Scatter(rec))
+                return CastRay(ray, dep - 1);
+
+            else
+                return ray->GetColor();
         }
         else
         {

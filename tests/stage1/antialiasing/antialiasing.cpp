@@ -8,16 +8,16 @@ using namespace platinum;
 using namespace glm;
 using namespace std;
 
-vec3 color(const Ray &r, World &world)
+vec3 color(shared_ptr<Ray> &r, World &world)
 {
     Intersection rec;
-    if (world.IntersectAll(r,  rec))
+    if (world.IntersectAll(r, rec))
     {
         return 0.5f * vec3(rec.normal.x + 1.0f, rec.normal.y + 1.0f, rec.normal.z + 1.0f);
     }
     else
     {
-        vec3 unit_direction = normalize(r.GetDirection());
+        vec3 unit_direction = normalize(r->GetDirection());
         float t = 0.5f * (unit_direction.y + 1.0f);
         return (1.0f - t) * vec3(1.0, 1.0, 1.0) + t * vec3(0.5, 0.7, 1.0);
     }
@@ -47,7 +47,7 @@ int main()
             {
                 u = static_cast<float>(i + Random::RandomInUnitFloat()) / static_cast<float>(nx);
                 v = static_cast<float>(j + Random::RandomInUnitFloat()) / static_cast<float>(ny);
-                Ray r = cam.GetRay(u, v);
+                auto r = std::make_shared<Ray>(std::move(cam.GetRay(u, v)));
                 col += color(r, world);
             }
             col /= static_cast<float>(ns);

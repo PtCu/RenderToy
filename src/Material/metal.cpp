@@ -20,27 +20,20 @@
 //  FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 //  DEALINGS IN THE SOFTWARE.
 
-#ifndef CORE_RENDER_H_
-#define CORE_RENDER_H_
-
-#include "world.h"
-#include "camera.h"
-#include "image.h"
+#include "metal.h"
 
 namespace platinum
 {
-    class Renderer
+    bool Metal::Scatter(Intersection &rec) const
     {
-    public:
-        Renderer(int img_w, int img_h, int channel, const std::string &fname, int iters);
-        void Render(const World &scene, const std::shared_ptr<Camera> &cam);
-
-    private:
-        inline void UpdateProgress(float progress);
-        Image img;
-        std::string filename;
-        int iterations;
-    };
+        glm::vec3 reflected = Reflect(rec.ray->GetDirection(), rec.normal) + fuzz * Random::RandomInUnitSphere();
+        if (glm::dot(reflected, rec.normal) < 0)
+        {
+            rec.ray->SetColor(glm::vec3(0, 0, 0));
+            return false;
+        }
+        auto attenuation = albedo;
+        rec.ray->Update(rec.point, reflected, attenuation);
+        return true;
+    }
 }
-
-#endif

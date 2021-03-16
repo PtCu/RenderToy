@@ -1,6 +1,6 @@
 // The MIT License (MIT)
 
-// Copyright (c) 2021 PtCu
+// Copyright (c) YEAR NAME
 
 //  Permission is hereby granted, free of charge, to any person obtaining a
 //  copy of this software and associated documentation files (the "Software"),
@@ -20,27 +20,15 @@
 //  FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 //  DEALINGS IN THE SOFTWARE.
 
-#ifndef CORE_RENDER_H_
-#define CORE_RENDER_H_
-
-#include "world.h"
-#include "camera.h"
-#include "image.h"
-
+#include "lambertian.h"
 namespace platinum
 {
-    class Renderer
+    bool Lambertian::Scatter(Intersection &rec) const
     {
-    public:
-        Renderer(int img_w, int img_h, int channel, const std::string &fname, int iters);
-        void Render(const World &scene, const std::shared_ptr<Camera> &cam);
+        auto reflected = Ray(rec.point, glm::vec3(rec.normal) + Random::RandomInUnitDisk());
+        auto attenuation = albedo;
+        rec.ray->Update(rec.point, reflected, attenuation);
+        return true;
+    }
 
-    private:
-        inline void UpdateProgress(float progress);
-        Image img;
-        std::string filename;
-        int iterations;
-    };
 }
-
-#endif

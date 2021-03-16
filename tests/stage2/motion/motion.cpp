@@ -10,34 +10,11 @@
 #include "../src/Geometry/sphere.h"
 #include "../src/Geometry/movingSphere.h"
 #include "../src/Core/world.h"
+#include "../src/Core/renderer.h"
 
 using namespace platinum;
 using namespace glm;
 using namespace std;
-
-vec3 color(const Ray &r, World &world, int depth)
-{
-    Intersection rec;
-    if (world.IntersectAll(r, rec))
-    {
-        Ray scattered;
-        vec3 attenuation;
-        if (depth < 50 && rec.material->Scatter(r, rec, attenuation, scattered))
-        {
-            return attenuation * color(scattered, world, depth + 1);
-        }
-        else
-        {
-            return vec3(0, 0, 0);
-        }
-    }
-    else
-    {
-        vec3 unit_direction = normalize(r.GetDirection());
-        float t = 0.5f * (unit_direction.y + 1.0f);
-        return (1.0f - t) * vec3(1.0, 1.0, 1.0) + t * vec3(0.5, 0.7, 1.0);
-    }
-}
 
 World random_scene()
 {
@@ -95,7 +72,6 @@ int main()
     int nx = 1200;
     int ny = 800;
     int ns = 20;
-    std::cout << "Start rendering..." << std::endl;
     World world = random_scene();
 
     vec3 lookfrom(13, 2, 3);
@@ -103,27 +79,10 @@ int main()
     float dist_to_focus = 10.0f;
     float aperture = 0.1f;
 
-    TCamera cam(lookfrom, lookat, vec3(0, -1, 0), 20, float(nx) / float(ny), aperture, dist_to_focus, 0.f, 1.f);
-    Image img(1200, 800, 3);
-    for (int j = 0; j < ny; ++j)
-    {
-        for (int i = 0; i < nx; ++i)
-        {
-            vec3 col(0, 0, 0);
-            for (int s = 0; s < ns; s++)
-            {
-                float u = static_cast<float>(i) / static_cast<float>(nx);
-                float v = static_cast<float>(j) / static_cast<float>(ny);
-                Ray r = cam.GetRay(u, v);
-                col += color(r, world, 0);
-            }
-            col /= static_cast<float>(ns);
-            col = vec3(sqrt(col[0]), sqrt(col[1]), sqrt(col[2]));
-            img.SetPixel(i, j, Image::Pixel<unsigned char>(static_cast<int>(255.99f * col.x), static_cast<int>(255.99f * col.y), static_cast<int>(255.99f * col.z)));
-        }
-    }
-    img.SaveAsPNG("motion_sphere.png");
-    std::cout << "Rendering finished" << std::endl;
+    shared_ptr<Camera> cam = make_shared<TCamera>(lookfrom, lookat, vec3(0, -1, 0), 20, float(nx) / float(ny), aperture, dist_to_focus, 0.f, 1.f);
+    Renderer render(nx, ny, 3, "bvh", 10);
+    render.Render(world, cam);
+
     world.DestroyAll();
     return 0;
 }

@@ -28,7 +28,24 @@ namespace platinum
         : img(Image(img_w, img_h, channel)), filename(fname), iterations(iters)
     {
     }
+    inline void Renderer::UpdateProgress(float progress)
+    {
+        int barWidth = 70;
 
+        std::cout << "[";
+        int pos = barWidth * progress;
+        for (int i = 0; i < barWidth; ++i)
+        {
+            if (i < pos)
+                std::cout << "=";
+            else if (i == pos)
+                std::cout << ">";
+            else
+                std::cout << " ";
+        }
+        std::cout << "] " << int(progress * 100.0) << " %\r";
+        std::cout.flush();
+    };
     void Renderer::Render(const World &scene, const std::shared_ptr<Camera> &cam)
     {
         std::shared_ptr<Ray> r;
@@ -45,13 +62,15 @@ namespace platinum
                     u = static_cast<float>(i + Random::RandomInUnitFloat()) / static_cast<float>(nx);
                     v = static_cast<float>(j + Random::RandomInUnitFloat()) / static_cast<float>(ny);
                     r = std::make_shared<Ray>(std::move(cam->GetRay(u, v)));
-                    col += scene.CastRay(r, 0);
+                    col += scene.CastRay(r);
                 }
                 col /= static_cast<float>(iterations);
                 col = glm::vec3(sqrt(col[0]), sqrt(col[1]), sqrt(col[2]));
                 img.SetPixel(i, j, Image::Pixel<unsigned char>(static_cast<int>(255.99f * col.x), static_cast<int>(255.99f * col.y), static_cast<int>(255.99f * col.z)));
             }
+            UpdateProgress(j / (float)ny);
         }
+        UpdateProgress(1.f);
         img.SaveAsPNG(filename);
     }
 }

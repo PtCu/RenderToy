@@ -31,8 +31,9 @@ namespace platinum
    {
    public:
       Dielectric(float ri) : ref_idx(ri) {}
-      virtual bool Scatter(const Ray &r_in, const Intersection &rec, glm::vec3 &attenuation, Ray &scattered) const;
-
+      virtual bool Scatter(Intersection &rec) const;
+   private:
+      glm::vec3 albedo; //Attenuation in three channel.
       float ref_idx;
    };
 

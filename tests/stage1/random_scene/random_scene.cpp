@@ -14,26 +14,27 @@ using namespace platinum;
 using namespace glm;
 using namespace std;
 
-vec3 color(const Ray &r, World &world, int depth)
+vec3 color(shared_ptr<Ray> &ray, World &world, int dep)
 {
-    Intersection rec;
-    if (world.IntersectAll(r, rec))
+    if (dep == 0)
     {
-        Ray scattered;
-        vec3 attenuation;
-        if (depth < 50 && rec.material->Scatter(r, rec, attenuation, scattered))
-        {
-            return attenuation * color(scattered, world, depth + 1);
-        }
+        return glm::vec3(0, 0, 0);
+    }
+    Intersection rec;
+    if (world.IntersectAll(ray, rec))
+    {
+        if (rec.material == NULL)
+            return glm::vec3(0, 1, 0);
+        if (rec.material->Scatter(rec))
+            return color(ray, world, dep - 1);
+
         else
-        {
-            return vec3(0, 0, 0);
-        }
+            return ray->GetColor();
     }
     else
     {
-        vec3 unit_direction = normalize(r.GetDirection());
-        float t = 0.5f * (unit_direction.y + 1.0f);
+        vec3 unit_direction = normalize(ray->GetDirection());
+        float t = 0.5f * (unit_direction.y + 1.0);
         return (1.0f - t) * vec3(1.0, 1.0, 1.0) + t * vec3(0.5, 0.7, 1.0);
     }
 }
@@ -112,8 +113,8 @@ int main()
             {
                 float u = static_cast<float>(i) / static_cast<float>(nx);
                 float v = static_cast<float>(j) / static_cast<float>(ny);
-                Ray r = cam.GetRay(u, v);
-                col += color(r, world, 0);
+                auto r = std::make_shared<Ray>(std::move(cam.GetRay(u, v)));
+                col += color(r, world, 50);
             }
             col /= static_cast<float>(ns);
             col = vec3(sqrt(col[0]), sqrt(col[1]), sqrt(col[2]));

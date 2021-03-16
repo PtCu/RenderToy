@@ -22,9 +22,9 @@
 
 #ifndef METAL_H
 #define METAL_H
-
-#include "../Core/material.h"
 #include "../Math/rand.h"
+#include "../Core/material.h"
+
 namespace platinum
 {
    class Metal : public Material
@@ -34,15 +34,11 @@ namespace platinum
       {
          f < 1 ? fuzz = f : fuzz = 1;
       }
-      virtual bool Scatter(const Ray &r_in, const Intersection &rec, glm::vec3 &attenuation, Ray &scattered) const
-      {
-         glm::vec3 reflected = glm::reflect(r_in.GetDirection(), rec.normal);
-         scattered = Ray(rec.point, reflected + fuzz * Random::RandomInUnitSphere());
-         attenuation = albedo;
-         return (glm::dot(scattered.GetDirection(), rec.normal) > 0);
-      }
+      virtual bool Scatter(Intersection &rec) const;
+
+   private:
       glm::vec3 albedo; //Attenuation in three channel.
-      float fuzz; //Zero is no perturbation
+      float fuzz;       //Zero is no perturbation
    };
 } // namespace platinum
 

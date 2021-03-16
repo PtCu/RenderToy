@@ -9,17 +9,27 @@ using namespace platinum;
 using namespace glm;
 using namespace std;
 
-vec3 color(const Ray &r, World &world)
+vec3 color(shared_ptr<Ray> &ray, World &world, int dep)
 {
-    Intersection rec;
-    if (world.IntersectAll(r,  rec))
+    if (dep == 0)
     {
-        return 0.5f * color(Ray(rec.point, rec.normal + Random::RandomInUnitSphere()), world);
+        return glm::vec3(0, 0, 0);
+    }
+    Intersection rec;
+    if (world.IntersectAll(ray, rec))
+    {
+        if (rec.material == NULL)
+            return glm::vec3(0, 1, 0);
+        if (rec.material->Scatter(rec))
+            return color(ray, world, dep - 1);
+
+        else
+            return ray->GetColor();
     }
     else
     {
-        vec3 unit_direction = normalize(r.GetDirection());
-        float t = 0.5f * (unit_direction.y + 1.0f);
+        vec3 unit_direction = normalize(ray->GetDirection());
+        float t = 0.5f * (unit_direction.y + 1.0);
         return (1.0f - t) * vec3(1.0, 1.0, 1.0) + t * vec3(0.5, 0.7, 1.0);
     }
 }
@@ -31,9 +41,9 @@ int main()
     int ns = 100;
     float u, v;
     World world;
-    auto sph1 = make_shared<Sphere>(vec3(0, 0, -1), 0.5);
+    auto sph1 = make_shared<Sphere>(vec3(0, 0, -1), 0.5, make_shared<Lambertian>(vec3(0.5, 0.5, 0.5)));
     world.AddObject(sph1);
-    auto sph2 = make_shared<Sphere>(vec3(0, -100.5, -1), 100);
+    auto sph2 = make_shared<Sphere>(vec3(0, -100.5, -1), 100, make_shared<Lambertian>(vec3(0.5, 0.5, 0.5)));
     world.AddObject(sph2);
     Image img(200, 100, 3);
     Camera cam;
@@ -47,8 +57,8 @@ int main()
             {
                 u = static_cast<float>(i + Random::RandomInUnitFloat()) / static_cast<float>(nx);
                 v = static_cast<float>(j + Random::RandomInUnitFloat()) / static_cast<float>(ny);
-                Ray r = cam.GetRay(u, v);
-                col += color(r, world);
+                auto r = std::make_shared<Ray>(std::move(cam.GetRay(u, v)));
+                col += color(r, world, 50);
             }
             col /= static_cast<float>(ns);
             col = vec3(sqrt(col[0]), sqrt(col[1]), sqrt(col[2]));

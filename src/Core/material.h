@@ -31,18 +31,10 @@ namespace platinum
     class Material
     {
     public:
-        virtual bool Scatter(const Ray &r_in, const Intersection &rec, glm::vec3 &attenuation, Ray &scattered) const = 0;
+        virtual bool Scatter(Intersection &rec) const = 0;
 
     protected:
-        /**
-         * @brief 
-         * @param  v                Incident light. 
-         * @param  n                Normal.
-         * @param  ni_over_nt       Refractive index, 
-         * @param  refracted        Emergent light.
-         * @return true 
-         * @return false 
-         */
+
         bool Refract(const glm::vec3 &v, const glm::vec3 &n, float ni_over_nt, glm::vec3 &refracted) const
         {
             glm::vec3 uv = glm::normalize(v);

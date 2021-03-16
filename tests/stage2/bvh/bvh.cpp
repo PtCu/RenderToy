@@ -70,7 +70,7 @@ int main()
     int nx = 1200;
     int ny = 800;
     int ns = 10;
-    std::cout << "Start rendering..." << std::endl;
+
     World world = random_scene();
 
     vec3 lookfrom(13, 2, 3);
@@ -78,7 +78,7 @@ int main()
     float dist_to_focus = 10.0f;
     float aperture = 0.1f;
 
-    Camera cam(lookfrom, lookat, vec3(0, -1, 0), 20, float(nx) / float(ny), aperture, dist_to_focus);
+    auto cam = make_shared<Camera>(lookfrom, lookat, vec3(0, -1, 0), 20, float(nx) / float(ny), aperture, dist_to_focus);
 
     Renderer render(nx, ny, 3, "bvh", 10);
     render.Render(world, cam);
