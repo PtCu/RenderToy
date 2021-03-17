@@ -36,7 +36,7 @@ namespace platinum
     {
         objects.clear();
     }
-    Intersection World ::intersectAll(const std::shared_ptr<Ray> &r) const
+    Intersection World ::intersectAll(std::shared_ptr<Ray> &r) const
     {
         return this->bvh_accel->RayCast(r);
     }
@@ -66,10 +66,10 @@ namespace platinum
             //TODO: Make it configurable
             glm::vec3 unit_direction = glm::normalize(ray->GetDirection());
             float t = 0.5f * (unit_direction.y + 1.0f);
-            return (1.0f - t) * glm::vec3(1.0, 1.0, 1.0) + t * glm::vec3(0.5, 0.7, 1.0);
+            return ray->GetColor() * ((1.0f - t) * glm::vec3(1.0, 1.0, 1.0) + t * glm::vec3(0.5, 0.7, 1.0));
         }
     }
-    bool World::IntersectAll(const std::shared_ptr<Ray> &r, Intersection &rec) const
+    bool World::IntersectAll(std::shared_ptr<Ray> &r, Intersection &rec) const
     {
         Intersection temp_rec;
         bool hit_anything = false;

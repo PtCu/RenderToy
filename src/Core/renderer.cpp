@@ -46,8 +46,9 @@ namespace platinum
         std::cout << "] " << int(progress * 100.0) << " %\r";
         std::cout.flush();
     };
-    void Renderer::Render(const World &scene, const std::shared_ptr<Camera> &cam)
+    void Renderer::Render(World &scene, const std::shared_ptr<Camera> &cam)
     {
+        scene.BuildBVH();
         std::shared_ptr<Ray> r;
         size_t ny = img.GetHeight();
         size_t nx = img.GetWidth();

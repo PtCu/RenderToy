@@ -32,12 +32,11 @@ World random_scene()
             {
                 if (choose_mat < 0.8)
                 { // diffuse
-                    sph = make_shared<MovingSphere>(center,
-                                                    center + vec3(0, 0.5 * Random::RandomInUnitFloat(), 0),
-                                                    0.0, 1.0, 0.2,
-                                                    make_shared<Lambertian>(vec3(Random::RandomInUnitFloat() * Random::RandomInUnitFloat(),
-                                                                                 Random::RandomInUnitFloat() * Random::RandomInUnitFloat(),
-                                                                                 Random::RandomInUnitFloat() * Random::RandomInUnitFloat())));
+                    sph = make_shared<Sphere>(center,
+                                              0.2,
+                                              make_shared<Lambertian>(vec3(Random::RandomInUnitFloat() * Random::RandomInUnitFloat(),
+                                                                           Random::RandomInUnitFloat() * Random::RandomInUnitFloat(),
+                                                                           Random::RandomInUnitFloat() * Random::RandomInUnitFloat())));
                 }
                 else if (choose_mat < 0.95)
                 { // metal
@@ -80,7 +79,7 @@ int main()
 
     auto cam = make_shared<Camera>(lookfrom, lookat, vec3(0, -1, 0), 20, float(nx) / float(ny), aperture, dist_to_focus);
 
-    Renderer render(nx, ny, 3, "bvh", 10);
+    Renderer render(nx, ny, 3, "bvh.png", ns);
     render.Render(world, cam);
 
     world.DestroyAll();

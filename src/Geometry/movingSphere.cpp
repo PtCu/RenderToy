@@ -31,7 +31,7 @@ namespace platinum
         glm::vec3 maxP = glm::max(center0 + glm::vec3(radius), center1 + glm::vec3(radius));
         bounding_box = AABB(minP, maxP);
     };
-    Intersection MovingSphere::Intersect(const std::shared_ptr<Ray> &r) const
+    Intersection MovingSphere::Intersect(std::shared_ptr<Ray> &r) const
     {
         std::shared_ptr<TRay> tRay = std::dynamic_pointer_cast<TRay>(r);
         Intersection rec;
@@ -48,7 +48,9 @@ namespace platinum
                 rec.time = temp;
                 rec.point = tRay->PointAtT(rec.time);
                 rec.normal = glm::vec3((rec.point - GetCenter(tRay->GetTime())) / radius);
+                rec.ray = r;
                 rec.material = material;
+                rec.happened = true;
                 return rec;
             }
             temp = (-b + sqrt(discriminant)) / a;
@@ -57,7 +59,9 @@ namespace platinum
                 rec.time = temp;
                 rec.point = tRay->PointAtT(rec.time);
                 rec.normal = glm::vec3((rec.point - GetCenter(tRay->GetTime())) / radius);
+                rec.ray = r;
                 rec.material = material;
+                rec.happened = true;
                 return rec;
             }
         }

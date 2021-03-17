@@ -71,7 +71,7 @@ int main()
 {
     int nx = 1200;
     int ny = 800;
-    int ns = 20;
+    int ns = 10;
     World world = random_scene();
 
     vec3 lookfrom(13, 2, 3);
@@ -80,7 +80,7 @@ int main()
     float aperture = 0.1f;
 
     shared_ptr<Camera> cam = make_shared<TCamera>(lookfrom, lookat, vec3(0, -1, 0), 20, float(nx) / float(ny), aperture, dist_to_focus, 0.f, 1.f);
-    Renderer render(nx, ny, 3, "bvh", 10);
+    Renderer render(nx, ny, 3, "motion.png", ns);
     render.Render(world, cam);
 
     world.DestroyAll();

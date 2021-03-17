@@ -35,6 +35,7 @@ namespace platinum
         {
             t_min = 0.0;
             t_max = std::numeric_limits<float>::max();
+            color = glm::vec3(1.0);
             inv_d = {1.0f / d.x, 1.0f / d.y, 1.0f / d.z};
             dirIsNeg = {d.x < 0, d.y < 0, d.z < 0};
         }

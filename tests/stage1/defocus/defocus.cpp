@@ -13,26 +13,24 @@ using namespace std;
 
 vec3 color(shared_ptr<Ray> &ray, World &world, int dep)
 {
-    if (dep == 0)
-    {
-        return glm::vec3(0, 0, 0);
-    }
     Intersection rec;
     if (world.IntersectAll(ray, rec))
     {
+        if (dep == 0)
+            return glm::vec3(0, 0, 0);
+
         if (rec.material == NULL)
-            return glm::vec3(0, 1, 0);
+            return glm::vec3(1, 0, 1);
         if (rec.material->Scatter(rec))
             return color(ray, world, dep - 1);
-
         else
             return ray->GetColor();
     }
     else
     {
         vec3 unit_direction = normalize(ray->GetDirection());
-        float t = 0.5f * (unit_direction.y + 1.0);
-        return (1.0f - t) * vec3(1.0, 1.0, 1.0) + t * vec3(0.5, 0.7, 1.0);
+        float t = 0.5f * (unit_direction.y + 1.0f);
+        return ray->GetColor() * ((1.0f - t) * vec3(1, 1, 1) + t * vec3(0.5, 0.7, 1));
     }
 }
 
@@ -40,7 +38,7 @@ int main()
 {
     int nx = 200;
     int ny = 100;
-    int ns = 100;
+    int ns = 10;
     float u, v;
     World world;
 
@@ -56,7 +54,7 @@ int main()
     float dist_to_focus = (lookfrom - lookat).length() * 1.0f;
     float aperture = 2.0f;
     Camera cam(lookfrom, lookat, vec3(0, -1, 0), 20, float(nx) / float(ny), aperture, dist_to_focus);
-    for (int j = ny - 1; j >= 0; --j)
+    for (int j = 0; j < ny; ++j)
     {
         for (int i = 0; i < nx; ++i)
         {

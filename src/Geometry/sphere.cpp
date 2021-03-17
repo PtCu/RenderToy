@@ -31,7 +31,7 @@ namespace platinum
         bounding_box = AABB(minP, maxP);
     };
 
-    Intersection Sphere::Intersect(const std::shared_ptr<Ray>& r) const
+    Intersection Sphere::Intersect(std::shared_ptr<Ray> &r) const
     {
         Intersection rec;
         rec.happened = false;
@@ -49,6 +49,7 @@ namespace platinum
                 rec.point = r->PointAtT(rec.time);
                 rec.normal = glm::vec3((rec.point - center) / radius);
                 rec.material = material;
+                rec.ray = r;
                 rec.happened = true;
                 return rec;
             }
@@ -59,6 +60,7 @@ namespace platinum
                 rec.point = r->PointAtT(rec.time);
                 rec.normal = glm::vec3((rec.point - center) / radius);
                 rec.material = material;
+                rec.ray = r;
                 rec.happened = true;
                 return rec;
             }

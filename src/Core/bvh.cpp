@@ -30,8 +30,8 @@ BVHAccel::BVHAccel(vector<shared_ptr<Object>> &p, int maxPrimsInNode,
                    SplitMethod splitMethod)
     : maxPrimsInNode(std::min(255, maxPrimsInNode)), splitMethod(splitMethod)
 {
-    time_t start, stop;
-    time(&start);
+    // time_t start, stop;
+    // time(&start);
     if (p.empty())
         return;
 
@@ -42,22 +42,22 @@ BVHAccel::BVHAccel(vector<shared_ptr<Object>> &p, int maxPrimsInNode,
     //TODO:
     //Other building method
 
-    time(&stop);
-    double diff = difftime(stop, start);
-    int hrs = (int)diff / 3600;
-    int mins = ((int)diff / 60) - (hrs * 60);
-    int secs = (int)diff - (hrs * 3600) - (mins * 60);
+    // time(&stop);
+    // double diff = difftime(stop, start);
+    // int hrs = (int)diff / 3600;
+    // int mins = ((int)diff / 60) - (hrs * 60);
+    // int secs = (int)diff - (hrs * 3600) - (mins * 60);
 
-    printf(
-        "\rBVH Generation complete: \nTime Taken: %i hrs, %i mins, %i secs\n\n",
-        hrs, mins, secs);
+    // printf(
+    //     "\rBVH Generation complete: \nTime Taken: %i hrs, %i mins, %i secs\n\n",
+    //     hrs, mins, secs);
 }
 BVHAccel::BVHAccel(vector<shared_ptr<Object>>::iterator &begin, vector<shared_ptr<Object>>::iterator &end, int maxPrimsInNode,
                    SplitMethod splitMethod)
     : maxPrimsInNode(std::min(255, maxPrimsInNode)), splitMethod(splitMethod)
 {
-    time_t start, stop;
-    time(&start);
+    // time_t start, stop;
+    // time(&start);
     if (begin == end)
         return;
 
@@ -68,15 +68,15 @@ BVHAccel::BVHAccel(vector<shared_ptr<Object>>::iterator &begin, vector<shared_pt
     //TODO:
     //Other building method
 
-    time(&stop);
-    double diff = difftime(stop, start);
-    int hrs = (int)diff / 3600;
-    int mins = ((int)diff / 60) - (hrs * 60);
-    int secs = (int)diff - (hrs * 3600) - (mins * 60);
+    // time(&stop);
+    // double diff = difftime(stop, start);
+    // int hrs = (int)diff / 3600;
+    // int mins = ((int)diff / 60) - (hrs * 60);
+    // int secs = (int)diff - (hrs * 3600) - (mins * 60);
 
-    printf(
-        "\rBVH Generation complete: \nTime Taken: %i hrs, %i mins, %i secs\n\n",
-        hrs, mins, secs);
+    // printf(
+    //     "\rBVH Generation complete: \nTime Taken: %i hrs, %i mins, %i secs\n\n",
+    //     hrs, mins, secs);
 }
 
 shared_ptr<BVH_Node> BVHAccel::recursiveBuild(vector<shared_ptr<Object>>::iterator begin, vector<shared_ptr<Object>>::iterator end)
@@ -139,7 +139,7 @@ shared_ptr<BVH_Node> BVHAccel::recursiveBuild(vector<shared_ptr<Object>>::iterat
     return node;
 }
 
-Intersection BVHAccel::RayCast(const std::shared_ptr<Ray> &r) const
+Intersection BVHAccel::RayCast(std::shared_ptr<Ray> &r) const
 {
     Intersection isect;
     if (!root)
@@ -148,7 +148,7 @@ Intersection BVHAccel::RayCast(const std::shared_ptr<Ray> &r) const
     return isect;
 }
 
-Intersection BVHAccel::getIntersection(const std::shared_ptr<Ray> &r) const
+Intersection BVHAccel::getIntersection(std::shared_ptr<Ray> &r) const
 {
     // TODO Traverse the BVH to find intersection
     if (!root->bounding_box.IsHit(r))
@@ -160,6 +160,8 @@ Intersection BVHAccel::getIntersection(const std::shared_ptr<Ray> &r) const
     {
         auto p = s.top();
         s.pop();
+        if(p==NULL)
+            continue;
         if (!p->bounding_box.IsHit(r))
             continue;
         if (p->left == NULL && p->right == NULL)
