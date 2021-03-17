@@ -21,12 +21,13 @@
 //  DEALINGS IN THE SOFTWARE.
 
 #include "renderer.h"
-
+#include <fstream>
 namespace platinum
 {
     Renderer::Renderer(int img_w, int img_h, int channel, const std::string &fname, int iters)
-        : img(Image(img_w, img_h, channel)), filename(fname), iterations(iters)
+        : filename(fname), iterations(iters)
     {
+        img.GenBuffer(img_w, img_h, channel);
     }
     void Renderer::UpdateProgress(float progress)
     {
@@ -49,10 +50,9 @@ namespace platinum
     void Renderer::Render(World &scene, const std::shared_ptr<Camera> &cam)
     {
         scene.BuildBVH();
-        std::shared_ptr<Ray> r;
         size_t ny = img.GetHeight();
         size_t nx = img.GetWidth();
-        float u, v;
+        float u = 0, v = 0;
         for (int j = 0; j < ny; ++j)
         {
             for (int i = 0; i < nx; ++i)
@@ -62,7 +62,7 @@ namespace platinum
                 {
                     u = static_cast<float>(i + Random::RandomInUnitFloat()) / static_cast<float>(nx);
                     v = static_cast<float>(j + Random::RandomInUnitFloat()) / static_cast<float>(ny);
-                    r = cam->GetRay(u, v);
+                    auto r = cam->GetRay(u, v);
                     col += scene.CastRay(r);
                 }
                 col /= static_cast<float>(iterations);

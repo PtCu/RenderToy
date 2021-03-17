@@ -9,7 +9,7 @@
 #include "../src/Geometry/sphere.h"
 #include "../src/Geometry/movingSphere.h"
 #include "../src/Core/renderer.h"
-
+#include <fstream>
 using namespace platinum;
 using namespace glm;
 using namespace std;
@@ -79,7 +79,9 @@ int main()
 
     auto cam = make_shared<Camera>(lookfrom, lookat, vec3(0, -1, 0), 20, float(nx) / float(ny), aperture, dist_to_focus);
 
+
     Renderer render(nx, ny, 3, "bvh.png", ns);
+
     render.Render(world, cam);
 
     world.DestroyAll();

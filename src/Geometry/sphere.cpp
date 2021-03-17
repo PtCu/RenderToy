@@ -34,7 +34,6 @@ namespace platinum
     Intersection Sphere::Intersect(std::shared_ptr<Ray> &r) const
     {
         Intersection rec;
-        rec.happened = false;
         glm::vec3 oc = r->GetOrigin() - center;
         float a = glm::dot(r->GetDirection(), r->GetDirection());
         float b = glm::dot(oc, r->GetDirection());

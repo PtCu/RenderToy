@@ -160,15 +160,16 @@ Intersection BVHAccel::getIntersection(std::shared_ptr<Ray> &r) const
     {
         auto p = s.top();
         s.pop();
-        if(p==NULL)
+        if (p == NULL)
             continue;
         if (!p->bounding_box.IsHit(r))
             continue;
         if (p->left == NULL && p->right == NULL)
         {
             tmp_inter = p->object->Intersect(r);
-            if (tmp_inter.time < inter.time)
-                inter = std::move(tmp_inter);
+            if (tmp_inter.happened && tmp_inter.time < inter.time)
+                // inter = std::move(tmp_inter);
+                inter = tmp_inter;
         }
         s.push(p->left);
         s.push(p->right);
