@@ -32,7 +32,7 @@ namespace platinum
             rec.ray->SetColor(glm::vec3(0, 0, 0));
             return false;
         }
-        auto attenuation = albedo;
+        auto attenuation = albedo->Value(0,0,rec.point);
         rec.ray->Update(rec.point, reflected, attenuation);
         return true;
     }

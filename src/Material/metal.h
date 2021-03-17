@@ -24,20 +24,27 @@
 #define METAL_H
 #include "../Math/rand.h"
 #include "../Core/material.h"
+#include "../Core/texture.h"
+#include "../Texture/constTexture.h"
 
 namespace platinum
 {
    class Metal : public Material
    {
    public:
-      Metal(const glm::vec3 &a, float f) : albedo(a)
+      Metal(const std::shared_ptr<Texture> &a, float f) : albedo(a)
       {
+         f < 1 ? fuzz = f : fuzz = 1;
+      }
+      Metal(const glm::vec3 &a, float f) 
+      {
+         albedo=std::make_shared<ConstTexture>(a);
          f < 1 ? fuzz = f : fuzz = 1;
       }
       virtual bool Scatter(Intersection &rec) const;
 
    private:
-      glm::vec3 albedo; //Attenuation in three channel.
+      std::shared_ptr<Texture> albedo; 
       float fuzz;       //Zero is no perturbation
    };
 } // namespace platinum

@@ -34,14 +34,15 @@ namespace platinum
       glm::vec3 refracted;
       float reflect_prob;
       float cosine;
+      //From inner to outer
       if (glm::dot(r_in->GetDirection(), rec.normal) > 0)
-      {
+      {  
          outward_normal = -rec.normal;
          ni_over_nt = ref_idx;
-         // cosine = ref_idx * glm::dot(r_in.GetDirection(), rec.normal) / r_in.GetDirection().length();
          cosine = glm::dot(r_in->GetDirection(), rec.normal) / r_in->GetDirection().length();
          cosine = std::sqrt(1 - ref_idx * ref_idx * (1 - cosine * cosine));
       }
+      //From outer to inner
       else
       {
          outward_normal = rec.normal;

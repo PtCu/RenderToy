@@ -78,6 +78,11 @@ namespace platinum
     class Ray;
     class Object;
     class AABB;
+    class Texture;
+    class ConstTexture;
+    class CheckerTexture;
+     class BVHAccel;
+     struct BVH_Node;
 
 } // namespace platinum
 #endif

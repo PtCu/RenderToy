@@ -25,6 +25,7 @@
 
 #include "../Core/material.h"
 #include "../Math/rand.h"
+#include "../Core/texture.h"
 namespace platinum
 {
    class Dielectric : public Material
@@ -33,7 +34,7 @@ namespace platinum
       Dielectric(float ri) : ref_idx(ri) {}
       virtual bool Scatter(Intersection &rec) const;
    private:
-      glm::vec3 albedo; //Attenuation in three channel.
+      std::shared_ptr<Texture> albedo;
       float ref_idx;
    };
 

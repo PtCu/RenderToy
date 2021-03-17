@@ -38,10 +38,9 @@ vec3 color(shared_ptr<Ray> &ray, World &world, int dep)
     }
 }
 
-World random_scene()
+void random_scene(World &world)
 {
     int n = 500;
-    World world;
     auto sph = make_shared<Sphere>(vec3(0, -1000, 0), 1000, make_shared<Lambertian>(vec3(0.5, 0.5, 0.5)));
     world.AddObject(sph);
     int i = 1;
@@ -86,7 +85,6 @@ World random_scene()
     world.AddObject(make_shared<Sphere>(vec3(-4, 1, 0), 1.0, make_shared<Lambertian>(vec3(0.4, 0.2, 0.1))));
     world.AddObject(make_shared<Sphere>(vec3(4, 1, 0), 1.0, make_shared<Metal>(vec3(0.7, 0.6, 0.5), 0.0)));
 
-    return world;
 }
 int main()
 {
@@ -94,7 +92,8 @@ int main()
     int ny = 800;
     int ns = 10;
     std::cout << "Start rendering..." << std::endl;
-    World world = random_scene();
+    World world;
+    random_scene(world);
 
     vec3 lookfrom(13, 2, 3);
     vec3 lookat(0, 0, 0);

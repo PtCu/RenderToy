@@ -16,10 +16,9 @@ using namespace platinum;
 using namespace glm;
 using namespace std;
 
-World random_scene()
+void random_scene(World &world)
 {
     int n = 500;
-    World world;
     shared_ptr<Object> sph;
     sph = make_shared<Sphere>(vec3(0, -1000, 0), 1000, make_shared<Lambertian>(vec3(0.5, 0.5, 0.5)));
     world.AddObject(sph);
@@ -64,15 +63,15 @@ World random_scene()
     world.AddObject(make_shared<Sphere>(vec3(-4, 1, 0), 1.0, make_shared<Lambertian>(vec3(0.4, 0.2, 0.1))));
     world.AddObject(make_shared<Sphere>(vec3(4, 1, 0), 1.0, make_shared<Metal>(vec3(0.7, 0.6, 0.5), 0.0)));
 
-    return world;
 }
 
 int main()
 {
     int nx = 1200;
     int ny = 800;
-    int ns = 10;
-    World world = random_scene();
+    int ns = 1000;
+    World world;
+    random_scene(world);
 
     vec3 lookfrom(13, 2, 3);
     vec3 lookat(0, 0, 0);

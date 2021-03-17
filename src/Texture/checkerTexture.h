@@ -20,27 +20,28 @@
 //  FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 //  DEALINGS IN THE SOFTWARE.
 
-#ifndef LAMBERTIAN_H
-#define LAMBERTIAN_H
-#include "../Core/material.h"
-#include "../Math/rand.h"
+#ifndef TEXTURE_CHECKERTEXTURE_H_
+#define TEXTURE_CHECKERTEXTURE_H_
+
+
 #include "../Core/texture.h"
-#include "../Texture/constTexture.h"
+#include <glm/glm.hpp>
 namespace platinum
 {
-    class Lambertian : public Material
+    class CheckerTexture : public Texture
     {
     public:
-        Lambertian(const std::shared_ptr<Texture> &a) : albedo(a) {}
-        Lambertian(const glm::vec3 &a)
-        {
-            albedo = std::make_shared<ConstTexture>(a);
-        }
-        virtual bool Scatter(Intersection &rec) const;
+        CheckerTexture() {}
+        CheckerTexture(const std::shared_ptr<Texture> &o, const std::shared_ptr<Texture> &e)
+        :odd(o),even(e){}
+        virtual glm::vec3 Value(float u, float v, const glm::vec3 &p)const;
 
     private:
-        std::shared_ptr<Texture> albedo;
+        std::shared_ptr<Texture> odd;
+        std::shared_ptr<Texture> even;
     };
-} // namespace platinum
+}
+
+
 
 #endif

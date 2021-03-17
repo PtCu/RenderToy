@@ -26,6 +26,7 @@
 #include "ray.h"
 #include "intersection.h"
 #include "defines.h"
+
 namespace platinum
 {
     class Material
