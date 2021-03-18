@@ -67,5 +67,5 @@ int main()
         }
     }
     img.SaveAsPNG("dielectrics.png");
-    world.DestroyAll();
+    world.Reset();
 }

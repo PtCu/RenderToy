@@ -20,13 +20,11 @@
 //  FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 //  DEALINGS IN THE SOFTWARE.
 
-
-
 #include "constTexture.h"
 
 namespace platinum
 {
-    glm::vec3 ConstTexture::Value(float u, float v, const glm::vec3 &p)const
+    glm::vec3 ConstTexture::GetValue(float u, float v, const glm::vec3 &p) const
     {
         return color;
     }

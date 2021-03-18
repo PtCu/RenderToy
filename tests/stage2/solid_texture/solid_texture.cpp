@@ -29,7 +29,7 @@ int main()
 {
     int nx = 1200;
     int ny = 800;
-    int ns = 100;
+    int ns = 10;
     World world;
     two_spheres(world);
     vec3 lookfrom(13, 2, 3);
@@ -41,6 +41,6 @@ int main()
     Renderer render(nx, ny, 3, "solid_texture.png", ns);
     render.Render(world, cam);
 
-    world.DestroyAll();
+    world.Reset();
     return 0;
 }

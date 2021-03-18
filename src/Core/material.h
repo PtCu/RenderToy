@@ -33,6 +33,7 @@ namespace platinum
     {
     public:
         virtual bool Scatter(Intersection &rec) const = 0;
+        virtual ~Material() = default;
 
     protected:
 

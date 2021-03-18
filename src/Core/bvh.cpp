@@ -26,9 +26,9 @@ using namespace std;
 using namespace glm;
 using namespace platinum;
 
-BVHAccel::BVHAccel(vector<shared_ptr<Object>> &p, int maxPrimsInNode,
+BVHAccel::BVHAccel(vector<shared_ptr<Object>> &p,
                    SplitMethod splitMethod)
-    : maxPrimsInNode(std::min(255, maxPrimsInNode)), splitMethod(splitMethod)
+    : splitMethod(splitMethod)
 {
     // time_t start, stop;
     // time(&start);
@@ -52,9 +52,9 @@ BVHAccel::BVHAccel(vector<shared_ptr<Object>> &p, int maxPrimsInNode,
     //     "\rBVH Generation complete: \nTime Taken: %i hrs, %i mins, %i secs\n\n",
     //     hrs, mins, secs);
 }
-BVHAccel::BVHAccel(vector<shared_ptr<Object>>::iterator &begin, vector<shared_ptr<Object>>::iterator &end, int maxPrimsInNode,
+BVHAccel::BVHAccel(vector<shared_ptr<Object>>::iterator &begin, vector<shared_ptr<Object>>::iterator &end,
                    SplitMethod splitMethod)
-    : maxPrimsInNode(std::min(255, maxPrimsInNode)), splitMethod(splitMethod)
+    : splitMethod(splitMethod)
 {
     // time_t start, stop;
     // time(&start);
@@ -158,6 +158,7 @@ Intersection BVHAccel::getIntersection(std::shared_ptr<Ray> &r) const
     s.push(root);
     while (!s.empty())
     {
+        //如果为unqiue_ptr就会被自动释放掉。可以用unique_ptr + raw pointer
         auto p = s.top();
         s.pop();
         if (p == NULL)

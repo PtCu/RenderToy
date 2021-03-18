@@ -20,41 +20,34 @@
 //  FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 //  DEALINGS IN THE SOFTWARE.
 
-#ifndef CORE_WORLD_H_
-#define CORE_WORLD_H_
+#ifndef MATH_PERLIN_H_
+#define MATH_PERLIN_H_
 
-#include "object.h"
 #include <glm/glm.hpp>
-#include "defines.h"
-#include "ray.h"
-#include "intersection.h"
-#include "bvh.h"
+#include "../Core/defines.h"
+#include "rand.h"
+#include <chrono>       // std::chrono::system_clock
 
 namespace platinum
 {
-    class World
+    class Perlin
     {
     public:
-        World() {}
-        World(int max_dep) : max_depth(max_dep) {}
-        ~World();
-        bool IntersectAll(std::shared_ptr<Ray> &r, Intersection &rec) const; //Brute method for stage 1
-        void AddObject(std::shared_ptr<Object> obj);
-        void Reset();
-        void BuildBVH();
-        glm::vec3 CastRay(std::shared_ptr<Ray> &r) const;
-        const std::vector<std::shared_ptr<Object>> &GetObjects() const { return objects; }
+        static float GenNoise(const glm::vec3 &p);
+        static float Turb(const glm::vec3 &p, size_t depth = 7);
 
     private:
-        void destroyAll();
-        glm::vec3 CastRay(std::shared_ptr<Ray> &r, int depth) const; //Using BVH tree to accelerate.
-        Intersection intersectAll(std::shared_ptr<Ray> &r) const;
+        static float PerlinInterp(const glm::vec3 c[2][2][2], float u, float v, float w);
+        static std::vector<size_t> GenPermute(size_t n);
+        static std::vector<glm::vec3> GenRandVec(size_t n);
 
-        int max_depth = 10;
-        std::unique_ptr<BVHAccel> bvh_accel;
-        std::vector<std::shared_ptr<Object>> objects;
+        static std::vector<glm::vec3> rand_vec;
+
+        // 0, 1, ... , 255 变更顺序后的序列
+        static std::vector<size_t> perm_x;
+        static std::vector<size_t> perm_y;
+        static std::vector<size_t> perm_z;
     };
-
-} // namespace platinum
+}
 
 #endif

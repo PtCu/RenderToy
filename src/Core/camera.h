@@ -37,7 +37,7 @@ namespace platinum
         Camera();
        
         Camera(glm::vec3 lookfrom, glm::vec3 lookat, glm::vec3 vup, float vfov, float aspect, float aperture, float focusDist);
-       
+        virtual ~Camera() = default;
         virtual std::shared_ptr<Ray> GetRay(float s, float t) const;
         
 

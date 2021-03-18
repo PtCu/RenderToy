@@ -33,6 +33,7 @@ namespace platinum
     public:
         Object() {}
         virtual ~Object() {}
+        //TODO: 考虑将虚拟函数声明为非公用的，将公用函数声明为非虚拟的
         virtual Intersection Intersect(std::shared_ptr<Ray> &r) const = 0;
         virtual AABB GetBoundingBox() const = 0;
     };

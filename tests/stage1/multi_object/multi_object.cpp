@@ -61,5 +61,5 @@ int main()
         }
     }
     img.SaveAsPNG("multi_object.png");
-    world.DestroyAll();
+    world.Reset();
 }

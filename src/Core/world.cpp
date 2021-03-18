@@ -24,6 +24,14 @@
 
 namespace platinum
 {
+    World::~World()
+    {
+        destroyAll();
+    }
+    void World::destroyAll()
+    {
+        objects.clear();
+    }
     void World::BuildBVH()
     {
         this->bvh_accel = std::unique_ptr<BVHAccel>(new BVHAccel(objects));
@@ -32,9 +40,10 @@ namespace platinum
     {
         this->objects.push_back(obj);
     }
-    void World::DestroyAll()
+    void World::Reset()
     {
-        objects.clear();
+        this->bvh_accel.reset();
+        this->destroyAll();
     }
     Intersection World ::intersectAll(std::shared_ptr<Ray> &r) const
     {

@@ -43,6 +43,7 @@ namespace platinum
             p_min = glm::min(a, b);
             p_max = glm::max(a, b);
         }
+        ~AABB() = default;
         AABB Intersect(const AABB &b) const;
 
         void Expand(const glm::vec3 &p);

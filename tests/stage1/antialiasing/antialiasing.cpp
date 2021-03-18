@@ -56,5 +56,5 @@ int main()
         }
     }
     img.SaveAsPNG("antialiasing.png");
-    world.DestroyAll();
+    world.Reset();
 }

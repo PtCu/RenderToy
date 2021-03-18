@@ -24,13 +24,13 @@
 
 namespace platinum
 {
-    glm::vec3 CheckerTexture::Value(float u, float v, const glm::vec3 &p)const
+    glm::vec3 CheckerTexture::GetValue(float u, float v, const glm::vec3 &p) const
     {
         float sines = std::sinf(10 * p.x) * sinf(10 * p.y) * sinf(10 * p.z);
         if (sines < 0)
-            return odd->Value(u, v, p);
+            return odd->GetValue(u, v, p);
         else
-            return even->Value(u, v, p);
+            return even->GetValue(u, v, p);
     }
 
 }

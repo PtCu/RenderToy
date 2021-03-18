@@ -67,5 +67,5 @@ int main()
         }
     }
     img.SaveAsPNG("diffuse.png");
-    world.DestroyAll();
+    world.Reset();
 }

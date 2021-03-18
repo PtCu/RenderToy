@@ -33,7 +33,7 @@ namespace platinum
         ConstTexture() {}
         ConstTexture(float r, float g, float b) { color = glm::vec3(r, g, b); }
         ConstTexture(const glm::vec3 &c) : color(c) {}
-        virtual glm::vec3 Value(float u, float v, const glm::vec3 &p)const;
+        virtual glm::vec3 GetValue(float u, float v, const glm::vec3 &p)const;
 
     private:
         glm::vec3 color;

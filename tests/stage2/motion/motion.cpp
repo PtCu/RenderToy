@@ -82,6 +82,6 @@ int main()
     Renderer render(nx, ny, 3, "motion.png", ns);
     render.Render(world, cam);
 
-    world.DestroyAll();
+    world.Reset();
     return 0;
 }

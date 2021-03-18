@@ -72,5 +72,5 @@ int main()
         }
     }
     img.SaveAsPNG("defocus.png");
-    world.DestroyAll();
+    world.Reset();
 }

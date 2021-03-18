@@ -17,7 +17,7 @@ using namespace std;
 vec3 color(shared_ptr<Ray> &ray, World &world, int dep)
 {
 
-        Intersection rec;
+    Intersection rec;
     if (world.IntersectAll(ray, rec))
     {
         if (dep == 0)
@@ -84,7 +84,6 @@ void random_scene(World &world)
     world.AddObject(make_shared<Sphere>(vec3(0, 1, 0), 1.0, make_shared<Dielectric>(1.5)));
     world.AddObject(make_shared<Sphere>(vec3(-4, 1, 0), 1.0, make_shared<Lambertian>(vec3(0.4, 0.2, 0.1))));
     world.AddObject(make_shared<Sphere>(vec3(4, 1, 0), 1.0, make_shared<Metal>(vec3(0.7, 0.6, 0.5), 0.0)));
-
 }
 int main()
 {
@@ -121,6 +120,6 @@ int main()
     }
     img.SaveAsPNG("random_scene.png");
     std::cout << "Rendering finished" << std::endl;
-    world.DestroyAll();
+    world.Reset();
     return 0;
 }

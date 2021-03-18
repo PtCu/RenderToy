@@ -67,5 +67,5 @@ int main()
         }
     }
     img.SaveAsPNG("metal.png");
-    world.DestroyAll();
+    world.Reset();
 }

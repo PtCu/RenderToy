@@ -83,6 +83,6 @@ int main()
 
     render.Render(world, cam);
 
-    world.DestroyAll();
+    world.Reset();
     return 0;
 }

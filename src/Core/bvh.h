@@ -48,9 +48,9 @@ namespace platinum
             HLBVH
         };
         // BVHAccel Public Methods
-        BVHAccel(std::vector<std::shared_ptr<Object>> &p, int maxPrimsInNode = 1, SplitMethod splitMethod = SplitMethod::MIDDLE);
+        BVHAccel(std::vector<std::shared_ptr<Object>> &p, SplitMethod splitMethod = SplitMethod::MIDDLE);
 
-        BVHAccel(std::vector<std::shared_ptr<Object>>::iterator &begin, std::vector<std::shared_ptr<Object>>::iterator &end, int maxPrimsInNode = 1, SplitMethod splitMethod = SplitMethod::MIDDLE);
+        BVHAccel(std::vector<std::shared_ptr<Object>>::iterator &begin, std::vector<std::shared_ptr<Object>>::iterator &end,  SplitMethod splitMethod = SplitMethod::MIDDLE);
 
         ~BVHAccel() = default;
 
@@ -63,8 +63,8 @@ namespace platinum
         std::shared_ptr<BVH_Node> recursiveBuild(std::vector<std::shared_ptr<Object>>::iterator begin, std::vector<std::shared_ptr<Object>>::iterator end);
 
         Intersection getIntersection(std::shared_ptr<Ray> &r) const;
+
         // BVHAccel Private Data
-        const int maxPrimsInNode;
         const SplitMethod splitMethod;
         std::shared_ptr<BVH_Node> root;
     };
