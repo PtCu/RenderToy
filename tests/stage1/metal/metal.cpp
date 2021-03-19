@@ -36,8 +36,8 @@ vec3 color(shared_ptr<Ray> &ray, World &world, int dep)
 
 int main()
 {
-    int nx = 200;
-    int ny = 100;
+    int nx = 1200;
+    int ny = 800;
     int ns = 10;
     float u, v;
     World world;
@@ -47,7 +47,7 @@ int main()
     world.AddObject(sph2);
     world.AddObject(make_shared<Sphere>(vec3(1, 0, -1), 0.5, make_shared<Metal>(vec3(0.8, 0.6, 0.2), 0.3)));
     world.AddObject(make_shared<Sphere>(vec3(-1, 0, -1), 0.5, make_shared<Metal>(vec3(0.8, 0.8, 0.8), 1.0)));
-    Image img(200, 100, 3);
+    Image img(nx, ny, 3);
     Camera cam;
     for (int j = 0; j < ny; ++j)
     {

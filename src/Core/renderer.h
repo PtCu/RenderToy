@@ -33,6 +33,7 @@ namespace platinum
     {
     public:
         Renderer(int img_w, int img_h, int channel, const std::string &fname, int iters);
+        ~Renderer() = default;
         void Render(World &scene, const std::shared_ptr<Camera> &cam);
 
     private:

@@ -30,7 +30,8 @@ namespace platinum
     class CheckerTexture : public Texture
     {
     public:
-        CheckerTexture() {}
+        CheckerTexture() = default;
+        ~CheckerTexture() = default;
         CheckerTexture(const std::shared_ptr<Texture> &o, const std::shared_ptr<Texture> &e)
             : odd(o), even(e) {}
         virtual glm::vec3 GetValue(float u, float v, const glm::vec3 &p) const;

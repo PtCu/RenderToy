@@ -48,9 +48,10 @@ namespace platinum
     }
     float Perlin::PerlinInterp(const glm::vec3 c[2][2][2], float u, float v, float w)
     {
-        float uu = u * u * (3 - 2 * u);
-        float vv = v * v * (3 - 2 * v);
-        float ww = w * w * (3 - 2 * w);
+        auto f = [](float t) { return t * t * t * (t * (6 * t - 15) + 10); };
+        float uu = f(u);
+        float vv = f(v);
+        float ww = f(w);
         float sum = 0;
         for (size_t i = 0; i < 2; i++)
         {

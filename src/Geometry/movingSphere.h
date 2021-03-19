@@ -33,7 +33,8 @@ namespace platinum
     class MovingSphere : public Object
     {
     public:
-        MovingSphere() {}
+        MovingSphere() = default;
+        ~MovingSphere() = default;
         MovingSphere(glm::vec3 cen0, glm::vec3 cen1, float t0, float t1, float r, std::shared_ptr<Material> m = nullptr);
         virtual Intersection Intersect(std::shared_ptr<Ray> &r) const;
         virtual AABB GetBoundingBox() const { return bounding_box; }
