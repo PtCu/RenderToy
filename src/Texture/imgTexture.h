@@ -20,35 +20,26 @@
 //  FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 //  DEALINGS IN THE SOFTWARE.
 
-#ifndef GEOMETRY_SPHERE_H_
-#define GEOMETRY_SPHERE_H_
+#ifndef TEXTURE_IMAGETEXTURE_H_
+#define TEXTURE_IMAGETEXTURE_H_
 
-#include "../Core/object.h"
-#include "../Core/ray.h"
-#include "../Core/intersection.h"
-#include "../Core/aabb.h"
+#include "../Core/texture.h"
+#include <glm/glm.hpp>
+#include "../Core/image.h"
 
 namespace platinum
 {
-    class Sphere : public Object
-    {
-    public:
-        Sphere() {}
-        Sphere(glm::vec3 cen, float r, std::shared_ptr<Material> m = nullptr);
-        ~Sphere() = default;
-        virtual Intersection Intersect(std::shared_ptr<Ray> &r) const;
-        virtual AABB GetBoundingBox() const { return bounding_box; }
+  class ImgTexture : public Texture
+  {
+  public:
+    ImgTexture(const std::string &fileName, bool flip = false);
 
-    protected:
-        void getSphereUV(const glm::vec3 &p, float &u, float &v) const;
+    virtual glm::vec3 GetValue(float u = 0, float v = 0, const glm::vec3 &p = glm::vec3(0)) const;
+    
 
-    private:
-        glm::vec3 center;
-        float radius;
-        std::shared_ptr<Material> material;
-        AABB bounding_box;
-    };
-
-} // namespace platinum
+  private:
+    std::shared_ptr<const Image> img;
+  };
+}
 
 #endif

@@ -47,6 +47,7 @@ namespace platinum
                 rec.time = temp;
                 rec.point = r->PointAtT(rec.time);
                 rec.normal = glm::vec3((rec.point - center) / radius);
+                getSphereUV(rec.normal, rec.u, rec.v);
                 rec.material = material;
                 rec.ray = r;
                 rec.happened = true;
@@ -58,6 +59,7 @@ namespace platinum
                 rec.time = temp;
                 rec.point = r->PointAtT(rec.time);
                 rec.normal = glm::vec3((rec.point - center) / radius);
+                getSphereUV(rec.normal, rec.u, rec.v);
                 rec.material = material;
                 rec.ray = r;
                 rec.happened = true;
@@ -65,6 +67,13 @@ namespace platinum
             }
         }
         return rec;
+    }
+    void Sphere::getSphereUV(const glm::vec3 &p, float &u, float &v) const
+    {
+        float phi = atan2(p.z, p.x);
+        float theta = asin(p.y);
+        u = 1 - (phi + Pi) / (2 * Pi);
+        v = (theta + Pi / 2) / Pi;
     }
 
 } // namespace platinum

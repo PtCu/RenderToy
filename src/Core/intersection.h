@@ -33,6 +33,8 @@ namespace platinum
         glm::vec3 point;
         glm::vec3 normal;
         float time;
+        float u;
+        float v;
         std::shared_ptr<Material> material;
         std::shared_ptr<Ray> ray;
         bool happened;

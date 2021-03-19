@@ -38,9 +38,12 @@ namespace platinum
         MovingSphere(glm::vec3 cen0, glm::vec3 cen1, float t0, float t1, float r, std::shared_ptr<Material> m = nullptr);
         virtual Intersection Intersect(std::shared_ptr<Ray> &r) const;
         virtual AABB GetBoundingBox() const { return bounding_box; }
-        glm::vec3 GetCenter(float time) const { return center0 + ((time - time0) / (time1 - time0)) * (center1 - center0); };
+
+    protected:
+        void getSphereUV(const glm::vec3 &p, float &u, float &v) const;
 
     private:
+        glm::vec3 GetCenter(float time) const { return center0 + ((time - time0) / (time1 - time0)) * (center1 - center0); };
         glm::vec3 center0, center1;
         float time0, time1;
         float radius;
