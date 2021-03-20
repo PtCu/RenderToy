@@ -33,19 +33,20 @@ namespace platinum
     class Sphere : public Object
     {
     public:
-        Sphere() {}
-        Sphere(glm::vec3 cen, float r, std::shared_ptr<Material> m = nullptr);
+        Sphere() = default;
+        Sphere(glm::vec3 cen, float r, const std::shared_ptr<Material> &m = nullptr);
         ~Sphere() = default;
         virtual Intersection Intersect(std::shared_ptr<Ray> &r) const;
         virtual AABB GetBoundingBox() const { return bounding_box; }
 
     protected:
+        virtual glm::vec3 getCenter(const std::shared_ptr<Ray> &r) const { return center; }
+        virtual void setIntersection(float t, Intersection &rec, const std::shared_ptr<Ray> &r) const;
         void getSphereUV(const glm::vec3 &p, float &u, float &v) const;
 
     private:
         glm::vec3 center;
         float radius;
-        std::shared_ptr<Material> material;
         AABB bounding_box;
     };
 

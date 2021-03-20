@@ -27,27 +27,25 @@
 #include "../Core/tRay.h"
 #include "../Core/intersection.h"
 #include "../Core/aabb.h"
+#include "sphere.h"
 
 namespace platinum
 {
-    class MovingSphere : public Object
+    class MovingSphere : public Sphere
     {
     public:
         MovingSphere() = default;
         ~MovingSphere() = default;
-        MovingSphere(glm::vec3 cen0, glm::vec3 cen1, float t0, float t1, float r, std::shared_ptr<Material> m = nullptr);
-        virtual Intersection Intersect(std::shared_ptr<Ray> &r) const;
+        MovingSphere(glm::vec3 cen0, glm::vec3 cen1, float t0, float t1, float r, const std::shared_ptr<Material> &m = nullptr);
         virtual AABB GetBoundingBox() const { return bounding_box; }
 
     protected:
-        void getSphereUV(const glm::vec3 &p, float &u, float &v) const;
+        virtual glm::vec3 getCenter(const std::shared_ptr<Ray> &r) const;
 
     private:
-        glm::vec3 GetCenter(float time) const { return center0 + ((time - time0) / (time1 - time0)) * (center1 - center0); };
         glm::vec3 center0, center1;
         float time0, time1;
         float radius;
-        std::shared_ptr<Material> material;
         AABB bounding_box;
     };
 

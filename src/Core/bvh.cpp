@@ -168,7 +168,7 @@ Intersection BVHAccel::getIntersection(std::shared_ptr<Ray> &r) const
         if (p->left == NULL && p->right == NULL)
         {
             tmp_inter = p->object->Intersect(r);
-            if (tmp_inter.happened && tmp_inter.time < inter.time)
+            if (tmp_inter.happened && tmp_inter.ray->GetMaxTime() < inter.ray->GetMaxTime())
                 // inter = std::move(tmp_inter);
                 inter = tmp_inter;
         }

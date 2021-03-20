@@ -37,8 +37,8 @@ vec3 color(shared_ptr<Ray> &ray, World &world, int dep)
 
 int main()
 {
-    int nx = 1200;
-    int ny = 800;
+    int nx = 2000;
+    int ny = 1000;
     int ns = 100;
     float u, v;
     World world;

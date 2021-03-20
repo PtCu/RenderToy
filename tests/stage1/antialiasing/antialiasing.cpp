@@ -13,7 +13,7 @@ vec3 color(shared_ptr<Ray> &r, World &world)
     Intersection rec;
     if (world.IntersectAll(r, rec))
     {
-        return 0.5f * vec3(rec.normal.x + 1.0f, rec.normal.y + 1.0f, rec.normal.z + 1.0f);
+        return 0.5f * vec3(rec.vert.normal.x + 1.0f, rec.vert.normal.y + 1.0f, rec.vert.normal.z + 1.0f);
     }
     else
     {

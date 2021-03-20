@@ -35,6 +35,9 @@ namespace platinum
     }
     void Ray::SetColor(const glm::vec3 &c)
     {
-        this->color = c;
+        origin = glm::vec3(0);
+        direction = glm::vec3(0);
+        color *= c;
+        t_max = 0;
     }
 }

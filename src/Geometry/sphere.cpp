@@ -23,18 +23,28 @@
 #include "sphere.h"
 namespace platinum
 {
-    Sphere::Sphere(glm::vec3 cen, float r, std::shared_ptr<Material> m)
-        : center(cen), radius(r), material(std::move(m))
+    Sphere::Sphere(glm::vec3 cen, float r, const std::shared_ptr<Material> &m)
+        : center(cen), radius(r), Object(m)
     {
         glm::vec3 minP = center - glm::vec3(radius);
         glm::vec3 maxP = center + glm::vec3(radius);
         bounding_box = AABB(minP, maxP);
     };
-
+    void Sphere::setIntersection(float t, Intersection &rec, const std::shared_ptr<Ray> &r) const
+    {
+        rec.ray->SetTMax(t);
+        rec.vert.pos = r->PointAtT(rec.ray->GetMaxTime());
+        rec.vert.normal = glm::vec3((rec.vert.pos - getCenter(r)) / radius);
+        getSphereUV(rec.vert.normal, rec.vert.u, rec.vert.v);
+        rec.material = GetMaterial();
+        rec.ray = r;
+        rec.happened = true;
+    }
+    
     Intersection Sphere::Intersect(std::shared_ptr<Ray> &r) const
     {
         Intersection rec;
-        glm::vec3 oc = r->GetOrigin() - center;
+        glm::vec3 oc = r->GetOrigin() -getCenter(r);
         float a = glm::dot(r->GetDirection(), r->GetDirection());
         float b = glm::dot(oc, r->GetDirection());
         float c = glm::dot(oc, oc) - radius * radius;
@@ -44,30 +54,17 @@ namespace platinum
             float temp = (-b - sqrt(discriminant)) / a;
             if (temp < r->GetMaxTime() && temp > r->GetMinTime())
             {
-                rec.time = temp;
-                rec.point = r->PointAtT(rec.time);
-                rec.normal = glm::vec3((rec.point - center) / radius);
-                getSphereUV(rec.normal, rec.u, rec.v);
-                rec.material = material;
-                rec.ray = r;
-                rec.happened = true;
-                return rec;
+                setIntersection(temp, rec, r);
             }
             temp = (-b + sqrt(discriminant)) / a;
             if (temp < r->GetMaxTime() && temp > r->GetMinTime())
             {
-                rec.time = temp;
-                rec.point = r->PointAtT(rec.time);
-                rec.normal = glm::vec3((rec.point - center) / radius);
-                getSphereUV(rec.normal, rec.u, rec.v);
-                rec.material = material;
-                rec.ray = r;
-                rec.happened = true;
-                return rec;
+                setIntersection(temp, rec, r);
             }
         }
         return rec;
     }
+    //Using the polar coordinates of sphere (phi, theta) to get fractions as u, v.
     void Sphere::getSphereUV(const glm::vec3 &p, float &u, float &v) const
     {
         float phi = atan2(p.z, p.x);

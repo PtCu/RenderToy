@@ -28,26 +28,26 @@ namespace platinum
    {
       glm::vec3 outward_normal;
       auto r_in = rec.ray;
-      glm::vec3 reflected = Reflect(r_in->GetDirection(), rec.normal);
+      glm::vec3 reflected = Reflect(r_in->GetDirection(), rec.vert.normal);
       float ni_over_nt;
       auto attenuation = glm::vec3(1.0, 1.0, 1.0);
       glm::vec3 refracted;
       float reflect_prob;
       float cosine;
       //From inner to outer
-      if (glm::dot(r_in->GetDirection(), rec.normal) > 0)
-      {  
-         outward_normal = -rec.normal;
+      if (glm::dot(r_in->GetDirection(), rec.vert.normal) > 0)
+      {
+         outward_normal = -rec.vert.normal;
          ni_over_nt = ref_idx;
-         cosine = glm::dot(r_in->GetDirection(), rec.normal) / r_in->GetDirection().length();
+         cosine = glm::dot(r_in->GetDirection(), rec.vert.normal) / r_in->GetDirection().length();
          cosine = std::sqrt(1 - ref_idx * ref_idx * (1 - cosine * cosine));
       }
       //From outer to inner
       else
       {
-         outward_normal = rec.normal;
+         outward_normal = rec.vert.normal;
          ni_over_nt = 1.0f / ref_idx;
-         cosine = -glm::dot(r_in->GetDirection(), rec.normal) / r_in->GetDirection().length();
+         cosine = -glm::dot(r_in->GetDirection(), rec.vert.normal) / r_in->GetDirection().length();
       }
       if (Refract(r_in->GetDirection(), outward_normal, ni_over_nt, refracted))
          reflect_prob = Schlick(cosine, ref_idx);
@@ -55,9 +55,9 @@ namespace platinum
          reflect_prob = 1.0;
 
       if (Random::RandomInUnitFloat() < reflect_prob)
-         r_in->Update(rec.point, reflected, attenuation);
+         r_in->Update(rec.vert.pos, reflected, attenuation);
       else
-         r_in->Update(rec.point, refracted, attenuation);
+         r_in->Update(rec.vert.pos, refracted, attenuation);
 
       return true;
    }

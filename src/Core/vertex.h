@@ -1,6 +1,6 @@
 // The MIT License (MIT)
 
-// Copyright (c) YEAR NAME
+// Copyright (c) 2021 PtCu
 
 //  Permission is hereby granted, free of charge, to any person obtaining a
 //  copy of this software and associated documentation files (the "Software"),
@@ -20,15 +20,26 @@
 //  FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 //  DEALINGS IN THE SOFTWARE.
 
-#include "lambertian.h"
+#ifndef CORE_VERTEX_H_
+#define CORE_VERTEX_H_
+
+#include <glm/glm.hpp>
+#include "defines.h"
+
 namespace platinum
 {
-    bool Lambertian::Scatter(Intersection &rec) const
+    struct Vertex
     {
-        auto reflected = glm::vec3(rec.vert.normal) + Random::RandomInUnitDisk();
-        auto attenuation = albedo->GetValue(rec.vert.u, rec.vert.v, rec.vert.pos);
-        rec.ray->Update(rec.vert.pos, reflected, attenuation);
-        return true;
-    }
-
+        Vertex(glm::vec3 pos = glm::vec3(0), glm::vec3 normal = glm::vec3(0, 0, 1), float u = 0, float v = 0);
+        glm::vec3 pos;
+        glm::vec3 normal;
+        float u;
+        float v;
+        
+        void Transform(const glm::mat4 &transform);
+        void Transform(const glm::mat4 &transform, const glm::mat3 &normalTransform);
+        static const Vertex GenVert(const glm::vec3 &abg, const Vertex &A, const Vertex &B, const Vertex &C);
+    };
 }
+
+#endif

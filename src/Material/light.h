@@ -20,11 +20,29 @@
 //  FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 //  DEALINGS IN THE SOFTWARE.
 
-#ifndef CORE_LIGHT_H_
-#define CORE_LIGHT_H_
+#ifndef MATERIAL_LIGHT_H_
+#define MATERIAL_LIGHT_H_
 
+#include "../Core/material.h"
+#include "../Math/rand.h"
+#include "../Core/texture.h"
+#include "../Texture/constTexture.h"
 
+namespace platinum
+{
+    class Light : public Material
+    {
+    public:
+        Light(const glm::vec3 &color, float linear = 0.0f, float quadratic = 0.0f);
+        Light(std::shared_ptr<Texture> lightTex, float linear = 0.0f, float quadratic = 0.0f);
+        virtual bool Scatter(Intersection &rec) const;
+
+    private:
+        std::shared_ptr<Texture> tex;
+        float linear;
+        float quadratic;
+    };
+
+} // namespace platinum
 
 #endif
-
-

@@ -6,7 +6,7 @@
 #include "../src/Material/metal.h"
 #include "../src/Material/lambertian.h"
 #include "../src/Material/dielectric.h"
-#include <limits>
+
 using namespace platinum;
 using namespace glm;
 using namespace std;

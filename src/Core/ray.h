@@ -60,8 +60,10 @@ namespace platinum
 
         void SetColor(const glm::vec3 &c);
 
+        void SetTMax(float t) { t_max = t; }
+
     protected:
-        virtual void DoNothing(){}
+        virtual void DoNothing() {}
 
     private:
         glm::vec3 origin;

@@ -1,6 +1,6 @@
 // The MIT License (MIT)
 
-// Copyright (c) YEAR NAME
+// Copyright (c) 2021 PtCu
 
 //  Permission is hereby granted, free of charge, to any person obtaining a
 //  copy of this software and associated documentation files (the "Software"),
@@ -20,15 +20,19 @@
 //  FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 //  DEALINGS IN THE SOFTWARE.
 
-#include "lambertian.h"
+#include "light.h"
+
 namespace platinum
 {
-    bool Lambertian::Scatter(Intersection &rec) const
-    {
-        auto reflected = glm::vec3(rec.vert.normal) + Random::RandomInUnitDisk();
-        auto attenuation = albedo->GetValue(rec.vert.u, rec.vert.v, rec.vert.pos);
-        rec.ray->Update(rec.vert.pos, reflected, attenuation);
-        return true;
-    }
+    Light::Light(const glm::vec3 &color, float linear, float quadratic)
+        : tex(std::make_shared<ConstTexture>(color)), linear(linear), quadratic(quadratic) {}
 
+    Light::Light(std::shared_ptr<Texture> lightTex, float linear, float quadratic)
+        : tex(tex), linear(linear), quadratic(quadratic) {}
+
+    bool Light::Scatter(Intersection &rec) const
+    {
+        rec.ray->SetColor(tex->GetValue(rec.vert.u, rec.vert.v, rec.vert.pos));
+        return false;
+    }
 }

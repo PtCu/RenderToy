@@ -26,23 +26,18 @@
 #include "defines.h"
 #include "material.h"
 #include "ray.h"
+#include "vertex.h"
+
 namespace platinum
 {
     struct Intersection
     {
-        glm::vec3 point;
-        glm::vec3 normal;
-        float time;
-        float u;
-        float v;
-        std::shared_ptr<Material> material;
+        Vertex vert;
+        std::shared_ptr<const Material> material;
         std::shared_ptr<Ray> ray;
         bool happened;
         Intersection()
         {
-            point = {0, 0, 0};
-            normal = {0, 0, 0};
-            time = std::numeric_limits<float>::max();
             material = NULL;
             ray = NULL;
             happened = false;

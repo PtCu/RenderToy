@@ -1,6 +1,6 @@
 // The MIT License (MIT)
 
-// Copyright (c) YEAR NAME
+// Copyright (c) 2021 PtCu
 
 //  Permission is hereby granted, free of charge, to any person obtaining a
 //  copy of this software and associated documentation files (the "Software"),
@@ -20,15 +20,34 @@
 //  FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 //  DEALINGS IN THE SOFTWARE.
 
-#include "lambertian.h"
+#ifndef GEOMETRY_TRIANGLE_H_
+#define GEOMETRY_TRIANGLE_H_
+
+#include "../Core/object.h"
+#include "../Core/ray.h"
+#include "../Core/intersection.h"
+#include "../Core/aabb.h"
+#include "../Core/vertex.h"
+
 namespace platinum
 {
-    bool Lambertian::Scatter(Intersection &rec) const
+    class Triangle : public Object
     {
-        auto reflected = glm::vec3(rec.vert.normal) + Random::RandomInUnitDisk();
-        auto attenuation = albedo->GetValue(rec.vert.u, rec.vert.v, rec.vert.pos);
-        rec.ray->Update(rec.vert.pos, reflected, attenuation);
-        return true;
-    }
+    public:
+        Triangle(const Vertex &a, const Vertex &b, const Vertex &c, const std::shared_ptr<Material> &material = NULL);
+        virtual Intersection Intersect(std::shared_ptr<Ray> &r) const;
+        virtual AABB GetBoundingBox() const { return bounding_box; }
+        const Vertex &GetA() const { return A; }
+        const Vertex &GetB() const { return B; }
+        const Vertex &GetC() const { return C; }
 
+    protected:
+        bool IsIntersectTri(const glm::vec3 &o, const glm::vec3 &d);
+
+    private:
+        Vertex A, B, C;
+        AABB bounding_box;
+    };
 }
+
+#endif

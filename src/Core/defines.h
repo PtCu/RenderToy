@@ -59,6 +59,7 @@ namespace platinum
     static constexpr float PiOver2 = 1.57079632679489661923f;
     static constexpr float PiOver4 = 0.78539816339744830961f;
     static constexpr float Sqrt2 = 1.41421356237309504880f;
+    static constexpr float Epsilon = 10e-6f;
 
     template <typename T>
     class Vector2;
@@ -81,8 +82,8 @@ namespace platinum
     class Texture;
     class ConstTexture;
     class CheckerTexture;
-     class BVHAccel;
-     struct BVH_Node;
+    class BVHAccel;
+    struct BVH_Node;
 
 } // namespace platinum
 #endif

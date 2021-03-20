@@ -86,10 +86,10 @@ namespace platinum
         for (int i = 0; i < objects.size(); i++)
         {
             temp_rec = objects[i]->Intersect(r);
-            if (temp_rec.happened && temp_rec.time < closest_so_far)
+            if (temp_rec.happened && temp_rec.ray->GetMaxTime() < closest_so_far)
             {
                 hit_anything = true;
-                closest_so_far = temp_rec.time;
+                closest_so_far = temp_rec.ray->GetMaxTime();
                 rec = temp_rec;
             }
         }

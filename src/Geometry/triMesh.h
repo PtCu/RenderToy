@@ -1,6 +1,6 @@
 // The MIT License (MIT)
 
-// Copyright (c) YEAR NAME
+// Copyright (c) 2021 PtCu
 
 //  Permission is hereby granted, free of charge, to any person obtaining a
 //  copy of this software and associated documentation files (the "Software"),
@@ -20,15 +20,25 @@
 //  FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 //  DEALINGS IN THE SOFTWARE.
 
-#include "lambertian.h"
+#ifndef GEOMETRY_TRIMESH_H_
+#define GEOMETRY_TRIMESH_H_
+
+#include "../Core/bvh.h"
+#include "../Core/vertex.h"
+#include "triangle.h"
 namespace platinum
 {
-    bool Lambertian::Scatter(Intersection &rec) const
+    class TriMesh : public BVHAccel
     {
-        auto reflected = glm::vec3(rec.vert.normal) + Random::RandomInUnitDisk();
-        auto attenuation = albedo->GetValue(rec.vert.u, rec.vert.v, rec.vert.pos);
-        rec.ray->Update(rec.vert.pos, reflected, attenuation);
-        return true;
-    }
+    public:
+        TriMesh(const std::vector<Vertex> &vertexs, std::shared_ptr<Material> m = NULL);
+
+        inline bool IsValid() const { return isValid; };
+
+    protected:
+        bool isValid;
+    };
 
 }
+
+#endif

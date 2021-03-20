@@ -1,6 +1,6 @@
 // The MIT License (MIT)
 
-// Copyright (c) YEAR NAME
+// Copyright (c) 2021 PtCu
 
 //  Permission is hereby granted, free of charge, to any person obtaining a
 //  copy of this software and associated documentation files (the "Software"),
@@ -20,15 +20,36 @@
 //  FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 //  DEALINGS IN THE SOFTWARE.
 
-#include "lambertian.h"
+#include "vertex.h"
+
 namespace platinum
 {
-    bool Lambertian::Scatter(Intersection &rec) const
+    Vertex::Vertex(glm::vec3 pos, glm::vec3 normal, float u, float v)
+        : pos(pos), normal(normal), u(u), v(v) {}
+
+    void Vertex::Transform(const glm::mat4 &transform)
     {
-        auto reflected = glm::vec3(rec.vert.normal) + Random::RandomInUnitDisk();
-        auto attenuation = albedo->GetValue(rec.vert.u, rec.vert.v, rec.vert.pos);
-        rec.ray->Update(rec.vert.pos, reflected, attenuation);
-        return true;
+        auto posQ = transform * glm::vec4(pos, 1.0);
+        pos = glm::vec3(posQ) / posQ.w;
+        normal = glm::normalize(glm::transpose(glm::inverse(glm::mat3(transform))) * normal);
+    }
+
+    void Vertex::Transform(const glm::mat4 &transform, const glm::mat3 &normalTransform)
+    {
+        auto posQ = transform * glm::vec4(pos, 1.0);
+        pos = glm::vec3(posQ) / posQ.w;
+        normal = glm::normalize(normalTransform * normal);
+    }
+
+    const Vertex Vertex::GenVert(const glm::vec3 &abg, const Vertex &A, const Vertex &B, const Vertex &C)
+    {
+        Vertex rst;
+        rst.u = glm::dot(abg, glm::vec3(A.u, B.u, C.u));
+        rst.v = glm::dot(abg, glm::vec3(A.v, B.v, C.v));
+        rst.pos = abg[0] * A.pos + abg[1] * B.pos + abg[2] * C.pos;
+        rst.normal = abg[0] * A.normal + abg[1] * B.normal + abg[2] * C.normal;
+
+        return rst;
     }
 
 }

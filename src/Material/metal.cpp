@@ -26,14 +26,14 @@ namespace platinum
 {
     bool Metal::Scatter(Intersection &rec) const
     {
-        glm::vec3 reflected = Reflect(rec.ray->GetDirection(), rec.normal) + fuzz * Random::RandomInUnitSphere();
-        if (glm::dot(reflected, rec.normal) < 0)
+        glm::vec3 reflected = Reflect(rec.ray->GetDirection(), rec.vert.normal) + fuzz * Random::RandomInUnitSphere();
+        if (glm::dot(reflected, rec.vert.normal) < 0)
         {
             rec.ray->SetColor(glm::vec3(0, 0, 0));
             return false;
         }
-        auto attenuation = albedo->GetValue(rec.u, rec.v,rec.point);
-        rec.ray->Update(rec.point, reflected, attenuation);
+        auto attenuation = albedo->GetValue(rec.vert.u, rec.vert.v,rec.vert.pos);
+        rec.ray->Update(rec.vert.pos, reflected, attenuation);
         return true;
     }
 }
