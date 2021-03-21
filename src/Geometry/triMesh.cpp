@@ -24,22 +24,18 @@
 
 namespace platinum
 {
-    TriMesh::TriMesh(const std::vector<Vertex> &vertexs, std::shared_ptr<Material> material) : BVHAccel()
+    TriMesh::TriMesh(const std::vector<Vertex> &vertexs, std::shared_ptr<Material> material) 
     {
         if (vertexs.size() % 3 != 0)
         {
             isValid = false;
             return;
         }
-
-        std::vector<std::shared_ptr<Object>> triangles;
         for (size_t i = 0; i < vertexs.size(); i += 3)
         {
             auto triangle = std::make_shared<Triangle>(vertexs[i], vertexs[i + 1], vertexs[i + 2], material);
             triangles.push_back(triangle);
         }
-
-        root = recursiveBuild(triangles.begin(), triangles.end());
         isValid = true;
     }
 }

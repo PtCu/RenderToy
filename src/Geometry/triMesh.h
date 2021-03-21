@@ -28,17 +28,18 @@
 #include "triangle.h"
 namespace platinum
 {
-    class TriMesh : public BVHAccel
+    class TriMesh
     {
     public:
         TriMesh(const std::vector<Vertex> &vertexs, std::shared_ptr<Material> m = NULL);
 
         inline bool IsValid() const { return isValid; };
+        std::vector<std::shared_ptr<Object>> &GetTriangles() { return triangles; }
 
     protected:
         bool isValid;
+        std::vector<std::shared_ptr<Object>> triangles;
     };
-
 }
 
 #endif

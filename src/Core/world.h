@@ -39,7 +39,9 @@ namespace platinum
         World(int max_dep) : max_depth(max_dep) {}
         ~World();
         bool IntersectAll(std::shared_ptr<Ray> &r, Intersection &rec) const; //Brute method for stage 1
-        void AddObject(std::shared_ptr<Object> obj);
+        void AddObject(const std::shared_ptr<Object>& obj);
+        void AddObject(const std::vector<std::shared_ptr<Object>> &obj);
+         void AddObject(const std::vector<std::shared_ptr<Object>>::iterator& begin,const std::vector<std::shared_ptr<Object>>::iterator& end);
         void Reset();
         void BuildBVH();
         glm::vec3 CastRay(std::shared_ptr<Ray> &r) const;

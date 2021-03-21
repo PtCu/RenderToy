@@ -36,9 +36,17 @@ namespace platinum
     {
         this->bvh_accel = std::unique_ptr<BVHAccel>(new BVHAccel(objects));
     }
-    void World::AddObject(std::shared_ptr<Object> obj)
+    void World::AddObject(const std::shared_ptr<Object> &obj)
     {
         this->objects.push_back(obj);
+    }
+    void World::AddObject(const std::vector<std::shared_ptr<Object>> &obj)
+    {
+        this->objects.insert(objects.end(), obj.begin(), obj.end());
+    }
+    void World::AddObject(const std::vector<std::shared_ptr<Object>>::iterator &begin, const std::vector<std::shared_ptr<Object>>::iterator &end)
+    {
+        this->objects.insert(objects.end(), begin, end);
     }
     void World::Reset()
     {
@@ -57,7 +65,7 @@ namespace platinum
     {
         if (dep == 0)
         {
-            return glm::vec3(0, 0, 0);
+            return glm::vec3(1.0001f / 255.0f);
         }
         auto rec = intersectAll(ray);
         if (rec.happened)
@@ -66,16 +74,16 @@ namespace platinum
                 return glm::vec3(0, 1, 0);
             if (rec.material->Scatter(rec))
                 return CastRay(ray, dep - 1);
-
             else
                 return ray->GetColor();
         }
         else
         {
+            return glm::vec3(1.0001f / 255.0f);
             //TODO: Make it configurable
-            glm::vec3 unit_direction = glm::normalize(ray->GetDirection());
-            float t = 0.5f * (unit_direction.y + 1.0f);
-            return ray->GetColor() * ((1.0f - t) * glm::vec3(1.0, 1.0, 1.0) + t * glm::vec3(0.5, 0.7, 1.0));
+            // glm::vec3 unit_direction = glm::normalize(ray->GetDirection());
+            // float t = 0.5f * (unit_direction.y + 1.0f);
+            // return ray->GetColor() * ((1.0f - t) * glm::vec3(1.0, 1.0, 1.0) + t * glm::vec3(0.5, 0.7, 1.0));
         }
     }
     bool World::IntersectAll(std::shared_ptr<Ray> &r, Intersection &rec) const

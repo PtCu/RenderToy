@@ -32,12 +32,12 @@ namespace platinum
     };
     void Sphere::setIntersection(float t, Intersection &rec, const std::shared_ptr<Ray> &r) const
     {
+        rec.ray = r;
         rec.ray->SetTMax(t);
         rec.vert.pos = r->PointAtT(rec.ray->GetMaxTime());
         rec.vert.normal = glm::vec3((rec.vert.pos - getCenter(r)) / radius);
         getSphereUV(rec.vert.normal, rec.vert.u, rec.vert.v);
         rec.material = GetMaterial();
-        rec.ray = r;
         rec.happened = true;
     }
     

@@ -28,10 +28,25 @@ namespace platinum
         : tex(std::make_shared<ConstTexture>(color)), linear(linear), quadratic(quadratic) {}
 
     Light::Light(std::shared_ptr<Texture> lightTex, float linear, float quadratic)
-        : tex(tex), linear(linear), quadratic(quadratic) {}
+        : tex(lightTex), linear(linear), quadratic(quadratic) {}
 
     bool Light::Scatter(Intersection &rec) const
     {
+        // float d = rec.ray->GetMaxTime() * glm::length(rec.ray->GetDirection());
+        // float attDis;
+        // if (linear == 0.0 && quadratic == 0.0)
+        //     attDis = 1;
+        // else
+        // {
+        //     if (isnan(d))
+        //         attDis = 0;
+        //     else
+        //         attDis = 1.0f / (1.0f + d * (linear + quadratic * d));
+        // }
+        // float attAngle = abs(glm::dot(glm::normalize(rec.ray->GetDirection()), rec.vert.normal));
+        // rec.ray->SetColor(attDis * attAngle * tex->GetValue(rec.vert.u, rec.vert.v, rec.vert.pos));
+        // return false;
+
         rec.ray->SetColor(tex->GetValue(rec.vert.u, rec.vert.v, rec.vert.pos));
         return false;
     }

@@ -73,6 +73,7 @@ namespace platinum
         //hitRst.hitable = this;
         rec.ray = r;
         rec.material = GetMaterial();
+        rec.happened = true;
         r->SetTMax(tnear);
         return rec;
     }
