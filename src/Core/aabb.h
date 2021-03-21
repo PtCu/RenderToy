@@ -37,11 +37,13 @@ namespace platinum
             float _max = std::numeric_limits<float>::max();
             p_min = glm::vec3(_max, _max, _max);
             p_max = glm::vec3(_min, _min, _min);
+            is_valid = false;
         }
         AABB(const glm::vec3 &a, const glm::vec3 &b)
         {
             p_min = glm::min(a, b);
             p_max = glm::max(a, b);
+            is_valid = true;
         }
         ~AABB() = default;
         AABB Intersect(const AABB &b) const;
@@ -79,9 +81,12 @@ namespace platinum
 
         glm::vec3 GetMax() const { return p_max; }
 
+        bool IsValid() const { return is_valid; }
+
     protected:
         glm::vec3 p_min;
         glm::vec3 p_max;
+        bool is_valid;
     };
 
     inline AABB Union(const AABB &b1, const AABB &b2)

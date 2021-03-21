@@ -158,7 +158,7 @@ Intersection BVHAccel::getIntersection(std::shared_ptr<Ray> &r) const
     s.push(root);
     while (!s.empty())
     {
-        //如果为unqiue_ptr就会被自动释放掉。可以用unique_ptr + raw pointer
+        //如果单独为unqiue_ptr就会被自动释放掉。可以用unique_ptr + raw pointer
         auto p = s.top();
         s.pop();
         if (p == NULL)

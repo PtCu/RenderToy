@@ -62,6 +62,8 @@ namespace platinum
 
         void SetTMax(float t) { t_max = t; }
 
+        void Transform(const glm::mat4 &transform);
+
     protected:
         virtual void DoNothing() {}
 

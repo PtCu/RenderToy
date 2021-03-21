@@ -20,31 +20,32 @@
 //  FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 //  DEALINGS IN THE SOFTWARE.
 
-#include "ray.h"
+#ifndef CORE_TRANSFORM_H_
+#define CORE_TRANSFORM_H_
+
+#include "../Core/object.h"
+#include "../Core/ray.h"
+#include "../Core/intersection.h"
+#include "../Core/aabb.h"
+#include <bitset>
 
 namespace platinum
 {
-    void Ray::Update(const glm::vec3 &o, const glm::vec3 &d, const glm::vec3 &a)
+    //An instance is a geometric primitive that has been moved or rotated somehow.
+    class Instance : public Object
     {
-        this->origin = o;
-        this->direction = d;
-        this->inv_d = {1.0f / d.x, 1.0f / d.y, 1.0f / d.z};
-        this->dirIsNeg = {d.x < 0, d.y < 0, d.z < 0};
-        this->color *= a;
-        this->t_max = std::numeric_limits<float>::max();
-    }
-    void Ray::SetColor(const glm::vec3 &c)
-    {
-        origin = glm::vec3(0);
-        direction = glm::vec3(0);
-        color *= c;
-        t_max = 0;
-    }
+    public:
+        Instance(const glm::mat4 &transform, std::shared_ptr<Object> former, const std::shared_ptr<Material> &m = NULL);
+        virtual Intersection Intersect(std::shared_ptr<Ray> &r) const;
+        virtual AABB GetBoundingBox() const { return bounding_box; }
 
-    void Ray::Transform(const glm::mat4 &transform)
-    {
-        direction = glm::mat3(transform) * direction;
-        auto originQ = transform * glm::vec4(origin, 1.0f);
-        origin = glm::vec3(originQ) / originQ.w;
-    }
+    private:
+        AABB bounding_box;
+        glm::mat4 transform;
+        glm::mat4 inverseTransform;
+        glm::mat3 normalTransform;
+        std::shared_ptr<Object> former;
+    };
 }
+
+#endif

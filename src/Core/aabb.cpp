@@ -26,6 +26,8 @@ namespace platinum
 {
     bool AABB::IsHit(const std::shared_ptr<Ray> &r) const
     {
+        if (is_valid == false)
+            return false;
         const glm::vec3 invDir = r->GetInvDirection();
         const AABB &bounds = *this;
         // Check for ray intersection against $x$ and $y$ slabs
@@ -62,11 +64,13 @@ namespace platinum
     {
         p_min = glm::min(p_min, aabb.p_min);
         p_max = glm::max(p_max, aabb.p_max);
+        is_valid = true;
     }
     void AABB::Expand(const glm::vec3 &p)
     {
         p_min = glm::min(p_min, p);
         p_max = glm::max(p_max, p);
+        is_valid = true;
     }
     glm::vec3 AABB::Offset(const glm::vec3 &p) const
     {

@@ -15,7 +15,7 @@
 using namespace platinum;
 using namespace glm;
 using namespace std;
-const float data_SquareVertexPos[] = {
+const float pos[] = {
     0.9, 0.7, -0.5,
     0.9, 0.1, -0.5,
     1, 0.1, 0.5,
@@ -24,15 +24,6 @@ const float data_SquareVertexPos[] = {
     0.9, 0.7, -0.5};
 void some_spheres(World &world)
 {
-    // float scale = 5;
-
-    // auto sph1 = make_shared<Sphere>(vec3(0, 0, -1), 0.5, make_shared<Light>(light_tex));
-    // world.AddObject(sph1);
-    // auto sph2 = make_shared<Sphere>(vec3(0, -100.5, -1), 100, make_shared<Lambertian>(make_shared<NoiseTexture>(scale, 1)));
-    // world.AddObject(sph2);
-    // world.AddObject(make_shared<Sphere>(vec3(1, 0, -1), 0.5, make_shared<Lambertian>(make_shared<NoiseTexture>(scale, 2))));
-    // world.AddObject(make_shared<Sphere>(vec3(-1, 0, -1), 0.5, make_shared<Lambertian>(make_shared<NoiseTexture>(scale, 3))));
-
     float scale = 5;
     auto light_tex = make_shared<ConstTexture>(vec3(1, 1, 1));
     auto noi_tex = make_shared<NoiseTexture>(scale, 1);
@@ -43,8 +34,8 @@ void some_spheres(World &world)
     auto sph3 = make_shared<Sphere>(vec3(0, 1, -2), 0.4, make_shared<Light>(light_tex));
     world.AddObject(sph3);
     vector<Vertex> vertexs;
-    for (size_t i = 0; i < sizeof(data_SquareVertexPos) / sizeof(float); i += 3)
-        vertexs.push_back(Vertex(vec3(data_SquareVertexPos[i], data_SquareVertexPos[i + 1], data_SquareVertexPos[i + 2])));
+    for (size_t i = 0; i < sizeof(pos) / sizeof(float); i += 3)
+        vertexs.push_back(Vertex(vec3(pos[i], pos[i + 1], pos[i + 2])));
     auto triMesh = TriMesh(vertexs, make_shared<Light>(light_tex)).GetTriangles();
     world.AddObject(triMesh);
 }
