@@ -20,29 +20,31 @@
 //  FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 //  DEALINGS IN THE SOFTWARE.
 
-#ifndef LAMBERTIAN_H
-#define LAMBERTIAN_H
+#ifndef GEOMETRY_VOLUME_H_
+#define GEOMETRY_VOLUME_H_
 
-#include "../Core/material.h"
-#include "../Math/rand.h"
-#include "../Core/texture.h"
-#include "../Texture/constTexture.h"
+#include "../Core/object.h"
+#include "../Core/ray.h"
+#include "../Core/intersection.h"
+#include "../Core/aabb.h"
 
 namespace platinum
 {
-    class Lambertian : public Material
+    class Volume : public Object
     {
     public:
-        Lambertian(const std::shared_ptr<Texture> &a) : albedo(a) {}
-        Lambertian(const glm::vec3 &a)
-        {
-            albedo = std::make_shared<ConstTexture>(a);
-        }
-        virtual bool Scatter(Intersection &rec) const;
+        Volume(std::shared_ptr<Object> obj, float dense, std::shared_ptr<Material> m)
+            : boundary(obj), density(dense), Object(m) {}
+
+        ~Volume() = default;
+        virtual Intersection Intersect(std::shared_ptr<Ray> &r) const;
+        virtual AABB GetBoundingBox() const { return boundary->GetBoundingBox(); }
 
     private:
-        std::shared_ptr<Texture> albedo;
+        std::shared_ptr<Object> boundary;
+        float density;
+        std::shared_ptr<Material> phase_f;
     };
-} // namespace platinum
+}
 
 #endif

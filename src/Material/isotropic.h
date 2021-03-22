@@ -20,8 +20,8 @@
 //  FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 //  DEALINGS IN THE SOFTWARE.
 
-#ifndef LAMBERTIAN_H
-#define LAMBERTIAN_H
+#ifndef MATERIAL_ISOTROPIC_H_
+#define MATERIAL_ISOTROPIC_H_
 
 #include "../Core/material.h"
 #include "../Math/rand.h"
@@ -30,19 +30,15 @@
 
 namespace platinum
 {
-    class Lambertian : public Material
+    class Isotropic : public Material
     {
     public:
-        Lambertian(const std::shared_ptr<Texture> &a) : albedo(a) {}
-        Lambertian(const glm::vec3 &a)
-        {
-            albedo = std::make_shared<ConstTexture>(a);
-        }
+        Isotropic(const std::shared_ptr<Texture> &a) : tex(a) {}
         virtual bool Scatter(Intersection &rec) const;
 
     private:
-        std::shared_ptr<Texture> albedo;
+        std::shared_ptr<Texture> tex;
     };
-} // namespace platinum
+}
 
 #endif

@@ -58,6 +58,7 @@ namespace platinum
         bounding_box = AABB(min_p, max_p);
     }
 
+
     Intersection Instance::Intersect(std::shared_ptr<Ray> &r) const
     {
         Intersection rec;
