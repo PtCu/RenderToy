@@ -47,7 +47,7 @@ namespace platinum
             // 此时以该起点的撞击结果即为前边的 bound_rec
             t0 = 0;
             tMaxFromT0 = bound_rec.ray->GetMaxTime();
-            //t0HitRst = bound_rec;
+            //t0_rec = bound_rec;
         }
         else
         {
@@ -55,16 +55,16 @@ namespace platinum
             // 此时以该起点的撞击结果需计算
             t0 = bound_rec.ray->GetMaxTime();
             auto t0Ray = std::make_shared<Ray>(r->PointAtT(t0), r->GetDirection());
-            Intersection t0HitRst = boundary->Intersect(t0Ray);
+            Intersection t0_rec = boundary->Intersect(t0Ray);
 
             //太薄
-            if (!t0HitRst.happened)
+            if (!t0_rec.happened)
             {
                 r->SetTMax(originTMax);
                 return rec;
             }
 
-            tMaxFromT0 = t0HitRst.ray->GetMaxTime();
+            tMaxFromT0 = t0_rec.ray->GetMaxTime();
         }
 
         float t1 = glm::min(originTMax, t0 + tMaxFromT0);
