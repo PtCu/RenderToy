@@ -27,6 +27,8 @@
 #include "../Core/ray.h"
 #include "../Core/intersection.h"
 #include "../Core/aabb.h"
+#include "../Math/rand.h"
+
 
 namespace platinum
 {
