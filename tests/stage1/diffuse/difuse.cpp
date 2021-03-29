@@ -39,7 +39,7 @@ int main()
 {
     int nx = 2000;
     int ny = 1000;
-    int ns = 100;
+    int ns = 10;
     float u, v;
     World world;
     auto sph1 = make_shared<Sphere>(vec3(0, 0, -1), 0.5, make_shared<Lambertian>(vec3(0.5, 0.5, 0.5)));

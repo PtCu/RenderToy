@@ -30,7 +30,7 @@ namespace platinum
         if (boundary == NULL)
             return rec;
 
-        float originTMax = r->GetMaxTime();
+        float origin_t_max = r->GetMaxTime();
 
         auto bound_rec = boundary->Intersect(r);
         if (!bound_rec.happened)
@@ -40,13 +40,13 @@ namespace platinum
         auto reverse_rec = boundary->Intersect(reverse_ray);
 
         float t0;
-        float tMaxFromT0;
+        float t_max_from_t0;
         if (reverse_rec.happened)
         {
             // 反向光线撞击到边界, 说明光线在内部, 则此时体积内部的起点为 光线起点
             // 此时以该起点的撞击结果即为前边的 bound_rec
             t0 = 0;
-            tMaxFromT0 = bound_rec.ray->GetMaxTime();
+            t_max_from_t0 = bound_rec.ray->GetMaxTime();
             //t0_rec = bound_rec;
         }
         else
@@ -60,29 +60,29 @@ namespace platinum
             //太薄
             if (!t0_rec.happened)
             {
-                r->SetTMax(originTMax);
+                r->SetTMax(origin_t_max);
                 return rec;
             }
 
-            tMaxFromT0 = t0_rec.ray->GetMaxTime();
+            t_max_from_t0 = t0_rec.ray->GetMaxTime();
         }
 
-        float t1 = glm::min(originTMax, t0 + tMaxFromT0);
+        float t1 = glm::min(origin_t_max, t0 + t_max_from_t0);
         //此处的 len 未考虑 transform 的 scale
-        float lenInVolume = (t1 - t0) * glm::length(r->GetDirection());
+        float dis_in_vol = (t1 - t0) * glm::length(r->GetDirection());
 
         // p = C * dL
         // p(L) = lim(n->inf, (1 - CL/n)^n) = exp(-CL)
         // L = -(1/C)ln(pL)
-        float hitLen = -(1.0f / density) * log(Random::RandomInUnitFloat());
+        float hit_dis = -(1.0f / density) * log(Random::RandomInUnitFloat());
 
-        if (hitLen >= lenInVolume)
+        if (hit_dis >= dis_in_vol)
         {
-            r->SetTMax(originTMax);
+            r->SetTMax(origin_t_max);
             return rec;
         }
 
-        float tFinal = t0 + hitLen / glm::length(r->GetDirection());
+        float tFinal = t0 + hit_dis / glm::length(r->GetDirection());
         r->SetTMax(tFinal);
 
         rec.happened = 1;

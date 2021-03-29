@@ -1,4 +1,3 @@
-
 #include "../src/Core/image.h"
 #include "../src/Core/ray.h"
 #include "../src/Core/camera.h"
@@ -33,7 +32,7 @@ int main()
     int nx = 1200;
     int ny = 800;
     int ns = 10;
-    World world;
+    World world(true);
     some_spheres(world);
     vec3 lookfrom(13, 2, 3);
     vec3 lookat(0, 0, 0);

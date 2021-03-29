@@ -29,19 +29,20 @@
 #include "ray.h"
 #include "intersection.h"
 #include "bvh.h"
-
+#include <functional>
 namespace platinum
 {
     class World
     {
     public:
-        World() {}
-        World(int max_dep) : max_depth(max_dep) {}
+        World() : max_depth(10), default_light(true){}
+        World(bool d_l) : max_depth(10), default_light(d_l) {}
+        World(bool d_l, int max_dep) : max_depth(max_dep), default_light(d_l) {}
         ~World();
         bool IntersectAll(std::shared_ptr<Ray> &r, Intersection &rec) const; //Brute method for stage 1
-        void AddObject(const std::shared_ptr<Object>& obj);
+        void AddObject(const std::shared_ptr<Object> &obj);
         void AddObject(const std::vector<std::shared_ptr<Object>> &obj);
-         void AddObject(const std::vector<std::shared_ptr<Object>>::iterator& begin,const std::vector<std::shared_ptr<Object>>::iterator& end);
+        void AddObject(const std::vector<std::shared_ptr<Object>>::iterator &begin, const std::vector<std::shared_ptr<Object>>::iterator &end);
         void Reset();
         void BuildBVH();
         glm::vec3 CastRay(std::shared_ptr<Ray> &r) const;
@@ -52,9 +53,10 @@ namespace platinum
         glm::vec3 CastRay(std::shared_ptr<Ray> &r, int depth) const; //Using BVH tree to accelerate.
         Intersection intersectAll(std::shared_ptr<Ray> &r) const;
 
-        int max_depth = 10;
+        int max_depth;
         std::unique_ptr<BVHAccel> bvh_accel;
         std::vector<std::shared_ptr<Object>> objects;
+        bool default_light;
     };
 
 } // namespace platinum

@@ -29,13 +29,12 @@
 #include "../Core/aabb.h"
 #include "../Math/rand.h"
 
-
 namespace platinum
 {
     class Volume : public Object
     {
     public:
-        Volume(std::shared_ptr<Object> obj, float dense, std::shared_ptr<Material> m)
+        Volume(std::shared_ptr<Object> obj = NULL, float dense = 1.0f, std::shared_ptr<Material> m = NULL)
             : boundary(obj), density(dense), Object(m) {}
 
         ~Volume() = default;

@@ -25,7 +25,7 @@ const float pos[] = {
 void some_spheres(World &world)
 {
     float scale = 5;
-    auto light_tex = make_shared<ConstTexture>(vec3(1, 1, 1));
+    auto light_tex = make_shared<ConstTexture>(vec3(1.5, 1, 1));
     auto noi_tex = make_shared<NoiseTexture>(scale, 1);
     auto sph1 = make_shared<Sphere>(vec3(0, -100, -1), 100, make_shared<Lambertian>(noi_tex));
     world.AddObject(sph1);
@@ -45,7 +45,7 @@ int main()
     int nx = 1200;
     int ny = 600;
     int ns = 30;
-    World world;
+    World world(false);
     some_spheres(world);
     vec3 lookfrom(13, 2, 3);
     vec3 lookat(0, 0, 0);

@@ -79,11 +79,14 @@ namespace platinum
         }
         else
         {
-            return glm::vec3(1.0001f / 255.0f);
+
+            if (!default_light)
+                return glm::vec3(1.0001f / 255.0f);
+
             //TODO: Make it configurable
-            // glm::vec3 unit_direction = glm::normalize(ray->GetDirection());
-            // float t = 0.5f * (unit_direction.y + 1.0f);
-            // return ray->GetColor() * ((1.0f - t) * glm::vec3(1.0, 1.0, 1.0) + t * glm::vec3(0.5, 0.7, 1.0));
+            glm::vec3 unit_direction = glm::normalize(ray->GetDirection());
+            float t = 0.5f * (unit_direction.y + 1.0f);
+            return ray->GetColor() * ((1.0f - t) * glm::vec3(1.0, 1.0, 1.0) + t * glm::vec3(0.75, 0.85, 1.0));
         }
     }
     bool World::IntersectAll(std::shared_ptr<Ray> &r, Intersection &rec) const

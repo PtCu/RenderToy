@@ -62,7 +62,6 @@ void random_scene(World &world)
     world.AddObject(make_shared<Sphere>(vec3(0, 1, 0), 1.0, make_shared<Dielectric>(1.5)));
     world.AddObject(make_shared<Sphere>(vec3(-4, 1, 0), 1.0, make_shared<Lambertian>(vec3(0.4, 0.2, 0.1))));
     world.AddObject(make_shared<Sphere>(vec3(4, 1, 0), 1.0, make_shared<Metal>(vec3(0.7, 0.6, 0.5), 0.0)));
-
 }
 
 int main()
@@ -70,7 +69,7 @@ int main()
     int nx = 1200;
     int ny = 800;
     int ns = 1000;
-    World world;
+    World world(true);
     random_scene(world);
 
     vec3 lookfrom(13, 2, 3);

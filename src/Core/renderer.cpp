@@ -50,27 +50,69 @@ namespace platinum
     void Renderer::Render(World &scene, const std::shared_ptr<Camera> &cam)
     {
         scene.BuildBVH();
-        size_t ny = img.GetHeight();
-        size_t nx = img.GetWidth();
+        int nx = img.GetWidth();
+        int ny = img.GetHeight();
         float u = 0, v = 0;
-        for (int j = 0; j < ny; ++j)
+        int img_size = ny * nx;
+
+        for (int cnt = 1; cnt <= iterations; ++cnt)
         {
-            for (int i = 0; i < nx; ++i)
+
+#pragma omp parallel for schedule(dynamic, 1024)
+            for (int px_id = 0; px_id < img_size; ++px_id)
             {
-                glm::vec3 col(0, 0, 0);
-                for (int s = 0; s < iterations; ++s)
-                {
-                    u = static_cast<float>(i + Random::RandomInUnitFloat()) / static_cast<float>(nx);
-                    v = static_cast<float>(j + Random::RandomInUnitFloat()) / static_cast<float>(ny);
-                    auto r = cam->GetRay(u, v);
-                    col += scene.CastRay(r);
-                }
-                col /= static_cast<float>(iterations);
-                col = glm::vec3(sqrt(col[0]), sqrt(col[1]), sqrt(col[2]));
-                img.SetPixel(i, j, Image::Pixel<unsigned char>(static_cast<int>(255.99f * col.x), static_cast<int>(255.99f * col.y), static_cast<int>(255.99f * col.z)));
+                int i = px_id % nx;
+                int j = px_id / nx;
+                u = static_cast<float>(i + Random::RandomInUnitFloat()) / static_cast<float>(nx);
+                v = static_cast<float>(j + Random::RandomInUnitFloat()) / static_cast<float>(ny);
+                auto r = cam->GetRay(u, v);
+                auto rst = scene.CastRay(r);
+                auto col = img.GetPixel_F(i, j);
+                glm::vec3 new_col(col.r, col.g, col.b);
+                new_col += rst / (static_cast<float>(iterations));
+                img.SetPixel(i, j, new_col);
             }
-            UpdateProgress(j / (float)ny);
+            UpdateProgress(static_cast<float>(cnt) / iterations);
         }
+
+// #pragma omp parallel for schedule(dynamic, 1024)
+//         for (int px_id = 0; px_id < img_size; ++px_id)
+//         {
+//             int i = px_id % nx;
+//             int j = px_id / nx;
+//             glm::vec3 col(0, 0, 0);
+//             for (int cnt = 1; cnt <= iterations; ++cnt)
+//             {
+//                 u = static_cast<float>(i + Random::RandomInUnitFloat()) / static_cast<float>(nx);
+//                 v = static_cast<float>(j + Random::RandomInUnitFloat()) / static_cast<float>(ny);
+//                 auto r = cam->GetRay(u, v);
+//                 auto rst = scene.CastRay(r);
+//                 col += rst;
+//             }
+//             col /= (static_cast<float>(iterations));
+//             col = glm::vec3(sqrt(col[0]), sqrt(col[1]), sqrt(col[2]));
+//             img.SetPixel(i, j, Image::Pixel<unsigned char>(static_cast<int>(255.99f * col.x), static_cast<int>(255.99f * col.y), static_cast<int>(255.99f * col.z)));
+//             // UpdateProgress(static_cast<float>(cnt) / iterations);
+//         }
+
+        // for (int j = 0; j < ny; ++j)
+        // {
+        //     for (int i = 0; i < nx; ++i)
+        //     {
+        //         glm::vec3 col(0, 0, 0);
+        //         for (int s = 0; s < iterations; ++s)
+        //         {
+        //             u = static_cast<float>(i + Random::RandomInUnitFloat()) / static_cast<float>(nx);
+        //             v = static_cast<float>(j + Random::RandomInUnitFloat()) / static_cast<float>(ny);
+        //             auto r = cam->GetRay(u, v);
+        //             col += scene.CastRay(r);
+        //         }
+        //         col /= static_cast<float>(iterations);
+        //         col = glm::vec3(sqrt(col[0]), sqrt(col[1]), sqrt(col[2]));
+        //         img.SetPixel(i, j, Image::Pixel<unsigned char>(static_cast<int>(255.99f * col.x), static_cast<int>(255.99f * col.y), static_cast<int>(255.99f * col.z)));
+        //     }
+        //     UpdateProgress(j / (float)ny);
+        // }
         UpdateProgress(1.f);
         img.SaveAsPNG(filename);
     }

@@ -12,6 +12,7 @@
 #include "../src/Texture/noiseTexture.h"
 #include "../src/Geometry/triMesh.h"
 #include "../src/Geometry/instance.h"
+#include "../src/Geometry/volume.h"
 #include <glm/gtc/matrix_transform.hpp>
 
 using namespace platinum;
@@ -340,7 +341,7 @@ void createWorld(World &world)
     mat4 tfmBottom(1.0f);
     tfmBottom = glm::translate(tfmBottom, vec3(0, -3, 0));
     tfmBottom = glm::scale(tfmBottom, vec3(6));
-    tfmBottom = glm::rotate(tfmBottom, -Pi / 2, vec3(-1, 0, 0));
+    tfmBottom = glm::rotate(tfmBottom, -Pi / 2, vec3(1, 0, 0));
     for (auto a : square->GetTriangles())
     {
         world.AddObject(make_shared<Instance>(tfmBottom, a, grayMat));
@@ -349,7 +350,7 @@ void createWorld(World &world)
     mat4 tfmTop(1.0f);
     tfmTop = glm::translate(tfmTop, vec3(0, 3, 0));
     tfmTop = glm::scale(tfmTop, vec3(6));
-    tfmTop = glm::rotate(tfmTop, Pi / 2, vec3(-1, 0, 0));
+    tfmTop = glm::rotate(tfmTop, Pi / 2, vec3(1, 0, 0));
     for (auto a : square->GetTriangles())
     {
         world.AddObject(make_shared<Instance>(tfmTop, a, grayMat));
@@ -378,7 +379,7 @@ void createWorld(World &world)
     tfmCube1 = glm::rotate(tfmCube1, -Pi / 12, vec3(0, 1, 0));
     for (auto a : cube->GetTriangles())
     {
-        world.AddObject(make_shared<Instance>(tfmCube1, a, cubeMat));
+        world.AddObject(make_shared<Volume>(make_shared<Instance>(tfmCube1, a, cubeMat), 1.65f));
     }
 
     mat4 tfmCube2(1.0f);
@@ -387,24 +388,24 @@ void createWorld(World &world)
     tfmCube2 = glm::rotate(tfmCube2, Pi / 9, vec3(0, 1, 0));
     for (auto a : cube->GetTriangles())
     {
-        world.AddObject(make_shared<Instance>(tfmCube2, a, cubeMat));
+        world.AddObject(make_shared<Volume>(make_shared<Instance>(tfmCube2, a, cubeMat), 1.0f));
     }
 }
 
 int main()
 {
-    int nx = 1200;
-    int ny = 800;
+    int nx = 200;
+    int ny = 200;
     int ns = 10;
-    World world(false);
+    World world;
     createWorld(world);
     vec3 lookfrom(0, 0, 10);
     vec3 lookat(0, 0, 0);
     float dist_to_focus = 8.0f;
     float aperture = 0.05f;
 
-    shared_ptr<Camera> cam = make_shared<Camera>(lookfrom, lookat, vec3(0, 1, 0), 45, float(nx) / float(ny), aperture, dist_to_focus);
-    Renderer render(nx, ny, 3, "instance.png", ns);
+    shared_ptr<Camera> cam = make_shared<Camera>(lookfrom, lookat, vec3(0, -1, 0), 45, float(nx) / float(ny), aperture, dist_to_focus);
+    Renderer render(nx, ny, 3, "volume.png", ns);
     render.Render(world, cam);
 
     world.Reset();

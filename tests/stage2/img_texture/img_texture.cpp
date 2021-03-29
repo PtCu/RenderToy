@@ -28,7 +28,7 @@ int main()
     int nx = 1200;
     int ny = 800;
     int ns = 10;
-    World world;
+        World world(true);
     some_spheres(world);
 
     shared_ptr<Camera> cam = make_shared<Camera>();

@@ -30,7 +30,7 @@ int main()
     int nx = 1200;
     int ny = 800;
     int ns = 10;
-    World world;
+    World world(true);
     two_spheres(world);
     vec3 lookfrom(13, 2, 3);
     vec3 lookat(0, 0, 0);
