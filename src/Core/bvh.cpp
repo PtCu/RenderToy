@@ -82,8 +82,9 @@ BVHAccel::BVHAccel(vector<shared_ptr<Object>>::iterator &begin, vector<shared_pt
 shared_ptr<BVH_Node> BVHAccel::recursiveBuild(vector<shared_ptr<Object>>::iterator begin, vector<shared_ptr<Object>>::iterator end)
 {
     size_t num = end - begin;
+    // if(num==0)
+    //     return NULL;
     auto node = make_shared<BVH_Node>();
-
     // Compute bounding_box of all primitives in BVH node
     if (num == 1)
     {

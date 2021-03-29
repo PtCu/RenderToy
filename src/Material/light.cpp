@@ -32,22 +32,22 @@ namespace platinum
 
     bool Light::Scatter(Intersection &rec) const
     {
-        // float d = rec.ray->GetMaxTime() * glm::length(rec.ray->GetDirection());
-        // float attDis;
-        // if (linear == 0.0 && quadratic == 0.0)
-        //     attDis = 1;
-        // else
-        // {
-        //     if (isnan(d))
-        //         attDis = 0;
-        //     else
-        //         attDis = 1.0f / (1.0f + d * (linear + quadratic * d));
-        // }
-        // float attAngle = abs(glm::dot(glm::normalize(rec.ray->GetDirection()), rec.vert.normal));
-        // rec.ray->SetColor(attDis * attAngle * tex->GetValue(rec.vert.u, rec.vert.v, rec.vert.pos));
-        // return false;
-
-        rec.ray->SetColor(tex->GetValue(rec.vert.u, rec.vert.v, rec.vert.pos));
+        float d = rec.ray->GetMaxTime() * glm::length(rec.ray->GetDirection());
+        float attDis;
+        if (linear == 0.0 && quadratic == 0.0)
+            attDis = 1;
+        else
+        {
+            if (isnan(d))
+                attDis = 0;
+            else
+                attDis = 1.0f / (1.0f + d * (linear + quadratic * d));
+        }
+        float attAngle = abs(glm::dot(glm::normalize(rec.ray->GetDirection()), rec.vert.normal));
+        rec.ray->SetColor(attDis * attAngle * tex->GetValue(rec.vert.u, rec.vert.v, rec.vert.pos));
         return false;
+
+        // rec.ray->SetColor(tex->GetValue(rec.vert.u, rec.vert.v, rec.vert.pos));
+        // return false;
     }
 }

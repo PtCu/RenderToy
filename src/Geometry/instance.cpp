@@ -44,7 +44,9 @@ namespace platinum
         }
 
         glm::vec3 srcP[2] = {childBox.GetMin(), childBox.GetMax()};
-        glm::vec3 min_p, max_p;
+        double max_t = std::numeric_limits<double>::max();
+        double min_t = std::numeric_limits<double>::lowest();
+        glm::vec3 min_p = glm::vec3(max_t), max_p(min_t);
         for (size_t i = 0; i < 8; i++)
         {
             std::bitset<3> binVal(i);
@@ -55,9 +57,8 @@ namespace platinum
             max_p = glm::max(max_p, tmp);
         }
 
-        bounding_box = AABB(min_p, max_p);
+        bounding_box = AABB(min_p-glm::vec3(0.005,0.005,0.005), max_p+glm::vec3(0.005,0.005,0.005));
     }
-
 
     Intersection Instance::Intersect(std::shared_ptr<Ray> &r) const
     {

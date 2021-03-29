@@ -315,17 +315,18 @@ void createWorld(World &world)
     auto redMat = make_shared<Lambertian>(make_shared<ConstTexture>(vec3(0.65f, 0.05f, 0.05f)));
     auto greenMat = make_shared<Lambertian>(make_shared<ConstTexture>(vec3(0.12f, 0.45f, 0.15f)));
     auto grayMat = make_shared<Lambertian>(make_shared<ConstTexture>(vec3(0.73f, 0.73f, 0.73f)));
-    auto lightMat = make_shared<Light>(vec3(4.0f));
+    auto lightMat = make_shared<Light>(vec3(10.f));
     auto cubeMat = make_shared<Lambertian>(make_shared<ConstTexture>(vec3(1.0f, 1.0f, 1.0f)));
 
-    // Transform
+    // // Transform
     mat4 tfmRight(1.0f);
     tfmRight = glm::translate(tfmRight, vec3(3, 0, 0));
     tfmRight = glm::scale(tfmRight, vec3(6));
     tfmRight = glm::rotate(tfmRight, -Pi / 2, vec3(0, 1, 0));
     for (auto a : square->GetTriangles())
     {
-        world.AddObject(make_shared<Instance>(tfmRight, a, redMat));
+       // world.AddObject(make_shared<Instance>(tfmRight, a, lightMat));
+         world.AddObject(make_shared<Instance>(tfmRight, a, redMat));
     }
 
     mat4 tfmLeft(1.0f);
@@ -334,24 +335,27 @@ void createWorld(World &world)
     tfmLeft = glm::rotate(tfmLeft, Pi / 2, vec3(0, 1, 0));
     for (auto a : square->GetTriangles())
     {
+        //world.AddObject(make_shared<Instance>(tfmLeft, a, lightMat));
         world.AddObject(make_shared<Instance>(tfmLeft, a, greenMat));
     }
 
     mat4 tfmBottom(1.0f);
     tfmBottom = glm::translate(tfmBottom, vec3(0, -3, 0));
     tfmBottom = glm::scale(tfmBottom, vec3(6));
-    tfmBottom = glm::rotate(tfmBottom, -Pi / 2, vec3(-1, 0, 0));
+    tfmBottom = glm::rotate(tfmBottom, -Pi / 2, vec3(1, 0, 0));
     for (auto a : square->GetTriangles())
     {
+        //world.AddObject(make_shared<Instance>(tfmBottom, a, lightMat));
         world.AddObject(make_shared<Instance>(tfmBottom, a, grayMat));
     }
 
     mat4 tfmTop(1.0f);
     tfmTop = glm::translate(tfmTop, vec3(0, 3, 0));
     tfmTop = glm::scale(tfmTop, vec3(6));
-    tfmTop = glm::rotate(tfmTop, Pi / 2, vec3(-1, 0, 0));
+    tfmTop = glm::rotate(tfmTop, Pi / 2, vec3(1, 0, 0));
     for (auto a : square->GetTriangles())
     {
+        //world.AddObject(make_shared<Instance>(tfmTop, a, lightMat));
         world.AddObject(make_shared<Instance>(tfmTop, a, grayMat));
     }
 
@@ -360,16 +364,18 @@ void createWorld(World &world)
     tfmBack = glm::scale(tfmBack, vec3(6));
     for (auto a : square->GetTriangles())
     {
+        //world.AddObject(make_shared<Instance>(tfmBack, a, lightMat));
         world.AddObject(make_shared<Instance>(tfmBack, a, grayMat));
     }
 
     mat4 tfmLight(1.0f);
-    tfmLight = glm::translate(tfmLight, vec3(0, 2.999, 0));
-    tfmLight = glm::scale(tfmLight, vec3(2));
+    tfmLight = glm::translate(tfmLight, vec3(0, 1.5, 0));
+    tfmLight = glm::scale(tfmLight, vec3(3));
     tfmLight = glm::rotate(tfmLight, Pi / 2, vec3(1, 0, 0));
     for (auto a : square->GetTriangles())
     {
         world.AddObject(make_shared<Instance>(tfmLight, a, lightMat));
+        //world.AddObject(make_shared<Instance>(tfmLight, a, redMat));
     }
 
     mat4 tfmCube1(1.0f);
@@ -393,8 +399,8 @@ void createWorld(World &world)
 
 int main()
 {
-    int nx = 1200;
-    int ny = 800;
+    int nx = 300;
+    int ny = 400;
     int ns = 10;
     World world(false);
     createWorld(world);
@@ -403,7 +409,7 @@ int main()
     float dist_to_focus = 8.0f;
     float aperture = 0.05f;
 
-    shared_ptr<Camera> cam = make_shared<Camera>(lookfrom, lookat, vec3(0, 1, 0), 45, float(nx) / float(ny), aperture, dist_to_focus);
+    shared_ptr<Camera> cam = make_shared<Camera>(lookfrom, lookat, vec3(0, -1, 0), 90, float(nx) / float(ny), aperture, dist_to_focus);
     Renderer render(nx, ny, 3, "instance.png", ns);
     render.Render(world, cam);
 
