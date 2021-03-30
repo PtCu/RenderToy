@@ -34,8 +34,8 @@ namespace platinum
     {
         AABB bounding_box;
         std::shared_ptr<BVH_Node> left, right;
-        std::shared_ptr<Object> object;
-        BVH_Node() : bounding_box(AABB()), left(NULL), right(NULL), object(NULL) {}
+        std::vector<std::shared_ptr<Object>> objects;
+        BVH_Node() : bounding_box(AABB()), left(NULL), right(NULL) {}
     };
 
     class BVHAccel
@@ -47,11 +47,11 @@ namespace platinum
             SAH,
             HLBVH
         };
-        BVHAccel(SplitMethod sm = SplitMethod::MIDDLE):splitMethod(sm){}
+        BVHAccel(SplitMethod sm = SplitMethod::MIDDLE) : splitMethod(sm) {}
         // BVHAccel Public Methods
         BVHAccel(std::vector<std::shared_ptr<Object>> &p, SplitMethod splitMethod = SplitMethod::MIDDLE);
 
-        BVHAccel(std::vector<std::shared_ptr<Object>>::iterator &begin, std::vector<std::shared_ptr<Object>>::iterator &end,  SplitMethod splitMethod = SplitMethod::MIDDLE);
+        BVHAccel(std::vector<std::shared_ptr<Object>>::iterator &begin, std::vector<std::shared_ptr<Object>>::iterator &end, SplitMethod splitMethod = SplitMethod::MIDDLE);
 
         ~BVHAccel() = default;
 

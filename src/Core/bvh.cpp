@@ -21,6 +21,8 @@
 //  DEALINGS IN THE SOFTWARE.
 
 #include "bvh.h"
+#include "spdlog/spdlog.h"
+#include <fstream>
 
 using namespace std;
 using namespace glm;
@@ -42,15 +44,7 @@ BVHAccel::BVHAccel(vector<shared_ptr<Object>> &p,
     //TODO:
     //Other building method
 
-    // time(&stop);
-    // double diff = difftime(stop, start);
-    // int hrs = (int)diff / 3600;
-    // int mins = ((int)diff / 60) - (hrs * 60);
-    // int secs = (int)diff - (hrs * 3600) - (mins * 60);
 
-    // printf(
-    //     "\rBVH Generation complete: \nTime Taken: %i hrs, %i mins, %i secs\n\n",
-    //     hrs, mins, secs);
 }
 BVHAccel::BVHAccel(vector<shared_ptr<Object>>::iterator &begin, vector<shared_ptr<Object>>::iterator &end,
                    SplitMethod splitMethod)
@@ -68,29 +62,21 @@ BVHAccel::BVHAccel(vector<shared_ptr<Object>>::iterator &begin, vector<shared_pt
     //TODO:
     //Other building method
 
-    // time(&stop);
-    // double diff = difftime(stop, start);
-    // int hrs = (int)diff / 3600;
-    // int mins = ((int)diff / 60) - (hrs * 60);
-    // int secs = (int)diff - (hrs * 3600) - (mins * 60);
 
-    // printf(
-    //     "\rBVH Generation complete: \nTime Taken: %i hrs, %i mins, %i secs\n\n",
-    //     hrs, mins, secs);
 }
 
 shared_ptr<BVH_Node> BVHAccel::recursiveBuild(vector<shared_ptr<Object>>::iterator begin, vector<shared_ptr<Object>>::iterator end)
 {
     size_t num = end - begin;
-    // if(num==0)
-    //     return NULL;
+    if (num == 0)
+        return NULL;
     auto node = make_shared<BVH_Node>();
     // Compute bounding_box of all primitives in BVH node
     if (num == 1)
     {
         // Create leaf _BVHBuildNode_
         node->bounding_box = (*begin)->GetBoundingBox();
-        node->object = (*begin);
+        node->objects.push_back(*begin);
         node->left = nullptr;
         node->right = nullptr;
         return node;
@@ -110,9 +96,9 @@ shared_ptr<BVH_Node> BVHAccel::recursiveBuild(vector<shared_ptr<Object>>::iterat
             centroidBounds.Expand((*iter)->GetBoundingBox().Centroid());
         int dim = centroidBounds.MaxExtent();
 
-        //TODO:
-        //Edge case: if identical bounding boxes exist
-
+        // if (centroidBounds.GetMax()[dim] == centroidBounds.GetMin()[dim])
+        // {
+        // }
         //Do partition according to split method
         std::vector<shared_ptr<Object>>::iterator middle;
         float p_mid = 0;
@@ -121,17 +107,25 @@ shared_ptr<BVH_Node> BVHAccel::recursiveBuild(vector<shared_ptr<Object>>::iterat
         case SplitMethod::MIDDLE:
             p_mid = centroidBounds.Centroid()[dim];
             middle = std::partition(begin, end,
-                                    [dim, p_mid](auto p) {
-                                        return p->GetBoundingBox().Centroid()[dim] < p_mid;
-                                    });
+                                    [dim, p_mid](auto p) { return p->GetBoundingBox().Centroid()[dim] < p_mid; });
 
+            //Edge case: if identical bounding boxes exist
+            if (middle - begin == 0)
+            {
+                node->left = node->right = NULL;
+                node->bounding_box = (*begin)->GetBoundingBox();
+                for (auto &iter = begin; iter != end; ++iter)
+                {
+                    node->objects.push_back(*iter);
+                }
+                return node;
+            }
             break;
         case SplitMethod::SAH:
             break;
         default:
             break;
         }
-
         node->left = recursiveBuild(begin, middle);
         node->right = recursiveBuild(middle, end);
         node->bounding_box = Union(node->left->bounding_box, node->right->bounding_box);
@@ -168,13 +162,21 @@ Intersection BVHAccel::getIntersection(std::shared_ptr<Ray> &r) const
             continue;
         if (p->left == NULL && p->right == NULL)
         {
-            tmp_inter = p->object->Intersect(r);
-            if (inter.happened == false || tmp_inter.happened && tmp_inter.ray->GetMaxTime() < inter.ray->GetMaxTime())
-                // inter = std::move(tmp_inter);
-                inter = tmp_inter;
+            for (auto &obj : p->objects)
+            {
+                tmp_inter = obj->Intersect(r);
+
+                if (tmp_inter.happened && (inter.happened == false || tmp_inter.ray->GetMaxTime() < inter.ray->GetMaxTime()))
+                {
+                    // inter = std::move(tmp_inter);
+                    inter = tmp_inter;
+                }
+            }
         }
-        s.push(p->left);
-        s.push(p->right);
+        if (p->left)
+            s.push(p->left);
+        if (p->right)
+            s.push(p->right);
     }
     return inter;
 }

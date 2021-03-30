@@ -28,17 +28,20 @@
 #include "triangle.h"
 namespace platinum
 {
-    class TriMesh
+    class TriMesh : public Object
     {
     public:
         TriMesh(const std::vector<Vertex> &vertexs, std::shared_ptr<Material> m = NULL);
-
+        TriMesh(const std::string &filename, std::shared_ptr<Material> m = NULL);
+        virtual Intersection Intersect(std::shared_ptr<Ray> &r) const;
+        virtual AABB GetBoundingBox() const { return bounding_box; }
         inline bool IsValid() const { return isValid; };
         std::vector<std::shared_ptr<Object>> &GetTriangles() { return triangles; }
 
     protected:
         bool isValid;
         std::vector<std::shared_ptr<Object>> triangles;
+        AABB bounding_box;
     };
 }
 

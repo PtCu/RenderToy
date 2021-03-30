@@ -42,6 +42,7 @@ namespace platinum
             ray = NULL;
             happened = false;
         };
+        
     }; // namespace platinum
 }
 #endif

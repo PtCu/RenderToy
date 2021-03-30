@@ -24,7 +24,7 @@
 
 namespace platinum
 {
-    TriMesh::TriMesh(const std::vector<Vertex> &vertexs, std::shared_ptr<Material> material) 
+    TriMesh::TriMesh(const std::vector<Vertex> &vertexs, std::shared_ptr<Material> material) : Object(material)
     {
         if (vertexs.size() % 3 != 0)
         {
@@ -35,7 +35,28 @@ namespace platinum
         {
             auto triangle = std::make_shared<Triangle>(vertexs[i], vertexs[i + 1], vertexs[i + 2], material);
             triangles.push_back(triangle);
+            bounding_box.Expand(triangle->GetBoundingBox());
         }
         isValid = true;
+    }
+    TriMesh::TriMesh(const std::string &filename, std::shared_ptr<Material> m) : Object(m)
+    {
+        //TODO
+    }
+    Intersection TriMesh::Intersect(std::shared_ptr<Ray> &r) const
+    {
+        Intersection rec;
+        bool intersect = false;
+        for (auto tri : triangles)
+        {
+            auto tmp_inter = tri->Intersect(r);
+
+            if (tmp_inter.happened && (rec.happened == false || tmp_inter.ray->GetMaxTime() < rec.ray->GetMaxTime()))
+            {
+                // inter = std::move(tmp_inter);
+                rec = tmp_inter;
+            }
+        }
+        return rec;
     }
 }

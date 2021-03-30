@@ -41,6 +41,7 @@
 #include <string.h>
 #include <stdint.h>
 #include <float.h>
+#include <typeinfo>
 
 // #include <intrin.h>
 

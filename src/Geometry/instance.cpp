@@ -57,7 +57,7 @@ namespace platinum
             max_p = glm::max(max_p, tmp);
         }
 
-        bounding_box = AABB(min_p-glm::vec3(0.005,0.005,0.005), max_p+glm::vec3(0.005,0.005,0.005));
+        bounding_box = AABB(min_p, max_p);
     }
 
     Intersection Instance::Intersect(std::shared_ptr<Ray> &r) const
