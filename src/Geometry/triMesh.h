@@ -25,23 +25,27 @@
 
 #include "../Core/bvh.h"
 #include "../Core/vertex.h"
+#include <OBJ_Loader.hpp>
 #include "triangle.h"
+
 namespace platinum
 {
     class TriMesh : public Object
     {
     public:
-        TriMesh(const std::vector<Vertex> &vertexs, std::shared_ptr<Material> m = NULL);
         TriMesh(const std::string &filename, std::shared_ptr<Material> m = NULL);
-        virtual Intersection Intersect(std::shared_ptr<Ray> &r) const;
+        TriMesh(const std::vector<Vertex> &vertexs, std::shared_ptr<Material> m = NULL);
+        virtual Intersection Intersect(std::shared_ptr<Ray> &r) ;
         virtual AABB GetBoundingBox() const { return bounding_box; }
         inline bool IsValid() const { return isValid; };
-        std::vector<std::shared_ptr<Object>> &GetTriangles() { return triangles; }
+        std::vector<std::shared_ptr<Triangle>> &GetTriangles() { return triangles; }
 
     protected:
+        float area;
         bool isValid;
-        std::vector<std::shared_ptr<Object>> triangles;
+        std::vector<std::shared_ptr<Triangle>> triangles;
         AABB bounding_box;
+        BVHAccel bvh_accel;
     };
 }
 

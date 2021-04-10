@@ -35,16 +35,13 @@ namespace platinum
     }
     void Ray::SetColor(const glm::vec3 &c)
     {
-        origin = glm::vec3(0);
-        direction = glm::vec3(0);
         color *= c;
-        t_max = 0;
     }
 
     void Ray::Transform(const glm::mat4 &transform)
     {
-        direction = glm::mat3(transform) * direction;
+        this->direction = glm::mat3(transform) * direction;
         auto originQ = transform * glm::vec4(origin, 1.0f);
-        origin = glm::vec3(originQ) / originQ.w;
+        this->origin = glm::vec3(originQ) / originQ.w;
     }
 }

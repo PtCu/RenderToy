@@ -36,7 +36,7 @@ namespace platinum
     {
     public:
         Instance(const glm::mat4 &transform, std::shared_ptr<Object> former, const std::shared_ptr<Material> &m = NULL);
-        virtual Intersection Intersect(std::shared_ptr<Ray> &r) const;
+        virtual Intersection Intersect(std::shared_ptr<Ray> &r) ;
         virtual AABB GetBoundingBox() const { return bounding_box; }
 
     private:

@@ -24,7 +24,7 @@
 
 namespace platinum
 {
-    Intersection Volume::Intersect(std::shared_ptr<Ray> &r) const
+    Intersection Volume::Intersect(std::shared_ptr<Ray> &r) 
     {
         Intersection rec;
         if (boundary == NULL)

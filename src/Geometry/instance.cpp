@@ -26,8 +26,8 @@ namespace platinum
 {
     Instance::Instance(const glm::mat4 &transform, std::shared_ptr<Object> former, const std::shared_ptr<Material> &m)
         : transform(transform),
-          inverseTransform(inverse(transform)),
-          normalTransform(transpose(inverse(glm::mat3(transform)))),
+          inverseTransform(glm::inverse(transform)),
+          normalTransform(glm::transpose(glm::inverse(glm::mat3(transform)))),
           former(former),
           Object(m)
 
@@ -60,7 +60,7 @@ namespace platinum
         bounding_box = AABB(min_p, max_p);
     }
 
-    Intersection Instance::Intersect(std::shared_ptr<Ray> &r) const
+    Intersection Instance::Intersect(std::shared_ptr<Ray> &r) 
     {
         Intersection rec;
         if (former == NULL)

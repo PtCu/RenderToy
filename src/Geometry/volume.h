@@ -38,7 +38,7 @@ namespace platinum
             : boundary(obj), density(dense), Object(m) {}
 
         ~Volume() = default;
-        virtual Intersection Intersect(std::shared_ptr<Ray> &r) const;
+        virtual Intersection Intersect(std::shared_ptr<Ray> &r);
         virtual AABB GetBoundingBox() const { return boundary->GetBoundingBox(); }
 
     private:

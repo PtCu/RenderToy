@@ -2,7 +2,7 @@
 
 set(PROJECT_NAME "RenderToy")
 
-
+set(CMAKE_CXX_STANDARD 17)
 #---------------------------------------
 macro(SETUP_PROJECT MODE TARGET_NAME STR_TARGET_SOURCES STR_TARGET_LIBS)
 	string(REPLACE " " ";" LIST_TARGET_SOURCES ${STR_TARGET_SOURCES})
@@ -59,13 +59,16 @@ set_property(GLOBAL PROPERTY USE_FOLDERS ON)
 cmake_minimum_required (VERSION 3.2)
 cmake_policy(VERSION 3.2)
 project (${PROJECT_NAME})
+# 往工程中添加spdlog库，这个库是一个interface类型的库
+add_library(spdlog INTERFACE)
 
 include_directories (
 	${PROJECT_SOURCE_DIR}/include
 	# $ENV{XXX_INCLUDE_PATH}
 	# ...
 )
-
+# spdlog会用到pthread库
+find_package(Threads)
 # The version number.
 set (${PROJECT_NAME}_VERSION_MAJOR 1)
 set (${PROJECT_NAME}_VERSION_MINOR 0)

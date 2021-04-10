@@ -41,7 +41,7 @@ namespace platinum
         rec.happened = true;
     }
     
-    Intersection Sphere::Intersect(std::shared_ptr<Ray> &r) const
+    Intersection Sphere::Intersect(std::shared_ptr<Ray> &r) 
     {
         Intersection rec;
         glm::vec3 oc = r->GetOrigin() -getCenter(r);

@@ -35,17 +35,19 @@ namespace platinum
     {
     public:
         Triangle(const Vertex &a, const Vertex &b, const Vertex &c, const std::shared_ptr<Material> &material = NULL);
-        virtual Intersection Intersect(std::shared_ptr<Ray> &r) const;
+        virtual Intersection Intersect(std::shared_ptr<Ray> &r) ;
         virtual AABB GetBoundingBox() const { return bounding_box; }
         const Vertex &GetA() const { return A; }
         const Vertex &GetB() const { return B; }
         const Vertex &GetC() const { return C; }
 
     protected:
-        bool IsIntersectTri(const glm::vec3 &o, const glm::vec3 &d);
+        glm::vec4 intersectRay(const glm::vec3 &o, const glm::vec3 &d);
 
     private:
         Vertex A, B, C;
+        glm::vec3 normal,e1,e2;
+        float area;
         AABB bounding_box;
     };
 }

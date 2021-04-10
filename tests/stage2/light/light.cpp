@@ -36,7 +36,7 @@ void some_spheres(World &world)
     vector<Vertex> vertexs;
     for (size_t i = 0; i < sizeof(pos) / sizeof(float); i += 3)
         vertexs.push_back(Vertex(vec3(pos[i], pos[i + 1], pos[i + 2])));
-    auto triMesh = TriMesh(vertexs, make_shared<Light>(light_tex)).GetTriangles();
+    auto triMesh = make_shared<TriMesh>(vertexs, make_shared<Light>(light_tex));
     world.AddObject(triMesh);
 }
 
