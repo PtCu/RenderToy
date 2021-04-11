@@ -57,41 +57,41 @@ void createWorld(World &world)
     auto lightMat = make_shared<Light>(vec3(10.f));
     auto cubeMat = make_shared<Lambertian>(make_shared<ConstTexture>(vec3(1.0f, 1.0f, 1.0f)));
 
-//     mat4 tfmLight(1.0f);
-//     tfmLight = glm::translate(tfmLight, vec3(0, 2.99, 0));
-//     tfmLight = glm::scale(tfmLight, vec3(3));
-//     tfmLight = glm::rotate(tfmLight, -Pi / 2, vec3(1, 0, 0));
-//     world.AddObject(make_shared<Instance>(tfmLight, square, lightMat));
+    // mat4 tfmLight(1.0f);
+    // tfmLight = glm::translate(tfmLight, vec3(0, 2.99, 0));
+    // tfmLight = glm::scale(tfmLight, vec3(3));
+    // tfmLight = glm::rotate(tfmLight, -Pi / 2, vec3(1, 0, 0));
+    // world.AddObject(make_shared<Instance>(tfmLight, square, lightMat));
 
-//  // Transform
-//     mat4 tfmRight(1.0f);
-//     tfmRight = glm::translate(tfmRight, vec3(3, 0, 0));
-//     tfmRight = glm::scale(tfmRight, vec3(6));
-//     tfmRight = glm::rotate(tfmRight, -Pi / 2, vec3(0, 1, 0));
-//     world.AddObject(make_shared<Instance>(tfmRight, square, redMat));
+ // Transform
+    // mat4 tfmRight(1.0f);
+    // tfmRight = glm::translate(tfmRight, vec3(3, 0, 0));
+    // tfmRight = glm::scale(tfmRight, vec3(6));
+    // tfmRight = glm::rotate(tfmRight, -Pi / 2, vec3(0, 1, 0));
+    // world.AddObject(make_shared<Instance>(tfmRight, square, redMat));
 
-//     mat4 tfmLeft(1.0f);
-//     tfmLeft = glm::translate(tfmLeft, vec3(-3, 0, 0));
-//     tfmLeft = glm::scale(tfmLeft, vec3(6));
-//     tfmLeft = glm::rotate(tfmLeft, Pi / 2, vec3(0, 1, 0));
-//     world.AddObject(make_shared<Instance>(tfmLeft, square, greenMat));
+    // mat4 tfmLeft(1.0f);
+    // tfmLeft = glm::translate(tfmLeft, vec3(-3, 0, 0));
+    // tfmLeft = glm::scale(tfmLeft, vec3(6));
+    // tfmLeft = glm::rotate(tfmLeft, Pi / 2, vec3(0, 1, 0));
+    // world.AddObject(make_shared<Instance>(tfmLeft, square, greenMat));
 
-//     // mat4 tfmBottom(1.0f);
-//     // tfmBottom = glm::translate(tfmBottom, vec3(0, -3, 0));
-//     // tfmBottom = glm::scale(tfmBottom, vec3(6));
-//     // tfmBottom = glm::rotate(tfmBottom, Pi / 2, vec3(1, 0, 0));
-//     // world.AddObject(make_shared<Instance>(tfmBottom, square, grayMat));
+    // mat4 tfmBottom(1.0f);
+    // tfmBottom = glm::translate(tfmBottom, vec3(0, -3, 0));
+    // tfmBottom = glm::scale(tfmBottom, vec3(6));
+    // tfmBottom = glm::rotate(tfmBottom, Pi / 2, vec3(1, 0, 0));
+    // world.AddObject(make_shared<Instance>(tfmBottom, square, grayMat));
 
-//     mat4 tfmTop(1.0f);
-//     tfmTop = glm::translate(tfmTop, vec3(0, 3, 0));
-//     tfmTop = glm::scale(tfmTop, vec3(6));
-//     tfmTop = glm::rotate(tfmTop, Pi / 2, vec3(1, 0, 0));
-//     world.AddObject(make_shared<Instance>(tfmTop, square, grayMat));
+    // mat4 tfmTop(1.0f);
+    // tfmTop = glm::translate(tfmTop, vec3(0, 3, 0));
+    // tfmTop = glm::scale(tfmTop, vec3(6));
+    // tfmTop = glm::rotate(tfmTop, Pi / 2, vec3(1, 0, 0));
+    // world.AddObject(make_shared<Instance>(tfmTop, square, grayMat));
 
     // mat4 tfmBack(1.0f);
     // tfmBack = glm::translate(tfmBack, vec3(0, 0, -3));
     // tfmBack = glm::scale(tfmBack, vec3(6));
-    // world.AddObject(make_shared<Instance>(tfmBack, square, lightMat));
+    // world.AddObject(make_shared<Instance>(tfmBack, square, grayMat));
 
     mat4 tfmCube1(1.0f);
     tfmCube1 = glm::translate(tfmCube1, vec3(1.1, -2.2, 1.5));

@@ -3,7 +3,9 @@
 // https://github.com/Bly7/OBJ-Loader
 // Use the MIT license.
 
-#pragma once
+// #pragma once
+#ifndef __OBJ_LOADER_HPP__
+#define __OBJ_LOADER_HPP__
 
 #include <optional>
 #include <iostream>
@@ -13,7 +15,7 @@
 #include <math.h>
 
 // Print progress to console while loading (large models)
-#define OBJL_CONSOLE_OUTPUT
+// #define OBJL_CONSOLE_OUTPUT
 
 // Namespace: OBJL
 //
@@ -1160,3 +1162,5 @@ namespace objl
         }
     };
 }
+
+#endif

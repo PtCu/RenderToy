@@ -1,3 +1,4 @@
+
 const float data_SquareVertexPos[36] = {
     -0.5,
     -0.5,

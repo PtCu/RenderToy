@@ -21,23 +21,24 @@
 //  DEALINGS IN THE SOFTWARE.
 
 #include "triMesh.h"
+#include <OBJ_Loader.hpp>
 
 namespace platinum
 {
-    TriMesh::TriMesh(const std::string &filename, std::shared_ptr<Material> m ): Object(m)
+    TriMesh::TriMesh(const std::string &filename, std::shared_ptr<Material> m) : Object(m)
     {
-        objl::Loader loader;
-        loader.LoadFile(filename);
+        loader = new objl::Loader();
+        loader->LoadFile(filename);
         area = 0;
-        assert(loader.LoadedMeshes.size() == 1);
-        auto mesh = loader.LoadedMeshes[0];
+        assert(loader->LoadedMeshes.size() == 1);
+        auto mesh = loader->LoadedMeshes[0];
 
         glm::vec3 min_vert = glm::vec3{std::numeric_limits<float>::infinity(),
-                                     std::numeric_limits<float>::infinity(),
-                                     std::numeric_limits<float>::infinity()};
+                                       std::numeric_limits<float>::infinity(),
+                                       std::numeric_limits<float>::infinity()};
         glm::vec3 max_vert = glm::vec3{-std::numeric_limits<float>::infinity(),
-                                     -std::numeric_limits<float>::infinity(),
-                                     -std::numeric_limits<float>::infinity()};
+                                       -std::numeric_limits<float>::infinity(),
+                                       -std::numeric_limits<float>::infinity()};
         for (int i = 0; i < mesh.Vertices.size(); i += 3)
         {
             std::array<glm::vec3, 3> face_vertices;
@@ -45,15 +46,15 @@ namespace platinum
             for (int j = 0; j < 3; j++)
             {
                 auto vert = glm::vec3(mesh.Vertices[i + j].Position.X,
-                                     mesh.Vertices[i + j].Position.Y,
-                                     mesh.Vertices[i + j].Position.Z);
+                                      mesh.Vertices[i + j].Position.Y,
+                                      mesh.Vertices[i + j].Position.Z);
                 face_vertices[j] = vert;
                 min_vert = glm::min(min_vert, vert);
                 max_vert = glm::max(max_vert, vert);
             }
 
             triangles.emplace_back(std::make_shared<Triangle>(face_vertices[0], face_vertices[1],
-                                   face_vertices[2],m));
+                                                              face_vertices[2], m));
         }
 
         bounding_box = AABB(min_vert, max_vert);
@@ -73,12 +74,12 @@ namespace platinum
         }
         isValid = true;
     }
-    
 
     Intersection TriMesh::Intersect(std::shared_ptr<Ray> &r)
     {
 
         Intersection rec;
+        int i = 0;
         for (auto &tri : triangles)
         {
             auto tmp_inter = tri->Intersect(r);
@@ -86,8 +87,10 @@ namespace platinum
             if (tmp_inter.happened && (rec.happened == false || tmp_inter.ray->GetMaxTime() < rec.ray->GetMaxTime()))
             {
                 // inter = std::move(tmp_inter);
+                visited[i] = 1;
                 rec = tmp_inter;
             }
+            i++;
         }
         return rec;
     }

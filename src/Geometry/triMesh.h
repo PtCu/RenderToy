@@ -25,8 +25,13 @@
 
 #include "../Core/bvh.h"
 #include "../Core/vertex.h"
-#include <OBJ_Loader.hpp>
+// #include <OBJ_Loader.hpp>
 #include "triangle.h"
+
+namespace objl
+{
+    class Loader;
+}
 
 namespace platinum
 {
@@ -35,7 +40,7 @@ namespace platinum
     public:
         TriMesh(const std::string &filename, std::shared_ptr<Material> m = NULL);
         TriMesh(const std::vector<Vertex> &vertexs, std::shared_ptr<Material> m = NULL);
-        virtual Intersection Intersect(std::shared_ptr<Ray> &r) ;
+        virtual Intersection Intersect(std::shared_ptr<Ray> &r);
         virtual AABB GetBoundingBox() const { return bounding_box; }
         inline bool IsValid() const { return isValid; };
         std::vector<std::shared_ptr<Triangle>> &GetTriangles() { return triangles; }
@@ -45,7 +50,9 @@ namespace platinum
         bool isValid;
         std::vector<std::shared_ptr<Triangle>> triangles;
         AABB bounding_box;
-        BVHAccel bvh_accel;
+        bool visited[20];
+        //BVHAccel bvh_accel;
+        objl::Loader *loader;
     };
 }
 

@@ -24,7 +24,6 @@
 #define CORE_CAMERA_H_
 
 #include "defines.h"
-#include <glm/glm.hpp>
 #include "../Math/rand.h"
 #include "material.h"
 
@@ -39,8 +38,7 @@ namespace platinum
         Camera(glm::vec3 lookfrom, glm::vec3 lookat, glm::vec3 vup, float vfov, float aspect, float aperture, float focusDist);
         virtual ~Camera() = default;
         virtual std::shared_ptr<Ray> GetRay(float s, float t) const;
-        
-
+    
     protected:
         glm::vec3 origin;
         glm::vec3 lower_left_corner;
