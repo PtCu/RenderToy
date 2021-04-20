@@ -31,19 +31,19 @@ namespace platinum
         e2 = B.pos - C.pos;
         normal = glm::normalize(glm::cross(e1, e2));
         area = 0.5f * glm::cross(e1, e2).length();
-        glm::vec3 minP = min(min(A.pos, B.pos), C.pos);
-        glm::vec3 maxP = max(max(A.pos, B.pos), C.pos);
-        for (size_t i = 0; i < 3; i++)
-        {
-            if (minP[i] == maxP[i])
-            {
-                minP[i] -= 0.001f;
-                maxP[i] += 0.001f;
-            }
-        }
-        bounding_box = AABB(minP, maxP);
-        // bounding_box = AABB(A.pos, B.pos);
-        // bounding_box.Expand(c.pos);
+        // glm::vec3 minP = min(min(A.pos, B.pos), C.pos);
+        // glm::vec3 maxP = max(max(A.pos, B.pos), C.pos);
+        // for (size_t i = 0; i < 3; i++)
+        // {
+        //     if (minP[i] == maxP[i])
+        //     {
+        //         minP[i] -= 0.001f;
+        //         maxP[i] += 0.001f;
+        //     }
+        // }
+        // bounding_box = AABB(minP, maxP);
+        bounding_box = AABB(A.pos, B.pos);
+        bounding_box.Expand(c.pos);
     }
     glm::vec4 Triangle::intersectRay(const glm::vec3 &o, const glm::vec3 &d)
     {

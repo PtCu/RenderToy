@@ -58,6 +58,7 @@ namespace platinum
         }
 
         bounding_box = AABB(min_vert, max_vert);
+        bvh_accel = std::make_unique<BVHAccel>(triangles);
     }
     TriMesh::TriMesh(const std::vector<Vertex> &vertexs, std::shared_ptr<Material> material) : Object(material)
     {
@@ -73,25 +74,32 @@ namespace platinum
             bounding_box.Expand(triangle->GetBoundingBox());
         }
         isValid = true;
+        bvh_accel = std::make_unique<BVHAccel>(triangles);
     }
 
     Intersection TriMesh::Intersect(std::shared_ptr<Ray> &r)
     {
+        Intersection intersec;
 
-        Intersection rec;
-        int i = 0;
-        for (auto &tri : triangles)
+        if (bvh_accel)
         {
-            auto tmp_inter = tri->Intersect(r);
-
-            if (tmp_inter.happened && (rec.happened == false || tmp_inter.ray->GetMaxTime() < rec.ray->GetMaxTime()))
-            {
-                // inter = std::move(tmp_inter);
-                visited[i] = 1;
-                rec = tmp_inter;
-            }
-            i++;
+            intersec = bvh_accel->RayCast(r);
         }
-        return rec;
+        return intersec;
+        // Intersection rec;
+        // int i = 0;
+        // for (auto &tri : triangles)
+        // {
+        //     auto tmp_inter = tri->Intersect(r);
+
+        //     if (tmp_inter.happened && (rec.happened == false || tmp_inter.ray->GetMaxTime() < rec.ray->GetMaxTime()))
+        //     {
+        //         // inter = std::move(tmp_inter);
+        //         visited[i] = 1;
+        //         rec = tmp_inter;
+        //     }
+        //     i++;
+        // }
+        // return rec;
     }
 }

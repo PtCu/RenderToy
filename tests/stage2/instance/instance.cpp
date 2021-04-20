@@ -82,29 +82,29 @@ void createWorld(World &world)
     // tfmBottom = glm::rotate(tfmBottom, Pi / 2, vec3(1, 0, 0));
     // world.AddObject(make_shared<Instance>(tfmBottom, square, grayMat));
 
-    // mat4 tfmTop(1.0f);
-    // tfmTop = glm::translate(tfmTop, vec3(0, 3, 0));
-    // tfmTop = glm::scale(tfmTop, vec3(6));
-    // tfmTop = glm::rotate(tfmTop, Pi / 2, vec3(1, 0, 0));
-    // world.AddObject(make_shared<Instance>(tfmTop, square, grayMat));
+    mat4 tfmTop(1.0f);
+    tfmTop = glm::translate(tfmTop, vec3(0, 3, 0));
+    tfmTop = glm::scale(tfmTop, vec3(6));
+    tfmTop = glm::rotate(tfmTop, Pi / 4, vec3(1, 0, 0));
+    world.AddObject(make_shared<Instance>(tfmTop, square, grayMat));
 
     // mat4 tfmBack(1.0f);
     // tfmBack = glm::translate(tfmBack, vec3(0, 0, -3));
     // tfmBack = glm::scale(tfmBack, vec3(6));
     // world.AddObject(make_shared<Instance>(tfmBack, square, grayMat));
 
-    mat4 tfmCube1(1.0f);
-    tfmCube1 = glm::translate(tfmCube1, vec3(1.1, -2.2, 1.5));
-    tfmCube1 = glm::scale(tfmCube1, vec3(1.6));
-    tfmCube1 = glm::rotate(tfmCube1, -Pi / 12, vec3(0, 1, 0));
-    world.AddObject(make_shared<Instance>(tfmCube1, cube, grayMat));
+    // mat4 tfmCube1(1.0f);
+    // tfmCube1 = glm::translate(tfmCube1, vec3(1.1, -2.2, 1.5));
+    // tfmCube1 = glm::scale(tfmCube1, vec3(1.6));
+    // tfmCube1 = glm::rotate(tfmCube1, -Pi / 12, vec3(0, 1, 0));
+    // world.AddObject(make_shared<Instance>(tfmCube1, cube, grayMat));
 
 
-    mat4 tfmCube2(1.0f);
-    tfmCube2 = glm::translate(tfmCube2, vec3(-1.1, -1, -0.5));
-    tfmCube2 = scale(tfmCube2, vec3(1.6, 4, 1.6));
-    tfmCube2 = glm::rotate(tfmCube2, Pi / 9, vec3(0, 1, 0));
-    world.AddObject(make_shared<Instance>(tfmCube2, cube, grayMat));
+    // mat4 tfmCube2(1.0f);
+    // tfmCube2 = glm::translate(tfmCube2, vec3(-1.1, -1, -0.5));
+    // tfmCube2 = scale(tfmCube2, vec3(1.6, 4, 1.6));
+    // tfmCube2 = glm::rotate(tfmCube2, Pi / 9, vec3(0, 1, 0));
+    // world.AddObject(make_shared<Instance>(tfmCube2, cube, grayMat));
 
 }
 

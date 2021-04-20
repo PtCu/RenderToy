@@ -40,6 +40,7 @@ namespace platinum
 
     void Ray::Transform(const glm::mat4 &transform)
     {
+        this->isTransformed = true;
         this->direction = glm::mat3(transform) * direction;
         auto originQ = transform * glm::vec4(origin, 1.0f);
         this->origin = glm::vec3(originQ) / originQ.w;
