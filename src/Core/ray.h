@@ -38,9 +38,10 @@ namespace platinum
             color = glm::vec3(1.0);
             inv_d = {1.0f / d.x, 1.0f / d.y, 1.0f / d.z};
             dirIsNeg = {d.x < 0, d.y < 0, d.z < 0};
-            isTransformed = false;
+           
         }
         virtual ~Ray() = default;
+        void Init(const glm::vec3 &o, const glm::vec3 &d);
         void Update(const glm::vec3 &o, const glm::vec3 &d, const glm::vec3 &a);
 
         glm::vec3 GetOrigin() const { return origin; }
@@ -74,7 +75,7 @@ namespace platinum
         glm::vec3 color;
         float t_min, t_max;
         std::array<int, 3> dirIsNeg;
-        bool isTransformed;
+       
     };
 } // namespace platinum
 

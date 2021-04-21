@@ -35,16 +35,17 @@ namespace platinum
         //For test
         Camera();
        
-        Camera(glm::vec3 lookfrom, glm::vec3 lookat, glm::vec3 vup, float vfov, float aspect, float aperture, float focusDist);
+        Camera(const glm::vec3& lookfrom,const glm::vec3& lookat, const glm::vec3& vup, float vfov, float aspect, float aperture, float focusDist);
         virtual ~Camera() = default;
         virtual std::shared_ptr<Ray> GetRay(float s, float t) const;
-    
+
     protected:
+        void GetRay(float s, float t, std::shared_ptr<Ray> ray) const;
         glm::vec3 origin;
         glm::vec3 lower_left_corner;
         glm::vec3 horizontal;
         glm::vec3 vertical;
-        glm::vec3 u, v, w; //A set of orthonormal basis, to describe orentation of camera.
+        glm::vec3 front, up, right; //A set of orthonormal basis, to describe orentation of camera.
         float lens_radius;
     };
 

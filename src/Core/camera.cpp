@@ -32,19 +32,34 @@ namespace platinum
         vertical = glm::vec3(0.0, -2.0, 0.0);
         origin = glm::vec3(0.0, 0.0, 0.0);
     }
-    Camera::Camera(glm::vec3 lookfrom, glm::vec3 lookat, glm::vec3 vup, float vfov, float aspect, float aperture, float focusDist)
+    Camera::Camera(const glm::vec3 &lookfrom, const glm::vec3 &lookat, const glm::vec3 &vup, float vfov, float aspect, float aperture, float focus_dist):
+    origin(lookfrom),lens_radius(aperture)
     {
-        lens_radius = aperture / 2;
-        float theta = vfov * Pi / 180;
-        float half_height = tan(theta / 2);
-        float half_width = aspect * half_height;
+        // lens_radius = aperture / 2;
+        // float theta = vfov * PI / 180;
+        // float half_height = tan(theta / 2);
+        // float half_width = aspect * half_height;
+        // origin = lookfrom;
+        // w = glm::normalize(glm::vec3(lookfrom - lookat));
+        // u = glm::normalize(glm::cross(vup, w));
+        // v = glm::cross(w, u);
+        // lower_left_corner = origin - half_width * focusDist * u - half_height * focusDist * v - focusDist * w;
+        // horizontal = 2 * half_width * focusDist * u;
+        // vertical = 2 * half_height * focusDist * v;
+
+        if (focus_dist == -1.0f)
+            focus_dist = glm::distance(lookfrom, lookat);
+
+        float theta = vfov / 180.0f * PI;
+        float height = 2 * focus_dist * tan(theta / 2);
+        float width = aspect * height;
         origin = lookfrom;
-        w = glm::normalize(glm::vec3(lookfrom - lookat));
-        u = glm::normalize(glm::cross(vup, w));
-        v = glm::cross(w, u);
-        lower_left_corner = origin - half_width * focusDist * u - half_height * focusDist * v - focusDist * w;
-        horizontal = 2 * half_width * focusDist * u;
-        vertical = 2 * half_height * focusDist * v;
+        front = glm::normalize(lookat - lookfrom);
+        right = glm::normalize(glm::cross(vup, -front));
+        up = glm::cross(-front, right);
+        lower_left_corner = origin + focus_dist * front - width / 2 * right - height / 2 * up;
+        horizontal = width * right;
+        vertical = height * up;
     }
 
     std::shared_ptr<Ray> Camera::GetRay(float s, float t) const
@@ -53,5 +68,11 @@ namespace platinum
                                          lower_left_corner + s * horizontal + t * vertical - origin);
         return ray;
     }
-
+    void Camera::GetRay(float s, float t, std::shared_ptr<Ray> ray) const
+    {
+        glm::vec2 rd = lens_radius * Random::RandomInUnitDisk();
+        glm::vec3 _origin = origin + rd.x * right + rd.y * up;
+        glm::vec3 dir = lower_left_corner + s * horizontal + t * vertical - origin;
+        ray->Init(origin, dir);
+    }
 }

@@ -62,9 +62,21 @@ namespace platinum
     }
     void AABB::Expand(const AABB &aabb)
     {
-        p_min = glm::min(p_min, aabb.p_min);
-        p_max = glm::max(p_max, aabb.p_max);
-        is_valid = true;
+        if (aabb.is_valid)
+        {
+            if (is_valid)
+            {
+                p_min = glm::min(p_min, aabb.p_min);
+                p_max = glm::max(p_max, aabb.p_max);
+            }
+            else{
+                p_min = aabb.GetMin();
+                p_max = aabb.GetMax();
+                is_valid = true;
+            }
+        }
+
+        
     }
     void AABB::Expand(const glm::vec3 &p)
     {

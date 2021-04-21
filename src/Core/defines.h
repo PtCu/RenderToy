@@ -53,7 +53,7 @@ namespace platinum
 #endif
 
     static constexpr float ShadowEpsilon = 0.0001f;
-    static constexpr float Pi = 3.14159265358979323846f;
+    static constexpr float PI = 3.14159265358979323846f;
     static constexpr float InvPi = 0.31830988618379067154f;
     static constexpr float Inv2Pi = 0.15915494309189533577f;
     static constexpr float Inv4Pi = 0.07957747154594766788f;

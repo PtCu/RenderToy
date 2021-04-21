@@ -34,6 +34,7 @@ namespace platinum
     {
         if (former == NULL)
         {
+            bounding_box = AABB();
             return;
         }
         auto childBox = former->GetBoundingBox();
@@ -46,7 +47,8 @@ namespace platinum
         glm::vec3 srcP[2] = {childBox.GetMin(), childBox.GetMax()};
         double max_t = std::numeric_limits<double>::max();
         double min_t = std::numeric_limits<double>::lowest();
-        glm::vec3 min_p = glm::vec3(max_t), max_p(min_t);
+        glm::vec3 min_p = glm::vec3(max_t);
+        glm::vec3 max_p = glm::vec3(min_t);
         for (size_t i = 0; i < 8; i++)
         {
             std::bitset<3> binVal(i);
@@ -60,7 +62,7 @@ namespace platinum
         bounding_box = AABB(min_p, max_p);
     }
 
-    Intersection Instance::Intersect(std::shared_ptr<Ray> &r) 
+    Intersection Instance::Intersect(std::shared_ptr<Ray> &r)
     {
         Intersection rec;
         if (former == NULL)

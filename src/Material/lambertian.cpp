@@ -25,7 +25,7 @@ namespace platinum
 {
     bool Lambertian::Scatter(Intersection &rec) const
     {
-        auto reflected = glm::vec3(rec.vert.normal) + Random::RandomInUnitDisk();
+        auto reflected = glm::vec3(rec.vert.normal) + Random::RandomInUnitSphere();
         auto attenuation = albedo->GetValue(rec.vert.u, rec.vert.v, rec.vert.pos);
         rec.ray->Update(rec.vert.pos, reflected, attenuation);
         return true;

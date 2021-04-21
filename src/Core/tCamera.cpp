@@ -24,12 +24,16 @@
 
 namespace platinum
 {
-     std::shared_ptr<Ray> TCamera::GetRay(float s, float t) const
+    std::shared_ptr<Ray> TCamera::GetRay(float s, float t) const
     {
-        glm::vec3 rd = lens_radius * Random::RandomInUnitDisk();
-        glm::vec3 offset = u * rd.x + v * rd.y;
+        auto tray = std::make_shared<TRay>();
         float time = time0 + Random::RandomInUnitFloat() * (time1 - time0);
-        auto ray = std::make_shared<TRay>(origin + offset, lower_left_corner + s * horizontal + t * vertical - origin - offset, time);
-        return ray;
+        Camera::GetRay(s, t, tray);
+        // glm::vec3 rd = lens_radius * Random::RandomInUnitDisk();
+        // glm::vec3 offset = u * rd.x + v * rd.y;
+        // float time = time0 + Random::RandomInUnitFloat() * (time1 - time0);
+        // auto ray = std::make_shared<TRay>(origin + offset, lower_left_corner + s * horizontal + t * vertical - origin - offset, time);
+        tray->SetTime(time);
+        return tray;
     }
 }

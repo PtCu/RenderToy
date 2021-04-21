@@ -24,6 +24,15 @@
 
 namespace platinum
 {
+    void Ray::Init(const glm::vec3 &o, const glm::vec3 &d)
+    {
+        this->origin = o;
+        this->direction = d;
+        this->inv_d = {1.0f / d.x, 1.0f / d.y, 1.0f / d.z};
+        this->dirIsNeg = {d.x < 0, d.y < 0, d.z < 0};
+        this->color=glm::vec3(1.0);
+        this->t_max = std::numeric_limits<float>::max();
+    }
     void Ray::Update(const glm::vec3 &o, const glm::vec3 &d, const glm::vec3 &a)
     {
         this->origin = o;
@@ -40,7 +49,6 @@ namespace platinum
 
     void Ray::Transform(const glm::mat4 &transform)
     {
-        this->isTransformed = true;
         this->direction = glm::mat3(transform) * direction;
         auto originQ = transform * glm::vec4(origin, 1.0f);
         this->origin = glm::vec3(originQ) / originQ.w;

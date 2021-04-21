@@ -30,6 +30,7 @@ namespace platinum
     class TRay : public Ray
     {
     public:
+        TRay() {}
         TRay(const glm::vec3 &o, const glm::vec3 &d, float ti = 0.0) : Ray(o, d), _time(ti) {}
         virtual ~TRay() = default;
         void SetTime(float t) { _time = t; }

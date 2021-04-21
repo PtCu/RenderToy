@@ -43,8 +43,6 @@ BVHAccel::BVHAccel(vector<shared_ptr<Object>> &p,
         root = recursiveBuild(p.begin(), p.end());
     //TODO:
     //Other building method
-
-
 }
 BVHAccel::BVHAccel(vector<shared_ptr<Object>>::iterator &begin, vector<shared_ptr<Object>>::iterator &end,
                    SplitMethod splitMethod)
@@ -61,8 +59,6 @@ BVHAccel::BVHAccel(vector<shared_ptr<Object>>::iterator &begin, vector<shared_pt
         root = recursiveBuild(begin, end);
     //TODO:
     //Other building method
-
-
 }
 
 shared_ptr<BVH_Node> BVHAccel::recursiveBuild(vector<shared_ptr<Object>>::iterator begin, vector<shared_ptr<Object>>::iterator end)
@@ -139,10 +135,49 @@ Intersection BVHAccel::RayCast(std::shared_ptr<Ray> &r) const
     Intersection isect;
     if (!root)
         return isect;
-    isect = BVHAccel::getIntersection(r);
+    // isect = BVHAccel::getIntersection(r);
+    isect = BVHAccel::getIntersection_rec(root, r);
     return isect;
 }
+Intersection BVHAccel::getIntersection_rec(std::shared_ptr<BVH_Node> node, std::shared_ptr<Ray> &r) const
+{
+    // TODO Traverse the BVH to find intersection
+    //如果和盒子没相交，就必不可能和盒子内的物体相交
+    if (!node->bounding_box.IsHit(r))
+        return Intersection();
 
+    if (!node->left && !node->right)
+    {
+        Intersection tmp_inter, inter;
+        for (auto &obj : node->objects)
+        {
+            tmp_inter = obj->Intersect(r);
+
+            if (tmp_inter.happened && (inter.happened == false || tmp_inter.ray->GetMaxTime() < inter.ray->GetMaxTime()))
+            {
+                // inter = std::move(tmp_inter);
+                inter = tmp_inter;
+            }
+        }
+        return inter;
+    }
+
+    Intersection hit1, hit2;
+    hit1 = getIntersection_rec(node->left, r);
+    hit2 = getIntersection_rec(node->right, r);
+    if (!hit1.happened)
+    {
+        return hit2;
+    }
+    else if (!hit2.happened)
+    {
+        return hit1;
+    }
+    else
+    {
+        return hit1.ray->GetMaxTime() < hit2.ray->GetMaxTime() ? hit1 : hit2;
+    }
+}
 Intersection BVHAccel::getIntersection(std::shared_ptr<Ray> &r) const
 {
     // TODO Traverse the BVH to find intersection
@@ -173,10 +208,11 @@ Intersection BVHAccel::getIntersection(std::shared_ptr<Ray> &r) const
                 }
             }
         }
-        if (p->left)
-            s.push(p->left);
+
         if (p->right)
             s.push(p->right);
+        if (p->left)
+            s.push(p->left);
     }
     return inter;
 }

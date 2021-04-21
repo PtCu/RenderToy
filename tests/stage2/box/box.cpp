@@ -49,13 +49,13 @@ void createWorld(World &world)
     // mat4 tfmCube1(1.0f);
     // tfmCube1 = glm::translate(tfmCube1, vec3(1.1, 2.2, 1.5));
     // tfmCube1 = glm::scale(tfmCube1, vec3(1.6));
-    // tfmCube1 = glm::rotate(tfmCube1, Pi / 12, vec3(0, 1, 0));
+    // tfmCube1 = glm::rotate(tfmCube1, PI / 12, vec3(0, 1, 0));
     // world.AddObject(make_shared<Instance>(tfmCube1, cube, grayMat));
 
     // mat4 tfmCube2(1.0f);
     // tfmCube2 = glm::translate(tfmCube2, vec3(-1.1, 1, -0.5));
     // tfmCube2 = scale(tfmCube2, vec3(1.6, 4, 1.6));
-    // tfmCube2 = glm::rotate(tfmCube2, -Pi / 9, vec3(0, 1, 0));
+    // tfmCube2 = glm::rotate(tfmCube2, -PI / 9, vec3(0, 1, 0));
     // world.AddObject(make_shared<Instance>(tfmCube2, cube, grayMat));
 }
 

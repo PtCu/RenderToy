@@ -69,8 +69,8 @@ namespace platinum
     {
         float phi = atan2(p.z, p.x);
         float theta = asin(p.y);
-        u = 1 - (phi + Pi) / (2 * Pi);
-        v = (theta + Pi / 2) / Pi;
+        u = 1 - (phi + PI) / (2 * PI);
+        v = (theta + PI / 2) / PI;
     }
 
 } // namespace platinum

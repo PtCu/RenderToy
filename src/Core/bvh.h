@@ -62,7 +62,7 @@ namespace platinum
     protected:
         // BVHAccel Private Methods
         std::shared_ptr<BVH_Node> recursiveBuild(std::vector<std::shared_ptr<Object>>::iterator begin, std::vector<std::shared_ptr<Object>>::iterator end);
-
+        Intersection BVHAccel::getIntersection_rec(std::shared_ptr<BVH_Node>node,std::shared_ptr<Ray> &r) const;
         Intersection getIntersection(std::shared_ptr<Ray> &r) const;
 
         // BVHAccel Private Data

@@ -323,7 +323,7 @@ void createWorld(World &world)
     mat4 tfmRight(1.0f);
     tfmRight = glm::translate(tfmRight, vec3(3, 0, 0));
     tfmRight = glm::scale(tfmRight, vec3(6));
-    tfmRight = glm::rotate(tfmRight, -Pi / 2, vec3(0, 1, 0));
+    tfmRight = glm::rotate(tfmRight, -PI / 2, vec3(0, 1, 0));
     for (auto a : square->GetTriangles())
     {
         world.AddObject(make_shared<Instance>(tfmRight, a, redMat));
@@ -332,7 +332,7 @@ void createWorld(World &world)
     mat4 tfmLeft(1.0f);
     tfmLeft = glm::translate(tfmLeft, vec3(-3, 0, 0));
     tfmLeft = glm::scale(tfmLeft, vec3(6));
-    tfmLeft = glm::rotate(tfmLeft, Pi / 2, vec3(0, 1, 0));
+    tfmLeft = glm::rotate(tfmLeft, PI / 2, vec3(0, 1, 0));
     for (auto a : square->GetTriangles())
     {
         world.AddObject(make_shared<Instance>(tfmLeft, a, greenMat));
@@ -341,7 +341,7 @@ void createWorld(World &world)
     mat4 tfmBottom(1.0f);
     tfmBottom = glm::translate(tfmBottom, vec3(0, -3, 0));
     tfmBottom = glm::scale(tfmBottom, vec3(6));
-    tfmBottom = glm::rotate(tfmBottom, -Pi / 2, vec3(1, 0, 0));
+    tfmBottom = glm::rotate(tfmBottom, -PI / 2, vec3(1, 0, 0));
     for (auto a : square->GetTriangles())
     {
         world.AddObject(make_shared<Instance>(tfmBottom, a, grayMat));
@@ -350,7 +350,7 @@ void createWorld(World &world)
     mat4 tfmTop(1.0f);
     tfmTop = glm::translate(tfmTop, vec3(0, 3, 0));
     tfmTop = glm::scale(tfmTop, vec3(6));
-    tfmTop = glm::rotate(tfmTop, Pi / 2, vec3(1, 0, 0));
+    tfmTop = glm::rotate(tfmTop, PI / 2, vec3(1, 0, 0));
     for (auto a : square->GetTriangles())
     {
         world.AddObject(make_shared<Instance>(tfmTop, a, grayMat));
@@ -367,7 +367,7 @@ void createWorld(World &world)
     mat4 tfmLight(1.0f);
     tfmLight = glm::translate(tfmLight, vec3(0, 2.999, 0));
     tfmLight = glm::scale(tfmLight, vec3(2));
-    tfmLight = glm::rotate(tfmLight, Pi / 2, vec3(1, 0, 0));
+    tfmLight = glm::rotate(tfmLight, PI / 2, vec3(1, 0, 0));
     for (auto a : square->GetTriangles())
     {
         world.AddObject(make_shared<Instance>(tfmLight, a, lightMat));
@@ -376,7 +376,7 @@ void createWorld(World &world)
     mat4 tfmCube1(1.0f);
     tfmCube1 = glm::translate(tfmCube1, vec3(1.1, -2.2, 1.5));
     tfmCube1 = glm::scale(tfmCube1, vec3(1.6));
-    tfmCube1 = glm::rotate(tfmCube1, -Pi / 12, vec3(0, 1, 0));
+    tfmCube1 = glm::rotate(tfmCube1, -PI / 12, vec3(0, 1, 0));
     for (auto a : cube->GetTriangles())
     {
         world.AddObject(make_shared<Volume>(make_shared<Instance>(tfmCube1, a, cubeMat), 1.65f));
@@ -385,7 +385,7 @@ void createWorld(World &world)
     mat4 tfmCube2(1.0f);
     tfmCube2 = glm::translate(tfmCube2, vec3(-1.1, -1, -0.5));
     tfmCube2 = glm::scale(tfmCube2, vec3(1.6, 4, 1.6));
-    tfmCube2 = glm::rotate(tfmCube2, Pi / 9, vec3(0, 1, 0));
+    tfmCube2 = glm::rotate(tfmCube2, PI / 9, vec3(0, 1, 0));
     for (auto a : cube->GetTriangles())
     {
         world.AddObject(make_shared<Volume>(make_shared<Instance>(tfmCube2, a, cubeMat), 1.0f));
@@ -397,7 +397,7 @@ int main()
     int nx = 200;
     int ny = 200;
     int ns = 10;
-    World world;
+    World world(true);
     createWorld(world);
     vec3 lookfrom(0, 0, 10);
     vec3 lookat(0, 0, 0);
