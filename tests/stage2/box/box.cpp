@@ -11,7 +11,9 @@
 #include "../src/Core/vertex.h"
 #include "../src/Texture/noiseTexture.h"
 #include "../src/Geometry/triMesh.h"
+#include "../src/Material/isotropic.h"
 #include "../src/Geometry/instance.h"
+#include "../src/Geometry/volume.h"
 #include <glm/gtc/matrix_transform.hpp>
 #include "box.h"
 using namespace platinum;
@@ -36,15 +38,15 @@ void createWorld(World &world)
     auto blueMat = make_shared<Lambertian>(make_shared<ConstTexture>(vec3(0.1f, 0.1f, 0.73f)));
     auto lightMat = make_shared<Light>(vec3(10.f));
     auto cubeMat = make_shared<Lambertian>(make_shared<ConstTexture>(vec3(1.0f, 1.0f, 1.0f)));
-
-    auto cube = make_shared<TriMesh>(cubeVerts, redMat);
+    auto volMat = make_shared<Isotropic>(make_shared<ConstTexture>(vec3(0.65f, 0.05f, 0.05f)));
+    auto cube = make_shared<TriMesh>(cubeVerts);
     if (!cube->IsValid())
     {
         printf("ERROR: cube is invalid.\n");
         exit(1);
     }
-
-    world.AddObject(cube);
+    auto vol_cube = make_shared<Volume>(cube, 1.6f, volMat);
+    world.AddObject(vol_cube);
 
     // mat4 tfmCube1(1.0f);
     // tfmCube1 = glm::translate(tfmCube1, vec3(1.1, 2.2, 1.5));

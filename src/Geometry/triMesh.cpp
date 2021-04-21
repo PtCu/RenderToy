@@ -67,6 +67,7 @@ namespace platinum
             isValid = false;
             return;
         }
+        
         for (size_t i = 0; i < vertexs.size(); i += 3)
         {
             auto triangle = std::make_shared<Triangle>(vertexs[i], vertexs[i + 1], vertexs[i + 2], material);
@@ -85,9 +86,14 @@ namespace platinum
         {
             intersec = bvh_accel->RayCast(r);
         }
+        if (intersec.happened)
+        {
+            int a = 1;
+            int b = 1;
+        }
         return intersec;
         // Intersection rec;
-        // int i = 0;
+
         // for (auto &tri : triangles)
         // {
         //     auto tmp_inter = tri->Intersect(r);
@@ -95,10 +101,10 @@ namespace platinum
         //     if (tmp_inter.happened && (rec.happened == false || tmp_inter.ray->GetMaxTime() < rec.ray->GetMaxTime()))
         //     {
         //         // inter = std::move(tmp_inter);
-        //         visited[i] = 1;
+
         //         rec = tmp_inter;
         //     }
-        //     i++;
+
         // }
         // return rec;
     }
