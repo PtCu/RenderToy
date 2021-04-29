@@ -35,11 +35,11 @@ namespace platinum
         virtual bool Scatter(Intersection &rec) const = 0;
         virtual ~Material() = default;
         // sample a ray by Material properties
-        inline glm::vec3 sample(const glm::vec3 &wi, const glm::vec3 &N);
+        virtual glm::vec3 sample(const glm::vec3 &wi, const glm::vec3 &N);
         // given a ray, calculate the PdF of this ray
-        inline float pdf(const glm::vec3 &wi, const glm::vec3 &wo, const glm::vec3 &N);
+        virtual float pdf(const glm::vec3 &wi, const glm::vec3 &wo, const glm::vec3 &N);
         // given a ray, calculate the contribution of this ray
-        inline glm::vec3 eval(const glm::vec3 &wi, const glm::vec3 &wo, const glm::vec3 &N);
+        virtual glm::vec3 eval(const glm::vec3 &wi, const glm::vec3 &wo, const glm::vec3 &N);
 
     protected:
         bool Refract(const glm::vec3 &v, const glm::vec3 &n, float ni_over_nt, glm::vec3 &refracted) const
