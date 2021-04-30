@@ -40,11 +40,11 @@ namespace platinum
         }
         virtual bool Scatter(Intersection &rec) const;
           // sample a ray by Material properties
-        virtual glm::vec3 sample(const glm::vec3 &wi, const glm::vec3 &N)=0;
+        virtual glm::vec3 Sample(const glm::vec3 &wi, const glm::vec3 &N)=0;
         // given a ray, calculate the PdF of this ray
-        virtual float pdf(const glm::vec3 &wi, const glm::vec3 &wo, const glm::vec3 &N)=0;
+        virtual float Pdf(const glm::vec3 &wo, Intersection &rec)=0;
         // given a ray, calculate the contribution of this ray
-        virtual glm::vec3 eval(const glm::vec3 &wi, const glm::vec3 &wo, const glm::vec3 &N)=0;
+        virtual glm::vec3 Eval(const glm::vec3 &wo, Intersection &rec)=0;
     private:
         std::shared_ptr<Texture> albedo;
     };
