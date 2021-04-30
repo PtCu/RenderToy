@@ -57,6 +57,7 @@ namespace platinum
         std::unique_ptr<BVHAccel> bvh_accel;
         std::vector<std::shared_ptr<Object>> objects;
         bool default_light;
+        float RussianRoulette;
     };
 
 } // namespace platinum

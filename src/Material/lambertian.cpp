@@ -30,5 +30,41 @@ namespace platinum
         rec.ray->Update(rec.vert.pos, reflected, attenuation);
         return true;
     }
+    // sample a ray by Material properties
+    glm::vec3 Lambertian::sample(const glm::vec3 &wi, const glm::vec3 &N)
+    {
+         // uniform sample on the hemisphere
+         float x_1 = Random::RandomInUnitFloat(), x_2 = Random::RandomInUnitFloat();
+         float z = std::fabs(1.0f - 2.0f * x_1);
+         float r = std::sqrt(1.0f - z * z), phi = 2 * PI * x_2;
+         glm::vec3 locay_ray(r * std::cos(phi), r * std::sin(phi), z);
+         
+    }
+    // given a ray, calculate the PdF of this ray
+    float Lambertian::pdf(const glm::vec3 &wi, const glm::vec3 &wo, const glm::vec3 &N)
+    {
+        float cosine = glm::dot(wo, N);
+        if (cosine > 0.0f)
+        {
+            return 0.5f / PI;
+        }
+        else
+        {
+            return 0.0f;
+        }
+    }
+    // given a ray, calculate the contribution of this ray
+    glm::vec3 Lambertian::eval(const glm::vec3 &wi, const glm::vec3 &wo, const glm::vec3 &N)
+    {
+        // calculate the contribution of diffuse   model
+        float cosalpha = glm::dot(N, wo);
+        if (cosalpha > 0.0f)
+        {
+        }
+        else
+        {
+            return glm::vec3(0.0f);
+        }
+    }
 
 }
