@@ -33,14 +33,14 @@ namespace platinum
     // sample a ray by Material properties
     glm::vec3 Lambertian::Sample(const glm::vec3 &wi, const glm::vec3 &N)
     {
-         // uniform sample on the hemisphere
-         // See chapter 6.
-         // x_1 is for phi, x_2 is for theta
-         float x_1 = Random::RandomInUnitFloat(), x_2 = Random::RandomInUnitFloat();
-         float cos_theta = std::fabs(1.0f - 2.0f * x_1);
-         float r = std::sqrt(1.0f - cos_theta * cos_theta), phi = 2 * PI * x_2;
-         glm::vec3 local_ray(r * std::cos(phi), r * std::sin(phi), cos_theta);
-         return toWorld(local_ray, N);
+        // uniform sample on the hemisphere
+        // See chapter 6.
+        // x_1 is for phi, x_2 is for theta
+        float x_1 = Random::RandomInUnitFloat(), x_2 = Random::RandomInUnitFloat();
+        float cos_theta = std::fabs(1.0f - 2.0f * x_1);
+        float r = std::sqrt(1.0f - cos_theta * cos_theta), phi = 2 * PI * x_2;
+        glm::vec3 local_ray(r * std::cos(phi), r * std::sin(phi), cos_theta);
+        return toWorld(local_ray, N);
     }
     // given a ray, calculate the PdF of this ray
     float Lambertian::Pdf(const glm::vec3 &wo, Intersection &rec)
@@ -48,7 +48,7 @@ namespace platinum
         float cosine = glm::dot(wo, rec.vert.normal);
         if (cosine > 0.0f)
         {
-            return 0.5f / PI;
+            return cosine / PI;
         }
         else
         {
@@ -56,14 +56,15 @@ namespace platinum
         }
     }
     // given a ray, calculate the contribution of this ray
-    glm::vec3 Lambertian::Eval(const glm::vec3 &wo, Intersection &rec)
+    glm::vec3 Lambertian::ScatterPdf(const glm::vec3 &wo, Intersection &rec)
     {
-        // calculate the contribution of diffuse   model
+        // calculate the contribution of diffuse model
         float cosalpha = glm::dot(rec.vert.normal, wo);
         if (cosalpha > 0.0f)
         {
-              auto attenuation = albedo->GetValue(rec.vert.u, rec.vert.v, rec.vert.pos)/PI;
-              return attenuation;
+            //f_r=albedo/PI
+            auto attenuation = albedo->GetValue(rec.vert.u, rec.vert.v, rec.vert.pos) / PI;
+            return attenuation;
         }
         else
         {

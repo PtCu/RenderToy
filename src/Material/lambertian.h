@@ -44,7 +44,7 @@ namespace platinum
         // given a ray, calculate the PdF of this ray
         virtual float Pdf(const glm::vec3 &wo, Intersection &rec)=0;
         // given a ray, calculate the contribution of this ray
-        virtual glm::vec3 Eval(const glm::vec3 &wo, Intersection &rec)=0;
+        virtual glm::vec3 ScatterPdf(const glm::vec3 &wo, Intersection &rec)=0;
     private:
         std::shared_ptr<Texture> albedo;
     };
