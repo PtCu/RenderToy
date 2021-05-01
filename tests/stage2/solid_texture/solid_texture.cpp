@@ -9,7 +9,7 @@
 #include "../src/Math/rand.h"
 #include "../src/Geometry/sphere.h"
 #include "../src/Geometry/movingSphere.h"
-#include "../src/Core/world.h"
+#include "../src/Core/scene.h"
 #include "../src/Core/renderer.h"
 #include "../src/Texture/checkerTexture.h"
 #include "../src/Texture/constTexture.h"
@@ -18,7 +18,7 @@ using namespace platinum;
 using namespace glm;
 using namespace std;
 
-void two_spheres(World &world)
+void two_spheres(Scene &world)
 {
     auto checker = make_shared<CheckerTexture>(make_shared<ConstTexture>(vec3(0.2, 0.3, 0.1)), make_shared<ConstTexture>(vec3(0.9, 0.9, 0.9)));
     world.AddObject(make_shared<Sphere>(vec3(0, -10, 0), 10, make_shared<Lambertian>(checker)));
@@ -30,7 +30,7 @@ int main()
     int nx = 1200;
     int ny = 800;
     int ns = 10;
-    World world(true);
+    Scene world(true);
     two_spheres(world);
     vec3 lookfrom(13, 2, 3);
     vec3 lookat(0, 0, 0);

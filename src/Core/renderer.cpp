@@ -47,7 +47,7 @@ namespace platinum
         std::cout << "] " << int(progress * 100.0) << " %\r";
         std::cout.flush();
     };
-    void Renderer::Render(World &scene, const std::shared_ptr<Camera> &cam)
+    void Renderer::Render(Scene &scene, const std::shared_ptr<Camera> &cam)
     {
         scene.BuildBVH();
         int nx = img.GetWidth();

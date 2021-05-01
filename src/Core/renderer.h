@@ -23,7 +23,7 @@
 #ifndef CORE_RENDER_H_
 #define CORE_RENDER_H_
 
-#include "world.h"
+#include "scene.h"
 #include "camera.h"
 #include "image.h"
 
@@ -34,7 +34,7 @@ namespace platinum
     public:
         Renderer(int img_w, int img_h, int channel, const std::string &fname, int iters);
         ~Renderer() = default;
-        void Render(World &scene, const std::shared_ptr<Camera> &cam);
+        void Render(Scene &scene, const std::shared_ptr<Camera> &cam);
 
     private:
         void UpdateProgress(float progress);

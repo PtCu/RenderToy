@@ -4,7 +4,7 @@
 #include "../src/Material/lambertian.h"
 #include "../src/Math/rand.h"
 #include "../src/Geometry/sphere.h"
-#include "../src/Core/world.h"
+#include "../src/Core/scene.h"
 #include "../src/Core/renderer.h"
 #include "../src/Material/light.h"
 #include "../src/Core/vertex.h"
@@ -14,7 +14,7 @@ using namespace platinum;
 using namespace glm;
 using namespace std;
 
-void createWorld(World &world)
+void createWorld(Scene &world)
 {
     // Mat
     auto redMat = make_shared<Lambertian>(make_shared<ConstTexture>(vec3(0.65f, 0.05f, 0.05f)));
@@ -44,7 +44,7 @@ int main()
     int nx = 500;
     int ny = 500;
     int ns = 100;
-    World world(false);
+    Scene world(false);
     createWorld(world);
     vec3 lookfrom(278, 273, -800);
     vec3 lookat(278, 273, 0);

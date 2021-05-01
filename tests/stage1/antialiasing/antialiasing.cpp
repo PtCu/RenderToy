@@ -1,6 +1,6 @@
 #include "../src/Core/ray.h"
 #include "../src/Core/image.h"
-#include "../src/Core/world.h"
+#include "../src/Core/scene.h"
 #include "../src/Geometry/sphere.h"
 #include "../src/Core/camera.h"
 #include <limits>
@@ -8,7 +8,7 @@ using namespace platinum;
 using namespace glm;
 using namespace std;
 
-vec3 color(shared_ptr<Ray> &r, World &world)
+vec3 color(shared_ptr<Ray> &r, Scene &world)
 {
     Intersection rec;
     if (world.IntersectAll(r, rec))
@@ -29,7 +29,7 @@ int main()
     int ny = 100;
     int ns = 100;
     float u, v;
-    World world;
+    Scene world;
     auto sph1 = make_shared<Sphere>(vec3(0, 0, -1), 0.5);
     //  Object *sph1 = new Sphere(vec3(0, 0, -1), 0.5);
     world.AddObject(sph1);

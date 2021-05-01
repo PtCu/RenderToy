@@ -8,13 +8,13 @@
 #include "../src/Material/metal.h"
 #include "../src/Math/rand.h"
 #include "../src/Geometry/sphere.h"
-#include "../src/Core/world.h"
+#include "../src/Core/scene.h"
 
 using namespace platinum;
 using namespace glm;
 using namespace std;
 
-vec3 color(shared_ptr<Ray> &ray, World &world, int dep)
+vec3 color(shared_ptr<Ray> &ray, Scene &world, int dep)
 {
 
     Intersection rec;
@@ -38,7 +38,7 @@ vec3 color(shared_ptr<Ray> &ray, World &world, int dep)
     }
 }
 
-void random_scene(World &world)
+void random_scene(Scene &world)
 {
     int n = 500;
     auto sph = make_shared<Sphere>(vec3(0, -1000, 0), 1000, make_shared<Lambertian>(vec3(0.5, 0.5, 0.5)));
@@ -91,7 +91,7 @@ int main()
     int ny = 800;
     int ns = 10;
     std::cout << "Start rendering..." << std::endl;
-    World world;
+    Scene world;
     random_scene(world);
 
     vec3 lookfrom(13, 2, 3);

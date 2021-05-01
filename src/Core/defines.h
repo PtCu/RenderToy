@@ -76,7 +76,7 @@ namespace platinum
     class TCamera;
     class Material;
     struct Intersection;
-    class World;
+    class Scene;
     class Ray;
     class Object;
     class AABB;

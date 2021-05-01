@@ -8,7 +8,7 @@
 #include "../src/Math/rand.h"
 #include "../src/Geometry/sphere.h"
 #include "../src/Geometry/movingSphere.h"
-#include "../src/Core/world.h"
+#include "../src/Core/scene.h"
 #include "../src/Core/renderer.h"
 #include "../src/Texture/noiseTexture.h"
 
@@ -16,7 +16,7 @@ using namespace platinum;
 using namespace glm;
 using namespace std;
 
-void some_spheres(World &world)
+void some_spheres(Scene &world)
 {
     float scale = 5;
     auto sph1 = make_shared<Sphere>(vec3(0, 0, -1), 0.5, make_shared<Lambertian>(make_shared<NoiseTexture>(scale, 0)));
@@ -32,7 +32,7 @@ int main()
     int nx = 1200;
     int ny = 800;
     int ns = 10;
-    World world(true);
+    Scene world(true);
     some_spheres(world);
     vec3 lookfrom(13, 2, 3);
     vec3 lookat(0, 0, 0);

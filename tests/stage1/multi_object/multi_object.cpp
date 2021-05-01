@@ -1,6 +1,6 @@
 #include "../src/Core/ray.h"
 #include "../src/Core/image.h"
-#include "../src/Core/world.h"
+#include "../src/Core/scene.h"
 #include "../src/Geometry/sphere.h"
 #include "../src/Core/camera.h"
 #include "../src/Material/lambertian.h"
@@ -9,7 +9,7 @@ using namespace platinum;
 using namespace glm;
 using namespace std;
 
-vec3 color(shared_ptr<Ray> &ray, World &world, int dep)
+vec3 color(shared_ptr<Ray> &ray, Scene &world, int dep)
 {
 
        Intersection rec;
@@ -42,7 +42,7 @@ int main()
     vec3 vertical(0.0, 2.0, 0.0);
     vec3 origin(0.0, 0.0, 0.0);
     float u, v;
-    World world;
+    Scene world;
     auto sph1 = make_shared<Sphere>(vec3(0, 0, -1), 0.5, make_shared<Lambertian>(vec3(0.1, 0.2, 0.5)));
     world.AddObject(sph1);
     auto sph2 = make_shared<Sphere>(vec3(0, -100.5, -1), 100, make_shared<Lambertian>(vec3(0.5, 0.2, 0.1)));

@@ -5,7 +5,7 @@
 #include "../src/Material/lambertian.h"
 #include "../src/Math/rand.h"
 #include "../src/Geometry/sphere.h"
-#include "../src/Core/world.h"
+#include "../src/Core/scene.h"
 #include "../src/Core/renderer.h"
 #include "../src/Material/light.h"
 #include "../src/Core/vertex.h"
@@ -22,7 +22,7 @@ const float pos[] = {
     1, 0.1, 0.5,
     1, 0.7, 0.5,
     0.9, 0.7, -0.5};
-void some_spheres(World &world)
+void some_spheres(Scene &world)
 {
     float scale = 5;
     auto light_tex = make_shared<ConstTexture>(vec3(1.5, 1, 1));
@@ -45,7 +45,7 @@ int main()
     int nx = 1200;
     int ny = 600;
     int ns = 30;
-    World world(false);
+    Scene world(false);
     some_spheres(world);
     vec3 lookfrom(13, 2, 3);
     vec3 lookat(0, 0, 0);

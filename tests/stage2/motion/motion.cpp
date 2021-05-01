@@ -9,14 +9,14 @@
 #include "../src/Math/rand.h"
 #include "../src/Geometry/sphere.h"
 #include "../src/Geometry/movingSphere.h"
-#include "../src/Core/world.h"
+#include "../src/Core/scene.h"
 #include "../src/Core/renderer.h"
 
 using namespace platinum;
 using namespace glm;
 using namespace std;
 
-void random_scene(World &world)
+void random_scene(Scene &world)
 {
     int n = 500;
     shared_ptr<Object> sph;
@@ -69,7 +69,7 @@ int main()
     int nx = 1200;
     int ny = 800;
     int ns = 1000;
-    World world(true);
+    Scene world(true);
     random_scene(world);
 
     vec3 lookfrom(13, 2, 3);

@@ -5,7 +5,7 @@
 // #include "../src/Material/lambertian.h"
 // #include "../src/Math/rand.h"
 // #include "../src/Geometry/sphere.h"
-// #include "../src/Core/world.h"
+// #include "../src/Core/scene.h"
 // #include "../src/Core/renderer.h"
 // #include "../src/Material/light.h"
 // #include "../src/Core/vertex.h"
@@ -18,9 +18,8 @@
 // using namespace glm;
 // using namespace std;
 
-// void createWorld(World &world)
+// void createWorld(Scene &world)
 // {
-   
 
 //     // Mat
 //     auto redMat = make_shared<Lambertian>(make_shared<ConstTexture>(vec3(0.65f, 0.05f, 0.05f)));
@@ -72,7 +71,6 @@
 //     tfmCube1 = glm::rotate(tfmCube1, -PI / 12, vec3(0, 1, 0));
 //     world.AddObject(make_shared<Instance>(tfmCube1, cube, lightMat));
 
-
 //     mat4 tfmCube2(1.0f);
 //     tfmCube2 = glm::translate(tfmCube2, vec3(-1.1, -1, -0.5));
 //     tfmCube2 = scale(tfmCube2, vec3(1.6, 4, 1.6));
@@ -86,7 +84,7 @@
 //     int nx = 400;
 //     int ny = 500;
 //     int ns = 10;
-//     World world(true);
+//     Scene world(true);
 //     createWorld(world);
 //     vec3 lookfrom(0, 0, 10);
 //     vec3 lookat(0, 0, 0);

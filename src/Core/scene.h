@@ -32,13 +32,13 @@
 #include <functional>
 namespace platinum
 {
-    class World
+    class Scene
     {
     public:
-        World() : max_depth(10), default_light(true){}
-        World(bool d_l) : max_depth(10), default_light(d_l) {}
-        World(bool d_l, int max_dep) : max_depth(max_dep), default_light(d_l) {}
-        ~World();
+        Scene() : max_depth(10), default_light(true){}
+        Scene(bool d_l) : max_depth(10), default_light(d_l) {}
+        Scene(bool d_l, int max_dep) : max_depth(max_dep), default_light(d_l) {}
+        ~Scene();
         bool IntersectAll(std::shared_ptr<Ray> &r, Intersection &rec) const; //Brute method for stage 1
         void AddObject(const std::shared_ptr<Object> &obj);
         void AddObject(const std::vector<std::shared_ptr<Object>> &obj);

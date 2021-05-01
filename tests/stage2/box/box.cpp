@@ -5,7 +5,7 @@
 #include "../src/Material/lambertian.h"
 #include "../src/Math/rand.h"
 #include "../src/Geometry/sphere.h"
-#include "../src/Core/world.h"
+#include "../src/Core/scene.h"
 #include "../src/Core/renderer.h"
 #include "../src/Material/light.h"
 #include "../src/Core/vertex.h"
@@ -20,7 +20,7 @@ using namespace platinum;
 using namespace glm;
 using namespace std;
 
-void createWorld(World &world)
+void createWorld(Scene &world)
 {
 
     vector<Vertex> cubeVerts;
@@ -66,7 +66,7 @@ int main()
     int nx = 500;
     int ny = 600;
     int ns = 10;
-    World world(true);
+    Scene world(true);
     createWorld(world);
     vec3 lookfrom(-10, -10, 10);
     vec3 lookat(0, 0, 0);

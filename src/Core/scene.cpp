@@ -20,48 +20,48 @@
 //  FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 //  DEALINGS IN THE SOFTWARE.
 
-#include "world.h"
+#include "scene.h"
 
 namespace platinum
 {
-    World::~World()
+    Scene::~Scene()
     {
         destroyAll();
     }
-    void World::destroyAll()
+    void Scene::destroyAll()
     {
         objects.clear();
     }
-    void World::BuildBVH()
+    void Scene::BuildBVH()
     {
         this->bvh_accel = std::unique_ptr<BVHAccel>(new BVHAccel(objects));
     }
-    void World::AddObject(const std::shared_ptr<Object> &obj)
+    void Scene::AddObject(const std::shared_ptr<Object> &obj)
     {
         this->objects.push_back(obj);
     }
-    void World::AddObject(const std::vector<std::shared_ptr<Object>> &obj)
+    void Scene::AddObject(const std::vector<std::shared_ptr<Object>> &obj)
     {
         this->objects.insert(objects.end(), obj.begin(), obj.end());
     }
-    void World::AddObject(const std::vector<std::shared_ptr<Object>>::iterator &begin, const std::vector<std::shared_ptr<Object>>::iterator &end)
+    void Scene::AddObject(const std::vector<std::shared_ptr<Object>>::iterator &begin, const std::vector<std::shared_ptr<Object>>::iterator &end)
     {
         this->objects.insert(objects.end(), begin, end);
     }
-    void World::Reset()
+    void Scene::Reset()
     {
         this->bvh_accel.reset();
         this->destroyAll();
     }
-    Intersection World ::intersectAll(std::shared_ptr<Ray> &r) const
+    Intersection Scene ::intersectAll(std::shared_ptr<Ray> &r) const
     {
         return this->bvh_accel->RayCast(r);
     }
-    glm::vec3 World::CastRay(std::shared_ptr<Ray> &r) const
+    glm::vec3 Scene::CastRay(std::shared_ptr<Ray> &r) const
     {
         return CastRay(r, max_depth);
     }
-    glm::vec3 World::CastRay(std::shared_ptr<Ray> &ray, int dep) const
+    glm::vec3 Scene::CastRay(std::shared_ptr<Ray> &ray, int dep) const
     {
         if (dep == 0)
         {
@@ -89,7 +89,7 @@ namespace platinum
             return ray->GetColor() * ((1.0f - t) * glm::vec3(1.0, 1.0, 1.0) + t * glm::vec3(0.75, 0.85, 1.0));
         }
     }
-    bool World::IntersectAll(std::shared_ptr<Ray> &r, Intersection &rec) const
+    bool Scene::IntersectAll(std::shared_ptr<Ray> &r, Intersection &rec) const
     {
         Intersection temp_rec;
         bool hit_anything = false;

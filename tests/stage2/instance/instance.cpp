@@ -5,7 +5,7 @@
 #include "../src/Material/lambertian.h"
 #include "../src/Math/rand.h"
 #include "../src/Geometry/sphere.h"
-#include "../src/Core/world.h"
+#include "../src/Core/scene.h"
 #include "../src/Core/renderer.h"
 #include "../src/Material/light.h"
 #include "../src/Core/vertex.h"
@@ -281,7 +281,7 @@ const float data_CubeVertexPos[216] = {
     0,
     -1,
 };
-void createWorld(World &world)
+void createWorld(Scene &world)
 {
     // Mesh
     vector<Vertex> squareVerts;
@@ -406,7 +406,7 @@ int main()
     int nx = 500;
     int ny = 500;
     int ns = 10;
-    World world(false);
+    Scene world(false);
     createWorld(world);
     vec3 lookfrom(0, 0, 10);
     vec3 lookat(0, 0, 0);
