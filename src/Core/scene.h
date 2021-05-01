@@ -35,9 +35,9 @@ namespace platinum
     class Scene
     {
     public:
-        Scene() : max_depth(10), default_light(true){}
-        Scene(bool d_l) : max_depth(10), default_light(d_l) {}
-        Scene(bool d_l, int max_dep) : max_depth(max_dep), default_light(d_l) {}
+        Scene() : max_depth(10), default_light(true),RussianRoulette(0.4) {  }
+        Scene(bool d_l) : max_depth(10), default_light(d_l),RussianRoulette(0.4) {}
+        Scene(bool d_l, int max_dep) : max_depth(max_dep), default_light(d_l),RussianRoulette(0.4) {}
         ~Scene();
         bool IntersectAll(std::shared_ptr<Ray> &r, Intersection &rec) const; //Brute method for stage 1
         void AddObject(const std::shared_ptr<Object> &obj);

@@ -47,7 +47,5 @@ namespace platinum
         rec.ray->SetColor(attDis * attAngle * tex->GetValue(rec.vert.u, rec.vert.v, rec.vert.pos));
         return false;
 
-        // rec.ray->SetColor(tex->GetValue(rec.vert.u, rec.vert.v, rec.vert.pos));
-        // return false;
     }
 }

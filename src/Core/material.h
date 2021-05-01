@@ -36,12 +36,12 @@ namespace platinum
         virtual bool Scatter(Intersection &rec) const = 0;
         virtual ~Material() = default;
         // sample a ray by Material properties
-        virtual glm::vec3 Sample(const glm::vec3 &wi, const glm::vec3 &N)=0;
+        virtual glm::vec3 Sample(const glm::vec3 &wi, const glm::vec3 &N) = 0;
         // given a ray, calculate the PdF of this ray
-        virtual float Pdf(const glm::vec3 &wo, Intersection &rec)=0;
+        virtual float Pdf(const glm::vec3 &wo, Intersection &rec) = 0;
         // given a ray, calculate the contribution of this ray
         // brdf
-        virtual glm::vec3 ScatterPdf(const glm::vec3 &wo, Intersection &rec)=0;
+        virtual glm::vec3 ScatterPdf(const glm::vec3 &wo, Intersection &rec) = 0;
 
     protected:
         bool Refract(const glm::vec3 &v, const glm::vec3 &n, float ni_over_nt, glm::vec3 &refracted) const
@@ -70,13 +70,16 @@ namespace platinum
             return r0 + (1.0f - r0) * pow((1.0f - cosine), 5.0f);
         }
         //Convert local vector a to world vector according to provided normal n.
-        glm::vec3 toWorld(const glm::vec3 &a,const glm::vec3&n){
+        glm::vec3 toWorld(const glm::vec3 &a, const glm::vec3 &n)
+        {
             glm::vec3 b, c;
-            if(std::fabs(n.x)>std::fabs(n.y)){
+            if (std::fabs(n.x) > std::fabs(n.y))
+            {
                 float inv_len = 1.0f / std::sqrt(n.x * n.x + n.z * n.z);
                 c = glm::vec3(n.z * inv_len, 0, 0f, -n.x * inv_len);
             }
-            else{
+            else
+            {
                 float inv_len = 1.0f / std::sqrt(n.y * n.y + n.z * n.z);
                 c = glm::vec3(0.0f, n.z * inv_len, -n.y * inv_len);
             }

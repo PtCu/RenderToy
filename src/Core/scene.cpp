@@ -63,11 +63,12 @@ namespace platinum
     }
     glm::vec3 Scene::CastRay(std::shared_ptr<Ray> &ray, int dep) const
     {
-        if (dep == 0)
-        {
-            return glm::vec3(1.0001f / 255.0f);
-        }
+
         auto rec = intersectAll(ray);
+        if(!rec.happened||dep==0){
+             return glm::vec3(1.0001f / 255.0f);
+        }
+   
         if (rec.happened)
         {
             if (rec.material == NULL)
@@ -77,17 +78,18 @@ namespace platinum
             else
                 return ray->GetColor();
         }
-        else
-        {
 
-            if (!default_light)
-                return glm::vec3(1.0001f / 255.0f);
+        // else
+        // {
 
-            //TODO: Make it configurable
-            glm::vec3 unit_direction = glm::normalize(ray->GetDirection());
-            float t = 0.5f * (unit_direction.y + 1.0f);
-            return ray->GetColor() * ((1.0f - t) * glm::vec3(1.0, 1.0, 1.0) + t * glm::vec3(0.75, 0.85, 1.0));
-        }
+        //     if (!default_light)
+        //         return glm::vec3(1.0001f / 255.0f);
+
+        //     //TODO: Make it configurable
+        //     glm::vec3 unit_direction = glm::normalize(ray->GetDirection());
+        //     float t = 0.5f * (unit_direction.y + 1.0f);
+        //     return ray->GetColor() * ((1.0f - t) * glm::vec3(1.0, 1.0, 1.0) + t * glm::vec3(0.75, 0.85, 1.0));
+        // }
     }
     bool Scene::IntersectAll(std::shared_ptr<Ray> &r, Intersection &rec) const
     {
