@@ -38,15 +38,15 @@ namespace platinum
         {
             albedo = std::make_shared<ConstTexture>(a);
         }
-        virtual bool Scatter(Intersection &rec) const;
-        // sample a ray by Material properties
-        virtual glm::vec3 Sample(const glm::vec3 &wi, const glm::vec3 &N)const = 0;
-        // given a ray, calculate the PdF of this ray
-        virtual float Pdf(const glm::vec3 &wo, Intersection &rec)const = 0;
-        // given a ray, calculate the contribution of this ray
-        virtual glm::vec3 ScatterPdf(const glm::vec3 &wo, Intersection &rec) const = 0;
+        bool Lambertian::Scatter(Intersection &rec) const;
+        // Sample a ray by Material properties
+        virtual glm::vec3 Sample(const glm::vec3 &wi, const glm::vec3 &wo, Intersection &rec) const = 0;
+        //Given a ray, calculate the PdF of this ray
+        virtual float Pdf(const glm::vec3 &wi, const glm::vec3 &wo, Intersection &rec) const = 0;
+        // brdf. Given a ray, calculate the contribution of this ray
+        virtual glm::vec3 ScatterPdf(const glm::vec3 &wi, const glm::vec3 &wo, Intersection &rec) const = 0;
         //The material itself emits light.
-        virtual glm::vec3 Emit(Intersection &rec) = 0;
+        virtual glm::vec3 Emit() const = 0;
 
     private:
         std::shared_ptr<Texture> albedo;

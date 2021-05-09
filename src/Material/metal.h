@@ -36,16 +36,24 @@ namespace platinum
       {
          f < 1 ? fuzz = f : fuzz = 1;
       }
-      Metal(const glm::vec3 &a, float f) 
+      Metal(const glm::vec3 &a, float f)
       {
-         albedo=std::make_shared<ConstTexture>(a);
+         albedo = std::make_shared<ConstTexture>(a);
          f < 1 ? fuzz = f : fuzz = 1;
       }
       virtual bool Scatter(Intersection &rec) const;
+      // Sample a ray by Material properties
+      virtual glm::vec3 Sample(const glm::vec3 &wi, const glm::vec3 &wo, const glm::vec3 &N) const = 0;
+      //Given a ray, calculate the PdF of this ray
+      virtual float Pdf(const glm::vec3 &wi, const glm::vec3 &wo, const glm::vec3 &N) const = 0;
+      // brdf. Given a ray, calculate the contribution of this ray
+      virtual glm::vec3 ScatterPdf(const glm::vec3 &wi, const glm::vec3 &wo, const glm::vec3 &N) const = 0;
+      //The material itself emits light.
+      virtual glm::vec3 Emit() const = 0;
 
    private:
-      std::shared_ptr<Texture> albedo; 
-      float fuzz;       //Zero is no perturbation
+      std::shared_ptr<Texture> albedo;
+      float fuzz; //Zero is no perturbation
    };
 } // namespace platinum
 

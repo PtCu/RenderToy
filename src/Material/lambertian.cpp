@@ -30,8 +30,9 @@ namespace platinum
         rec.ray->Update(rec.vert.pos, reflected, attenuation);
         return true;
     }
+
     // sample a ray by Material properties
-    glm::vec3 Lambertian::Sample(const glm::vec3 &wi, const glm::vec3 &N)
+    glm::vec3 Lambertian::Sample(const glm::vec3 &wi, const glm::vec3 &wo,Intersection&rec) const
     {
         // uniform sample on the hemisphere
         // See chapter 6.
@@ -40,10 +41,10 @@ namespace platinum
         float cos_theta = std::fabs(1.0f - 2.0f * x_1);
         float r = std::sqrt(1.0f - cos_theta * cos_theta), phi = 2 * PI * x_2;
         glm::vec3 local_ray(r * std::cos(phi), r * std::sin(phi), cos_theta);
-        return toWorld(local_ray, N);
+        return toWorld(local_ray, rec.vert.normal);
     }
     // given a ray, calculate the PdF of this ray
-    float Lambertian::Pdf(const glm::vec3 &wo, Intersection &rec)
+    float Lambertian::Pdf(const glm::vec3 &wi, const glm::vec3 &wo, Intersection&rec) const
     {
         float cosine = glm::dot(wo, rec.vert.normal);
         if (cosine > 0.0f)
@@ -56,7 +57,7 @@ namespace platinum
         }
     }
     // given a ray, calculate the contribution of this ray
-    glm::vec3 Lambertian::ScatterPdf(const glm::vec3 &wo, Intersection &rec) const
+    glm::vec3 Lambertian::ScatterPdf(const glm::vec3 &wi,const glm::vec3 &wo, Intersection&rec) const
     {
         // calculate the contribution of diffuse model
         float cosalpha = glm::dot(rec.vert.normal, wo);
