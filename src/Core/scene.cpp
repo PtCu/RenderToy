@@ -103,7 +103,7 @@ namespace platinum
         {
             //直接光照
             //入射方向为光源射向物体，出射方向（所求的方向)为参数ray的方向
-            glm::vec3 f_r = objInter.material->ScatterPdf(obj2lightDir, objInter);
+            glm::vec3 f_r = objInter.material->ScatterPdf(obj2lightDir, w_o, objInter);
             //对光源采样
             float r2 = glm::dot(obj2light, obj2light);
             float cosA = std::max(.0f, glm::dot(objN, obj2lightDir));
@@ -114,10 +114,10 @@ namespace platinum
         if (Random::RandomInUnitFloat() < RussianRoulette)
         {
             //间接光照
-            w_i = glm::normalize(objInter.material->Sample(w_o, objN));
+            w_i = glm::normalize(objInter.material->Sample(w_o, objInter));
             float cos = std::max(.0f, glm::dot(w_i, objN));
-            glm::vec3 f_r = objInter.material->ScatterPdf(w_o,objInter);
-            float pdf = objInter.material->Pdf(w_o,objInter);
+            glm::vec3 f_r = objInter.material->ScatterPdf(w_o, w_i, objInter);
+            float pdf = objInter.material->Pdf(w_o, w_i, objInter);
             auto next_ray = std::make_shared<Ray>(objInter.vert.pos, w_i);
             Lo_indir = CastRay(next_ray, dep) * f_r * cos / pdf / RussianRoulette;
         }

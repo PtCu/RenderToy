@@ -32,7 +32,7 @@ namespace platinum
     }
 
     // sample a ray by Material properties
-    glm::vec3 Lambertian::Sample(const glm::vec3 &wi, const glm::vec3 &wo,Intersection&rec) const
+    glm::vec3 Lambertian::Sample(const glm::vec3 &d, Intersection &rec) const
     {
         // uniform sample on the hemisphere
         // See chapter 6.
@@ -44,7 +44,7 @@ namespace platinum
         return toWorld(local_ray, rec.vert.normal);
     }
     // given a ray, calculate the PdF of this ray
-    float Lambertian::Pdf(const glm::vec3 &wi, const glm::vec3 &wo, Intersection&rec) const
+    float Lambertian::Pdf(const glm::vec3 &wi, const glm::vec3 &wo, Intersection &rec) const
     {
         float cosine = glm::dot(wo, rec.vert.normal);
         if (cosine > 0.0f)
@@ -57,7 +57,7 @@ namespace platinum
         }
     }
     // given a ray, calculate the contribution of this ray
-    glm::vec3 Lambertian::ScatterPdf(const glm::vec3 &wi,const glm::vec3 &wo, Intersection&rec) const
+    glm::vec3 Lambertian::ScatterPdf(const glm::vec3 &wi, const glm::vec3 &wo, Intersection &rec) const
     {
         // calculate the contribution of diffuse model
         float cosalpha = glm::dot(rec.vert.normal, wo);
