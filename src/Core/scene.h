@@ -30,14 +30,15 @@
 #include "intersection.h"
 #include "bvh.h"
 #include <functional>
+#include "../Math/rand.h"
 namespace platinum
 {
     class Scene
     {
     public:
-        Scene() : max_depth(10), default_light(true),RussianRoulette(0.4) {  }
-        Scene(bool d_l) : max_depth(10), default_light(d_l),RussianRoulette(0.4) {}
-        Scene(bool d_l, int max_dep) : max_depth(max_dep), default_light(d_l),RussianRoulette(0.4) {}
+        Scene() : max_depth(10), default_light(true), RussianRoulette(0.4) {}
+        Scene(bool d_l) : max_depth(10), default_light(d_l), RussianRoulette(0.4) {}
+        Scene(bool d_l, int max_dep) : max_depth(max_dep), default_light(d_l), RussianRoulette(0.4) {}
         ~Scene();
         bool IntersectAll(std::shared_ptr<Ray> &r, Intersection &rec) const; //Brute method for stage 1
         void AddObject(const std::shared_ptr<Object> &obj);
@@ -52,7 +53,7 @@ namespace platinum
         void destroyAll();
         glm::vec3 CastRay(std::shared_ptr<Ray> &r, int depth) const; //Using BVH tree to accelerate.
         Intersection intersectAll(std::shared_ptr<Ray> &r) const;
-
+        void sampleLight(Intersection &inter,float &pdf) const;
         int max_depth;
         std::unique_ptr<BVHAccel> bvh_accel;
         std::vector<std::shared_ptr<Object>> objects;

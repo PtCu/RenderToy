@@ -49,7 +49,7 @@ namespace platinum
     {
         glm::mat3 equation_A(glm::vec3(A.pos - B.pos), glm::vec3(A.pos - C.pos), d);
 
-        if (glm::abs(glm::determinant(equation_A)) < Epsilon)
+        if (glm::abs(glm::determinant(equation_A)) < EPSILON)
             return glm::vec4(0, 0, 0, 0);
 
         glm::vec3 equation_b = A.pos - o;
@@ -69,7 +69,7 @@ namespace platinum
         // glm::vec3 pvec = glm::cross(r->GetDirection(), e2);
         // float det = glm::dot(e1, pvec);
         // // This r is parallel to this triangle.
-        // if (fabs(det) < Epsilon)
+        // if (fabs(det) < EPSILON)
         //     return inter;
 
         // float det_inv = 1. / det;
@@ -85,7 +85,7 @@ namespace platinum
         // t_tmp = glm::dot(e2, qvec) * det_inv;
 
         // // This means that there is a line intersection but not a ray intersection.
-        // if (t_tmp < Epsilon)
+        // if (t_tmp < EPSILON)
         // {
         //     return inter;
         // }

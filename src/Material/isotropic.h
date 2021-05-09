@@ -35,6 +35,8 @@ namespace platinum
     public:
         Isotropic(const std::shared_ptr<Texture> &a) : tex(a) {}
         virtual bool Scatter(Intersection &rec) const;
+        //The material itself emits light.
+        virtual glm::vec3 Emit(Intersection &rec) = 0;
 
     private:
         std::shared_ptr<Texture> tex;

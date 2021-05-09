@@ -33,6 +33,9 @@ namespace platinum
    public:
       Dielectric(float ri) : ref_idx(ri) {}
       virtual bool Scatter(Intersection &rec) const;
+      //The material itself emits light.
+      virtual glm::vec3 Emit(Intersection &rec) = 0;
+
    private:
       std::shared_ptr<Texture> albedo;
       float ref_idx;

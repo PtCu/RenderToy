@@ -36,6 +36,8 @@ namespace platinum
         Light(const glm::vec3 &color, float linear = 0.0f, float quadratic = 0.0f);
         Light(std::shared_ptr<Texture> lightTex, float linear = 0.0f, float quadratic = 0.0f);
         virtual bool Scatter(Intersection &rec) const;
+        //The material itself emits light.
+        virtual glm::vec3 Emit(Intersection &rec) = 0;
 
     private:
         std::shared_ptr<Texture> tex;
