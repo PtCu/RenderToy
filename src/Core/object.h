@@ -40,6 +40,7 @@ namespace platinum
         virtual Intersection Intersect(std::shared_ptr<Ray> &r) = 0;
         virtual AABB GetBoundingBox() const = 0;
         virtual void Sample(Intersection &inter, float &pdf) const = 0;
+        virtual float GetArea() const = 0;
 
     private:
         std::shared_ptr<const Material> material;

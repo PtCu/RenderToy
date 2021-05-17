@@ -24,6 +24,10 @@
 
 namespace platinum
 {
+    float Instance::GetArea() const
+    {
+        return former->GetArea();
+    }
     Instance::Instance(const glm::mat4 &transform, std::shared_ptr<Object> former, const std::shared_ptr<Material> &m)
         : transform(transform),
           inverseTransform(glm::inverse(transform)),

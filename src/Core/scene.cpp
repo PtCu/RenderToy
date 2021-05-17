@@ -57,6 +57,34 @@ namespace platinum
     {
         return this->bvh_accel->RayCast(r);
     }
+    void Scene::sampleLight(Intersection &inter, float &pdf) const
+    {
+        float emit_area_sum = 0;
+        for (uint32_t k = 0; k < objects.size(); ++k)
+        {
+            //计算发光物体的总面积
+            if (objects[k]->GetMaterial()->IsEmit())
+            {
+                emit_area_sum += objects[k]->GetArea();
+            }
+        }
+        float p = Random::RandomInUnitFloat() * emit_area_sum;
+        emit_area_sum = 0;
+        for (uint32_t k = 0; k < objects.size(); ++k)
+        {
+            //找到光源
+            if (objects[k]->GetMaterial()->IsEmit())
+            {
+                emit_area_sum += objects[k]->GetArea();
+                if (p <= emit_area_sum)
+                {
+                    //按概率选取一条光线
+                    objects[k]->Sample(inter, pdf);
+                    break;
+                }
+            }
+        }
+    }
     glm::vec3 Scene::CastRay(std::shared_ptr<Ray> &r) const
     {
         return CastRay(r, max_depth);
@@ -64,21 +92,21 @@ namespace platinum
     glm::vec3 Scene::CastRay(std::shared_ptr<Ray> &ray, int dep) const
     {
 
-        auto rec = intersectAll(ray);
-        if (!rec.happened || dep == 0)
-        {
-            return glm::vec3(1.0001f / 255.0f);
-        }
+        // auto rec = intersectAll(ray);
+        // if (!rec.happened || dep == 0)
+        // {
+        //     return glm::vec3(1.0001f / 255.0f);
+        // }
 
-        if (rec.happened)
-        {
-            if (rec.material == NULL)
-                return glm::vec3(0, 1, 0);
-            if (rec.material->Scatter(rec))
-                return CastRay(ray, dep - 1);
-            else
-                return ray->GetColor();
-        }
+        // if (rec.happened)
+        // {
+        //     if (rec.material == NULL)
+        //         return glm::vec3(0, 1, 0);
+        //     if (rec.material->Scatter(rec))
+        //         return CastRay(ray, dep - 1);
+        //     else
+        //         return ray->GetColor();
+        // }
 
         //求一条光线与场景的交点
         Intersection objInter = intersectAll(ray);

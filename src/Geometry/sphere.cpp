@@ -23,12 +23,24 @@
 #include "sphere.h"
 namespace platinum
 {
+    float Sphere::GetArea() const
+    {
+    }
+    AABB Sphere::GetBoundingBox() const
+    {
+        return bounding_box;
+    }
+    glm::vec3 Sphere::getCenter(const std::shared_ptr<Ray> &r) const
+    {
+        return center;
+    }
     Sphere::Sphere(glm::vec3 cen, float r, const std::shared_ptr<Material> &m)
         : center(cen), radius(r), Object(m)
     {
         glm::vec3 minP = center - glm::vec3(radius);
         glm::vec3 maxP = center + glm::vec3(radius);
         bounding_box = AABB(minP, maxP);
+        area = PI * 4.0f * r * r;
     };
     void Sphere::setIntersection(float t, Intersection &rec, const std::shared_ptr<Ray> &r) const
     {
@@ -40,11 +52,11 @@ namespace platinum
         rec.material = GetMaterial();
         rec.happened = true;
     }
-    
-    Intersection Sphere::Intersect(std::shared_ptr<Ray> &r) 
+
+    Intersection Sphere::Intersect(std::shared_ptr<Ray> &r)
     {
         Intersection rec;
-        glm::vec3 oc = r->GetOrigin() -getCenter(r);
+        glm::vec3 oc = r->GetOrigin() - getCenter(r);
         float a = glm::dot(r->GetDirection(), r->GetDirection());
         float b = glm::dot(oc, r->GetDirection());
         float c = glm::dot(oc, oc) - radius * radius;

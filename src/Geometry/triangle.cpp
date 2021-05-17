@@ -24,6 +24,14 @@
 
 namespace platinum
 {
+    virtual AABB Triangle::GetBoundingBox() const
+    {
+        return bounding_box;
+    }
+    float Triangle::GetArea() const
+    {
+        return area;
+    }
     Triangle::Triangle(const Vertex &a, const Vertex &b, const Vertex &c, const std::shared_ptr<Material> &material)
         : A(a), B(b), C(c), Object(material)
     {

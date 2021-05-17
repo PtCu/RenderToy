@@ -43,6 +43,7 @@ namespace platinum
         virtual glm::vec3 ScatterPdf(const glm::vec3 &wi, const glm::vec3 &wo, Intersection &rec) const = 0;
         //The material itself emits light.
         virtual glm::vec3 Emit() const = 0;
+        virtual bool IsEmit() const = 0;
 
     protected:
         bool Refract(const glm::vec3 &v, const glm::vec3 &n, float ni_over_nt, glm::vec3 &refracted) const
