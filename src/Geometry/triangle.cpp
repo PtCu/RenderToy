@@ -24,7 +24,14 @@
 
 namespace platinum
 {
-    virtual AABB Triangle::GetBoundingBox() const
+    void Triangle::Sample(Intersection &inter, float &pdf) const
+    {
+        float x = std::sqrt(Random::RandomInUnitFloat()), y = Random::RandomInUnitFloat();
+        inter.vert.pos = A.pos * (1.0f - x) + B.pos * (x * (1.0f - y)) + C.pos * (x * y);
+        inter.vert.normal = this->normal;
+        pdf = 1.0f / area;
+    }
+    AABB Triangle::GetBoundingBox() const
     {
         return bounding_box;
     }

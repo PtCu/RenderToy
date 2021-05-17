@@ -24,6 +24,10 @@
 
 namespace platinum
 {
+    void Instance::Sample(Intersection &inter, float &pdf) const
+    {
+        former->Sample(inter, pdf);
+    }
     float Instance::GetArea() const
     {
         return former->GetArea();

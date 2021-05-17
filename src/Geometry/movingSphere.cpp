@@ -24,6 +24,7 @@
 
 namespace platinum
 {
+
     MovingSphere::MovingSphere(glm::vec3 cen0, glm::vec3 cen1, float t0, float t1, float r, const std::shared_ptr<Material> &m)
         : center0(cen0), center1(cen1), time0(t0), time1(t1), Sphere(glm::vec3(0), r, m)
     {
@@ -38,6 +39,5 @@ namespace platinum
         float t = tRay->GetTime();
         return center0 + ((t - time0) / (time1 - time0)) * (center1 - center0);
     }
-
 
 } // namespace platinum

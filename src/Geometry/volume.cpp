@@ -24,7 +24,15 @@
 
 namespace platinum
 {
-    Intersection Volume::Intersect(std::shared_ptr<Ray> &r) 
+    void Volume::Sample(Intersection &inter, float &pdf) const
+    {
+        boundary->Sample(inter, pdf);
+    }
+    float Volume::GetArea() const
+    {
+        return boundary->GetArea();
+    }
+    Intersection Volume::Intersect(std::shared_ptr<Ray> &r)
     {
         Intersection rec;
         if (boundary == NULL)

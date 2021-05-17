@@ -28,6 +28,7 @@
 #include "../Core/intersection.h"
 #include "../Core/aabb.h"
 #include "../Core/vertex.h"
+#include "../Math/rand.h"
 
 namespace platinum
 {
@@ -38,6 +39,7 @@ namespace platinum
         virtual Intersection Intersect(std::shared_ptr<Ray> &r);
         virtual AABB GetBoundingBox() const;
         virtual float GetArea() const;
+        virtual void Sample(Intersection &inter, float &pdf) const;
         const Vertex &GetA() const { return A; }
         const Vertex &GetB() const { return B; }
         const Vertex &GetC() const { return C; }

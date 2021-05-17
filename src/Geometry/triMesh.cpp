@@ -25,6 +25,10 @@
 
 namespace platinum
 {
+    float TriMesh::GetArea() const
+    {
+        return area;
+    }
     TriMesh::TriMesh(const std::string &filename, std::shared_ptr<Material> m) : Object(m)
     {
         loader = new objl::Loader();
@@ -52,9 +56,10 @@ namespace platinum
                 min_vert = glm::min(min_vert, vert);
                 max_vert = glm::max(max_vert, vert);
             }
-
-            triangles.emplace_back(std::make_shared<Triangle>(face_vertices[0], face_vertices[1],
-                                                              face_vertices[2], m));
+            auto tri = std::make_shared<Triangle>(face_vertices[0], face_vertices[1],
+                                                  face_vertices[2], m);
+            area += tri->GetArea();
+            triangles.emplace_back(tri);
         }
 
         bounding_box = AABB(min_vert, max_vert);
@@ -62,15 +67,17 @@ namespace platinum
     }
     TriMesh::TriMesh(const std::vector<Vertex> &vertexs, std::shared_ptr<Material> material) : Object(material)
     {
+        area = 0;
         if (vertexs.size() % 3 != 0)
         {
             isValid = false;
             return;
         }
-        
+
         for (size_t i = 0; i < vertexs.size(); i += 3)
         {
             auto triangle = std::make_shared<Triangle>(vertexs[i], vertexs[i + 1], vertexs[i + 2], material);
+            area += triangle->GetArea();
             triangles.emplace_back(triangle);
             bounding_box.Expand(triangle->GetBoundingBox());
         }

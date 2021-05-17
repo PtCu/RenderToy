@@ -27,6 +27,7 @@
 #include "../Core/ray.h"
 #include "../Core/intersection.h"
 #include "../Core/aabb.h"
+#include "../Math/rand.h"
 
 namespace platinum
 {
@@ -39,6 +40,7 @@ namespace platinum
         virtual Intersection Intersect(std::shared_ptr<Ray> &r);
         virtual float Sphere::GetArea() const;
         virtual AABB GetBoundingBox() const;
+        virtual void Sample(Intersection &inter, float &pdf) const;
 
     protected:
         virtual glm::vec3 getCenter(const std::shared_ptr<Ray> &r) const;

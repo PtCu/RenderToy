@@ -28,6 +28,7 @@
 #include "../Core/intersection.h"
 #include "../Core/aabb.h"
 #include "../Math/rand.h"
+#include "../Math/rand.h"
 
 namespace platinum
 {
@@ -38,6 +39,8 @@ namespace platinum
             : boundary(obj), density(dense), Object(m) {}
 
         ~Volume() = default;
+        virtual float GetArea() const;
+        virtual void Sample(Intersection &inter, float &pdf) const;
         virtual Intersection Intersect(std::shared_ptr<Ray> &r);
         virtual AABB GetBoundingBox() const { return boundary->GetBoundingBox(); }
 

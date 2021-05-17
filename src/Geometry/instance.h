@@ -27,6 +27,7 @@
 #include "../Core/ray.h"
 #include "../Core/intersection.h"
 #include "../Core/aabb.h"
+#include "../Math/rand.h"
 #include <bitset>
 
 namespace platinum
@@ -36,9 +37,10 @@ namespace platinum
     {
     public:
         Instance(const glm::mat4 &transform, std::shared_ptr<Object> former, const std::shared_ptr<Material> &m = NULL);
-        virtual Intersection Intersect(std::shared_ptr<Ray> &r) ;
+        virtual Intersection Intersect(std::shared_ptr<Ray> &r);
         virtual AABB GetBoundingBox() const { return bounding_box; }
         virtual float GetArea() const;
+        virtual void Sample(Intersection &inter, float &pdf) const;
 
     private:
         AABB bounding_box;

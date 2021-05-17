@@ -27,6 +27,7 @@
 #include "../Core/tRay.h"
 #include "../Core/intersection.h"
 #include "../Core/aabb.h"
+#include "../Math/rand.h"
 #include "sphere.h"
 
 namespace platinum
@@ -38,7 +39,7 @@ namespace platinum
         ~MovingSphere() = default;
         MovingSphere(glm::vec3 cen0, glm::vec3 cen1, float t0, float t1, float r, const std::shared_ptr<Material> &m = nullptr);
         virtual AABB GetBoundingBox() const { return bounding_box; }
-
+    
     protected:
         virtual glm::vec3 getCenter(const std::shared_ptr<Ray> &r) const;
 
