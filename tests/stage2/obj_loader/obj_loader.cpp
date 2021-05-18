@@ -21,7 +21,7 @@ void createWorld(Scene &world)
     auto greenMat = make_shared<Lambertian>(make_shared<ConstTexture>(vec3(0.12f, 0.45f, 0.15f)));
     auto grayMat = make_shared<Lambertian>(make_shared<ConstTexture>(vec3(0.73f, 0.73f, 0.73f)));
     auto blueMat = make_shared<Lambertian>(make_shared<ConstTexture>(vec3(0.1f, 0.1f, 0.73f)));
-    auto lightMat = make_shared<Light>(vec3(100.f));
+    // auto lightMat = make_shared<Light>(vec3(100.f));
     auto cubeMat = make_shared<Lambertian>(make_shared<ConstTexture>(vec3(1.0f, 1.0f, 1.0f)));
 
     auto floor = make_shared<TriMesh>("../../../../../assets/cornellbox/floor.obj", grayMat);
@@ -29,14 +29,14 @@ void createWorld(Scene &world)
     auto tallbox = make_shared<TriMesh>("../../../../../assets/cornellbox/tallbox.obj", cubeMat);
     auto left = make_shared<TriMesh>("../../../../../assets/cornellbox/left.obj", redMat);
     auto right = make_shared<TriMesh>("../../../../../assets/cornellbox/right.obj", greenMat);
-    auto light_ = make_shared<TriMesh>("../../../../../assets/cornellbox/light.obj", lightMat);
+   // auto light_ = make_shared<TriMesh>("../../../../../assets/cornellbox/light.obj", lightMat);
 
     world.AddObject(floor);
     world.AddObject(shortbox);
     world.AddObject(tallbox);
     world.AddObject(left);
     world.AddObject(right);
-    world.AddObject(light_);
+   // world.AddObject(light_);
 }
 
 int main()

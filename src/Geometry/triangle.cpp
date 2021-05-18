@@ -30,6 +30,7 @@ namespace platinum
         inter.vert.pos = A.pos * (1.0f - x) + B.pos * (x * (1.0f - y)) + C.pos * (x * y);
         inter.vert.normal = this->normal;
         pdf = 1.0f / area;
+        inter.ray->SetColor(inter.material->Emit());
     }
     AABB Triangle::GetBoundingBox() const
     {

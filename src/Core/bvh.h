@@ -59,12 +59,14 @@ namespace platinum
 
         std::shared_ptr<BVH_Node> GetRoot() { return root; }
 
+        void Sample(Intersection &inter, float &pdf) const;
+
     protected:
         // BVHAccel Private Methods
         std::shared_ptr<BVH_Node> recursiveBuild(std::vector<std::shared_ptr<Object>>::iterator begin, std::vector<std::shared_ptr<Object>>::iterator end);
         Intersection BVHAccel::getIntersection_rec(std::shared_ptr<BVH_Node>node,std::shared_ptr<Ray> &r) const;
         Intersection getIntersection(std::shared_ptr<Ray> &r) const;
-
+        void getSample(std::shared_ptr<BVH_Node>node, float p, Intersection &pos, float &pdf);
         // BVHAccel Private Data
         const SplitMethod splitMethod;
         std::shared_ptr<BVH_Node> root;

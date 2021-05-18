@@ -33,9 +33,9 @@ namespace platinum
     {
     public:
         //ordinary scatter
-        virtual bool Scatter(Intersection &rec) const = 0;
         virtual ~Material() = default;
         // Sample a ray by Material properties
+        virtual bool Scatter(Intersection &rec) const = 0;
         virtual glm::vec3 Sample(const glm::vec3 &d, Intersection &rec) const = 0;
         //Given a ray, calculate the PdF of this ray
         virtual float Pdf(const glm::vec3 &wi, const glm::vec3 &wo, Intersection &rec) const = 0;
@@ -78,7 +78,7 @@ namespace platinum
             if (std::fabs(n.x) > std::fabs(n.y))
             {
                 float inv_len = 1.0f / std::sqrt(n.x * n.x + n.z * n.z);
-                c = glm::vec3(n.z * inv_len, 0, 0f, -n.x * inv_len);
+                c = glm::vec3(n.z * inv_len, 0.f, -n.x * inv_len);
             }
             else
             {

@@ -30,6 +30,7 @@ namespace platinum
         inter.vert.pos = center + radius * dir;
         inter.vert.normal = dir;
         pdf = 1.0f / area;
+        inter.ray->SetColor(inter.material->Emit());
     }
     float Sphere::GetArea() const
     {

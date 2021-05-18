@@ -25,6 +25,10 @@
 
 namespace platinum
 {
+    void TriMesh::Sample(Intersection &inter, float &pdf) const
+    {
+        bvh_accel->Sample(inter, pdf);
+    }
     float TriMesh::GetArea() const
     {
         return area;

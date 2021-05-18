@@ -24,6 +24,16 @@
 
 namespace platinum
 {
+    Metal::Metal(const std::shared_ptr<Texture> &a, float f) : albedo(a)
+    {
+        f < 1 ? fuzz = f : fuzz = 1;
+    }
+    Metal::Metal(const glm::vec3 &a, float f)
+    {
+        albedo = std::make_shared<ConstTexture>(a);
+        f < 1 ? fuzz = f : fuzz = 1;
+    }
+
     bool Metal::Scatter(Intersection &rec) const
     {
         glm::vec3 reflected = Reflect(rec.ray->GetDirection(), rec.vert.normal) + fuzz * Random::RandomInUnitSphere();
@@ -32,8 +42,32 @@ namespace platinum
             rec.ray->SetColor(glm::vec3(0, 0, 0));
             return false;
         }
-        auto attenuation = albedo->GetValue(rec.vert.u, rec.vert.v,rec.vert.pos);
+        auto attenuation = albedo->GetValue(rec.vert.u, rec.vert.v, rec.vert.pos);
         rec.ray->Update(rec.vert.pos, reflected, attenuation);
         return true;
+    }
+    // Sample a ray by Material properties
+    glm::vec3 Metal::Sample(const glm::vec3 &d, Intersection &rec) const
+    {
+        return glm::vec3(0, 0, 0);
+    }
+    //Given a ray, calculate the PdF of this ray
+    float Metal::Pdf(const glm::vec3 &wi, const glm::vec3 &wo, const glm::vec3 &N) const
+    {
+        return 0;
+    }
+    // brdf. Given a ray, calculate the contribution of this ray
+    glm::vec3 Metal::ScatterPdf(const glm::vec3 &wi, const glm::vec3 &wo, const glm::vec3 &N) const
+    {
+        return glm::vec3(0, 0, 0);
+    }
+    //The material itself emits light.
+    glm::vec3 Metal::Emit() const
+    {
+        return glm::vec3(0, 0, 0);
+    }
+    bool Metal::IsEmit() const
+    {
+        return false;
     }
 }

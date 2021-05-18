@@ -23,6 +23,11 @@
 #include "lambertian.h"
 namespace platinum
 {
+    Lambertian::Lambertian(const std::shared_ptr<Texture> &a) : albedo(a) {}
+    Lambertian::Lambertian(const glm::vec3 &a)
+    {
+        albedo = std::make_shared<ConstTexture>(a);
+    }
     bool Lambertian::Scatter(Intersection &rec) const
     {
         auto reflected = glm::vec3(rec.vert.normal) + Random::RandomInUnitSphere();
@@ -71,6 +76,14 @@ namespace platinum
         {
             return glm::vec3(0.0f);
         }
+    }
+    glm::vec3 Lambertian::Emit() const
+    {
+        return glm::vec3(0, 0, 0);
+    }
+    bool Lambertian::IsEmit() const
+    {
+        return false;
     }
 
 }

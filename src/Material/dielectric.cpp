@@ -24,6 +24,7 @@
 
 namespace platinum
 {
+   Dielectric::Dielectric(float ri) : ref_idx(ri) {}
    bool Dielectric::Scatter(Intersection &rec) const
    {
       glm::vec3 outward_normal;
@@ -60,5 +61,30 @@ namespace platinum
          r_in->Update(rec.vert.pos, refracted, attenuation);
 
       return true;
+   }
+
+   // Sample a ray by Material properties
+   glm::vec3 Dielectric::Sample(const glm::vec3 &d, Intersection &rec) const
+   {
+      return glm::vec3(0, 0, 0);
+   }
+   //Given a ray, calculate the PdF of this ray
+   float Dielectric::Pdf(const glm::vec3 &wi, const glm::vec3 &wo, const glm::vec3 &N) const
+   {
+      return 0;
+   }
+   // brdf. Given a ray, calculate the contribution of this ray
+   glm::vec3 Dielectric::ScatterPdf(const glm::vec3 &wi, const glm::vec3 &wo, const glm::vec3 &N) const
+   {
+      return glm::vec3(0, 0, 0);
+   }
+   //The material itself emits light.
+   glm::vec3 Dielectric::Emit() const
+   {
+      return glm::vec3(0, 0, 0);
+   }
+   bool Dielectric::IsEmit() const
+   {
+      return false;
    }
 }

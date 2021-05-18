@@ -24,10 +24,37 @@
 
 namespace platinum
 {
+    Isotropic::Isotropic(const std::shared_ptr<Texture> &a) : tex(a) {}
+
     bool Isotropic::Scatter(Intersection &rec) const
     {
         auto attenuation = tex->GetValue(rec.vert.u, rec.vert.v, rec.vert.pos);
         rec.ray->Update(rec.vert.pos, Random::RandomInUnitSphere(), attenuation);
         return true;
     }
+    // Sample a ray by Material properties
+    glm::vec3 Isotropic::Sample(const glm::vec3 &d, Intersection &rec) const
+    {
+        return glm::vec3(0, 0, 0);
+    }
+    //Given a ray, calculate the PdF of this ray
+    float Isotropic::Pdf(const glm::vec3 &wi, const glm::vec3 &wo, const glm::vec3 &N) const
+    {
+        return 0;
+    }
+    // brdf. Given a ray, calculate the contribution of this ray
+    glm::vec3 Isotropic::ScatterPdf(const glm::vec3 &wi, const glm::vec3 &wo, const glm::vec3 &N) const
+    {
+        return glm::vec3(0, 0, 0);
+    }
+    //The material itself emits light.
+    glm::vec3 Isotropic::Emit() const
+    {
+        return glm::vec3(0, 0, 0);
+    }
+    bool Isotropic::IsEmit() const
+    {
+        return false;
+    }
+
 }

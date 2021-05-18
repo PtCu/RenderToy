@@ -216,6 +216,14 @@ Intersection BVHAccel::getIntersection(std::shared_ptr<Ray> &r) const
     }
     return inter;
 }
+
+void BVHAccel::Sample(Intersection &inter, float &pdf) const
+{
+    
+}
+void BVHAccel::getSample(std::shared_ptr<BVH_Node> node, float p, Intersection &pos, float &pdf)
+{
+}
 // BVH_Node::BVH_Node(vector<shared_ptr<Object>> &objects)
 // {
 //     if (objects.size() == 0)

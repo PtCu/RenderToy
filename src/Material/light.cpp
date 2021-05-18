@@ -46,6 +46,28 @@ namespace platinum
         float attAngle = abs(glm::dot(glm::normalize(rec.ray->GetDirection()), rec.vert.normal));
         rec.ray->SetColor(attDis * attAngle * tex->GetValue(rec.vert.u, rec.vert.v, rec.vert.pos));
         return false;
-
+    }
+    glm::vec3 Light::ScatterPdf(const glm::vec3 &wi, const glm::vec3 &wo, const glm::vec3 &N) const
+    {
+        return glm::vec3(0, 0, 0);
+    }
+    // Sample a ray by Material properties
+    glm::vec3 Light::Sample(const glm::vec3 &d, Intersection &rec) const
+    {
+        return glm::vec3(0, 0, 0);
+    }
+    //Given a ray, calculate the PdF of this ray
+    float Light::Pdf(const glm::vec3 &wi, const glm::vec3 &wo, const glm::vec3 &N) const
+    {
+        return 0;
+    }
+    //The material itself emits light.
+    glm::vec3 Light::Emit() const
+    {
+        return tex->GetValue(0, 0, glm::vec3(0));
+    }
+    bool Light::IsEmit() const
+    {
+        return true;
     }
 }

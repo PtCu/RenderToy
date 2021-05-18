@@ -115,7 +115,10 @@ namespace platinum
             return glm::vec3(0.f);
         }
         glm::vec3 hitColor(0.f);
-
+        if (objInter.material->IsEmit())
+        {
+            hitColor += objInter.material->Emit();
+        }
         // 采样光源点
         float light_pdf;
         Intersection lightInter;
