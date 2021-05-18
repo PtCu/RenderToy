@@ -75,6 +75,7 @@ shared_ptr<BVH_Node> BVHAccel::recursiveBuild(vector<shared_ptr<Object>>::iterat
         node->objects.push_back(*begin);
         node->left = nullptr;
         node->right = nullptr;
+        node->area += (*begin)->GetArea();
         return node;
     }
     else if (num == 2)
@@ -82,6 +83,7 @@ shared_ptr<BVH_Node> BVHAccel::recursiveBuild(vector<shared_ptr<Object>>::iterat
         node->left = recursiveBuild(begin, begin + 1);
         node->right = recursiveBuild(begin + 1, end);
         node->bounding_box = Union(node->left->bounding_box, node->right->bounding_box);
+        node->area += node->left->area + node->right->area;
         return node;
     }
     else
@@ -125,6 +127,7 @@ shared_ptr<BVH_Node> BVHAccel::recursiveBuild(vector<shared_ptr<Object>>::iterat
         node->left = recursiveBuild(begin, middle);
         node->right = recursiveBuild(middle, end);
         node->bounding_box = Union(node->left->bounding_box, node->right->bounding_box);
+        node->area = node->left->area + node->right->area;
     }
 
     return node;
@@ -219,10 +222,22 @@ Intersection BVHAccel::getIntersection(std::shared_ptr<Ray> &r) const
 
 void BVHAccel::Sample(Intersection &inter, float &pdf) const
 {
-    
+    float p = std::sqrt(Random::RandomInUnitFloat()) * root->area;
+    getSample(root, p, inter, pdf);
+    pdf /= root->area;
 }
-void BVHAccel::getSample(std::shared_ptr<BVH_Node> node, float p, Intersection &pos, float &pdf)
+void BVHAccel::getSample(std::shared_ptr<BVH_Node> node, float p, Intersection &pos, float &pdf) const
 {
+    if (node->left == nullptr || node->right == nullptr)
+    {
+        (*node->objects.begin())->Sample(pos, pdf);
+        pdf *= node->area;
+        return;
+    }
+    if (p < node->left->area)
+        getSample(node->left, p, pos, pdf);
+    else
+        getSample(node->right, p - node->left->area, pos, pdf);
 }
 // BVH_Node::BVH_Node(vector<shared_ptr<Object>> &objects)
 // {

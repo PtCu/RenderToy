@@ -35,6 +35,7 @@ namespace platinum
     public:
         Light(const glm::vec3 &color, float linear = 0.0f, float quadratic = 0.0f);
         Light(std::shared_ptr<Texture> lightTex, float linear = 0.0f, float quadratic = 0.0f);
+        
         virtual bool Scatter(Intersection &rec) const;
         // Sample a ray by Material properties
         virtual glm::vec3 Sample(const glm::vec3 &d, Intersection &rec) const;

@@ -27,6 +27,7 @@
 #include "object.h"
 #include "intersection.h"
 #include "aabb.h"
+#include "../Math/rand.h"
 
 namespace platinum
 {
@@ -35,7 +36,8 @@ namespace platinum
         AABB bounding_box;
         std::shared_ptr<BVH_Node> left, right;
         std::vector<std::shared_ptr<Object>> objects;
-        BVH_Node() : bounding_box(AABB()), left(NULL), right(NULL) {}
+        float area;
+        BVH_Node() : bounding_box(AABB()), left(NULL), right(NULL),area(0) {}
     };
 
     class BVHAccel
@@ -66,7 +68,7 @@ namespace platinum
         std::shared_ptr<BVH_Node> recursiveBuild(std::vector<std::shared_ptr<Object>>::iterator begin, std::vector<std::shared_ptr<Object>>::iterator end);
         Intersection BVHAccel::getIntersection_rec(std::shared_ptr<BVH_Node>node,std::shared_ptr<Ray> &r) const;
         Intersection getIntersection(std::shared_ptr<Ray> &r) const;
-        void getSample(std::shared_ptr<BVH_Node>node, float p, Intersection &pos, float &pdf);
+        void getSample(std::shared_ptr<BVH_Node>node, float p, Intersection &pos, float &pdf)const;
         // BVHAccel Private Data
         const SplitMethod splitMethod;
         std::shared_ptr<BVH_Node> root;
