@@ -35,7 +35,7 @@ namespace platinum
     public:
         Lambertian(const std::shared_ptr<Texture> &a);
         Lambertian(const glm::vec3 &a);
-        bool Lambertian::Scatter(Intersection &rec) const;
+        virtual bool Scatter(Intersection &rec) const;
         // Sample a ray by Material properties
         virtual glm::vec3 Sample(const glm::vec3 &d, Intersection &rec) const;
         //Given a ray, calculate the PdF of this ray

@@ -38,9 +38,9 @@ namespace platinum
         // Sample a ray by Material properties
         virtual glm::vec3 Sample(const glm::vec3 &d, Intersection &rec) const;
         //Given a ray, calculate the PdF of this ray
-        virtual float Pdf(const glm::vec3 &wi, const glm::vec3 &wo, const glm::vec3 &N) const;
+        virtual float Pdf(const glm::vec3 &wi, const glm::vec3 &wo, Intersection &rec) const;
         // brdf. Given a ray, calculate the contribution of this ray
-        virtual glm::vec3 ScatterPdf(const glm::vec3 &wi, const glm::vec3 &wo, const glm::vec3 &N) const;
+        virtual glm::vec3 ScatterPdf(const glm::vec3 &wi, const glm::vec3 &wo, Intersection &rec) const;
         //The material itself emits light.
         virtual glm::vec3 Emit() const;
         virtual bool IsEmit() const;

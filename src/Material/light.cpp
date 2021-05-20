@@ -47,7 +47,7 @@ namespace platinum
         rec.ray->SetColor(attDis * attAngle * tex->GetValue(rec.vert.u, rec.vert.v, rec.vert.pos));
         return false;
     }
-    glm::vec3 Light::ScatterPdf(const glm::vec3 &wi, const glm::vec3 &wo, const glm::vec3 &N) const
+    glm::vec3 Light::ScatterPdf(const glm::vec3 &wi, const glm::vec3 &wo, Intersection &rec) const
     {
         return glm::vec3(0, 0, 0);
     }
@@ -57,7 +57,7 @@ namespace platinum
         return glm::vec3(0, 0, 0);
     }
     //Given a ray, calculate the PdF of this ray
-    float Light::Pdf(const glm::vec3 &wi, const glm::vec3 &wo, const glm::vec3 &N) const
+    float Light::Pdf(const glm::vec3 &wi, const glm::vec3 &wo, Intersection &rec) const
     {
         return 0;
     }

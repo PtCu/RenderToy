@@ -38,12 +38,12 @@ namespace platinum
         return glm::vec3(0, 0, 0);
     }
     //Given a ray, calculate the PdF of this ray
-    float Isotropic::Pdf(const glm::vec3 &wi, const glm::vec3 &wo, const glm::vec3 &N) const
+    float Isotropic::Pdf(const glm::vec3 &wi, const glm::vec3 &wo, Intersection &rec) const
     {
         return 0;
     }
     // brdf. Given a ray, calculate the contribution of this ray
-    glm::vec3 Isotropic::ScatterPdf(const glm::vec3 &wi, const glm::vec3 &wo, const glm::vec3 &N) const
+    glm::vec3 Isotropic::ScatterPdf(const glm::vec3 &wi, const glm::vec3 &wo, Intersection &rec) const
     {
         return glm::vec3(0, 0, 0);
     }

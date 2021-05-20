@@ -34,16 +34,17 @@ namespace platinum
    public:
       Metal(const std::shared_ptr<Texture> &a, float f);
       Metal(const glm::vec3 &a, float f);
-      virtual bool Scatter(Intersection &rec) const;
+
+      bool Scatter(Intersection &rec) const final;
       // Sample a ray by Material properties
-      virtual glm::vec3 Sample(const glm::vec3 &d, Intersection &rec) const;
+      glm::vec3 Sample(const glm::vec3 &d, Intersection &rec) const override;
       //Given a ray, calculate the PdF of this ray
-      virtual float Pdf(const glm::vec3 &wi, const glm::vec3 &wo, const glm::vec3 &N) const;
+      float Pdf(const glm::vec3 &wi, const glm::vec3 &wo, Intersection &rec) const override;
       // brdf. Given a ray, calculate the contribution of this ray
-      virtual glm::vec3 ScatterPdf(const glm::vec3 &wi, const glm::vec3 &wo, const glm::vec3 &N) const;
+      glm::vec3 ScatterPdf(const glm::vec3 &wi, const glm::vec3 &wo, Intersection &rec) const override;
       //The material itself emits light.
-      virtual glm::vec3 Emit() const;
-      virtual bool IsEmit() const;
+      glm::vec3 Emit() const override;
+      bool IsEmit() const override;
 
    private:
       std::shared_ptr<Texture> albedo;

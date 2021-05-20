@@ -35,17 +35,17 @@ namespace platinum
     public:
         Light(const glm::vec3 &color, float linear = 0.0f, float quadratic = 0.0f);
         Light(std::shared_ptr<Texture> lightTex, float linear = 0.0f, float quadratic = 0.0f);
-        
-        virtual bool Scatter(Intersection &rec) const;
+
+        bool Scatter(Intersection &rec) const final;
         // Sample a ray by Material properties
-        virtual glm::vec3 Sample(const glm::vec3 &d, Intersection &rec) const;
+        glm::vec3 Sample(const glm::vec3 &d, Intersection &rec) const override;
         //Given a ray, calculate the PdF of this ray
-        virtual float Pdf(const glm::vec3 &wi, const glm::vec3 &wo, const glm::vec3 &N) const;
+        float Pdf(const glm::vec3 &wi, const glm::vec3 &wo, Intersection &rec) const override;
         // brdf. Given a ray, calculate the contribution of this ray
-        virtual glm::vec3 ScatterPdf(const glm::vec3 &wi, const glm::vec3 &wo, const glm::vec3 &N) const;
+        glm::vec3 ScatterPdf(const glm::vec3 &wi, const glm::vec3 &wo, Intersection &rec) const override;
         //The material itself emits light.
-        virtual glm::vec3 Emit() const;
-        virtual bool IsEmit() const;
+        glm::vec3 Emit() const override;
+        bool IsEmit() const override;
 
     private:
         std::shared_ptr<Texture> tex;
