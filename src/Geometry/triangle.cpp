@@ -24,13 +24,14 @@
 
 namespace platinum
 {
+
     void Triangle::Sample(Intersection &inter, float &pdf) const
     {
         float x = std::sqrt(Random::RandomInUnitFloat()), y = Random::RandomInUnitFloat();
         inter.vert.pos = A.pos * (1.0f - x) + B.pos * (x * (1.0f - y)) + C.pos * (x * y);
         inter.vert.normal = this->normal;
         pdf = 1.0f / area;
-        inter.ray->SetColor(inter.material->Emit());
+        // inter.ray->SetColor(material->Emit());
     }
     AABB Triangle::GetBoundingBox() const
     {
@@ -40,12 +41,22 @@ namespace platinum
     {
         return area;
     }
+    Triangle::Triangle(const glm::vec3 &a, const glm::vec3 &b, const glm::vec3 &c, const std::shared_ptr<Material> &material)
+        : A(a), B(b), C(c), Object(material)
+    {
+        e1 = C.pos - A.pos;
+        e2 = B.pos - A.pos;
+        normal = -glm::normalize(glm::cross(e1, e2));
+        area = 0.5f * glm::cross(e1, e2).length();
+        bounding_box = AABB(A.pos, B.pos);
+        bounding_box.Expand(C.pos);
+    }
     Triangle::Triangle(const Vertex &a, const Vertex &b, const Vertex &c, const std::shared_ptr<Material> &material)
         : A(a), B(b), C(c), Object(material)
     {
         e1 = C.pos - A.pos;
-        e2 = B.pos - C.pos;
-        normal = glm::normalize(glm::cross(e1, e2));
+        e2 = B.pos - A.pos;
+        normal = -glm::normalize(glm::cross(e1, e2));
         area = 0.5f * glm::cross(e1, e2).length();
         // glm::vec3 minP = min(min(A.pos, B.pos), C.pos);
         // glm::vec3 maxP = max(max(A.pos, B.pos), C.pos);
@@ -59,7 +70,7 @@ namespace platinum
         // }
         // bounding_box = AABB(minP, maxP);
         bounding_box = AABB(A.pos, B.pos);
-        bounding_box.Expand(c.pos);
+        bounding_box.Expand(C.pos);
     }
     glm::vec4 Triangle::intersectRay(const glm::vec3 &o, const glm::vec3 &d)
     {
@@ -118,6 +129,7 @@ namespace platinum
             return rec;
 
         rec.vert = Vertex::GenVert(glm::vec3(abgt[0], abgt[1], abgt[2]), A, B, C);
+        rec.vert.normal = normal;
         rec.ray = r;
         rec.material = GetMaterial();
         rec.happened = true;

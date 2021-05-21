@@ -35,6 +35,7 @@ namespace platinum
     class Triangle : public Object
     {
     public:
+        Triangle(const glm::vec3 &a, const glm::vec3 &b, const glm::vec3 &c, const std::shared_ptr<Material> &material = NULL);
         Triangle(const Vertex &a, const Vertex &b, const Vertex &c, const std::shared_ptr<Material> &material = NULL);
         virtual Intersection Intersect(std::shared_ptr<Ray> &r);
         virtual AABB GetBoundingBox() const;

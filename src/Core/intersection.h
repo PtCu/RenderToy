@@ -42,7 +42,16 @@ namespace platinum
             ray = NULL;
             happened = false;
         };
-        
+        Intersection(bool default_ray)
+        {
+            material = NULL;
+            if (default_ray)
+                ray = std::make_shared<Ray>();
+            else
+                ray = NULL;
+            happened = false;
+        };
+
     }; // namespace platinum
 }
 #endif

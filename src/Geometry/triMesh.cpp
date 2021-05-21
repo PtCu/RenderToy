@@ -28,6 +28,7 @@ namespace platinum
     void TriMesh::Sample(Intersection &inter, float &pdf) const
     {
         bvh_accel->Sample(inter, pdf);
+        inter.ray->SetColor(material->Emit());
     }
     float TriMesh::GetArea() const
     {
@@ -96,11 +97,6 @@ namespace platinum
         if (bvh_accel)
         {
             intersec = bvh_accel->RayCast(r);
-        }
-        if (intersec.happened)
-        {
-            int a = 1;
-            int b = 1;
         }
         return intersec;
         // Intersection rec;

@@ -17,11 +17,11 @@ using namespace std;
 void createWorld(Scene &world)
 {
     // Mat
-    auto redMat = make_shared<Lambertian>(make_shared<ConstTexture>(vec3(0.65f, 0.05f, 0.05f)));
-    auto greenMat = make_shared<Lambertian>(make_shared<ConstTexture>(vec3(0.12f, 0.45f, 0.15f)));
-    auto grayMat = make_shared<Lambertian>(make_shared<ConstTexture>(vec3(0.73f, 0.73f, 0.73f)));
+    auto redMat = make_shared<Lambertian>(make_shared<ConstTexture>(vec3(0.63f, 0.065f, 0.05f)));
+    auto greenMat = make_shared<Lambertian>(make_shared<ConstTexture>(vec3(0.14f, 0.45f, 0.091f)));
+    auto grayMat = make_shared<Lambertian>(make_shared<ConstTexture>(vec3(0.725f, 0.71f, 0.68f)));
     auto blueMat = make_shared<Lambertian>(make_shared<ConstTexture>(vec3(0.1f, 0.1f, 0.73f)));
-    auto lightMat = make_shared<Light>(vec3(100.f));
+    auto lightMat = make_shared<Light>(make_shared<ConstTexture>(8.0f * glm::vec3(0.747f + 0.058f, 0.747f + 0.258f, 0.747f) + 15.6f * glm::vec3(0.740f + 0.287f, 0.740f + 0.160f, 0.740f) + 18.4f * glm::vec3(0.737f + 0.642f, 0.737f + 0.159f, 0.737f)));
     auto cubeMat = make_shared<Lambertian>(make_shared<ConstTexture>(vec3(1.0f, 1.0f, 1.0f)));
 
     auto floor = make_shared<TriMesh>("../../../../../assets/cornellbox/floor.obj", grayMat);
@@ -31,19 +31,26 @@ void createWorld(Scene &world)
     auto right = make_shared<TriMesh>("../../../../../assets/cornellbox/right.obj", greenMat);
     auto light_ = make_shared<TriMesh>("../../../../../assets/cornellbox/light.obj", lightMat);
 
+    //auto floor = make_shared<TriMesh>("../../../../../assets/cornellbox/floor.obj", lightMat);
+    // auto shortbox = make_shared<TriMesh>("../../../../../assets/cornellbox/shortbox.obj", lightMat);
+    // auto tallbox = make_shared<TriMesh>("../../../../../assets/cornellbox/tallbox.obj", lightMat);
+    // auto left = make_shared<TriMesh>("../../../../../assets/cornellbox/left.obj", lightMat);
+    // auto right = make_shared<TriMesh>("../../../../../assets/cornellbox/right.obj", lightMat);
+    // auto light_ = make_shared<TriMesh>("../../../../../assets/cornellbox/light.obj", lightMat);
+
     world.AddObject(floor);
     world.AddObject(shortbox);
     world.AddObject(tallbox);
     world.AddObject(left);
     world.AddObject(right);
-   world.AddObject(light_);
+    world.AddObject(light_);
 }
 
 int main()
 {
-    int nx = 500;
-    int ny = 500;
-    int ns = 100;
+    int nx = 1280;
+    int ny = 960;
+    int ns = 16;
     Scene world(false);
     createWorld(world);
     vec3 lookfrom(278, 273, -800);

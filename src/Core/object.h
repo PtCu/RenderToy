@@ -42,7 +42,7 @@ namespace platinum
         virtual void Sample(Intersection &inter, float &pdf) const = 0;
         virtual float GetArea() const = 0;
 
-    private:
+    protected:
         std::shared_ptr<const Material> material;
     };
 } // namespace platinum

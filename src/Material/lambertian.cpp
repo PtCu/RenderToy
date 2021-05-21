@@ -54,7 +54,7 @@ namespace platinum
         float cosine = glm::dot(wo, rec.vert.normal);
         if (cosine > 0.0f)
         {
-            return cosine / PI;
+            return 0.5f / PI;
         }
         else
         {

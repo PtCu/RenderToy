@@ -25,12 +25,12 @@ namespace platinum
 {
     void Sphere::Sample(Intersection &inter, float &pdf) const
     {
-        float theta = 2.0 * PI * Random::RandomInUnitFloat(), phi = PI *Random::RandomInUnitFloat();
+        float theta = 2.0f * PI * Random::RandomInUnitFloat(), phi = PI *Random::RandomInUnitFloat();
         glm::vec3 dir(std::cos(phi), std::sin(phi) * std::cos(theta), std::sin(phi) * std::sin(theta));
         inter.vert.pos = center + radius * dir;
         inter.vert.normal = dir;
         pdf = 1.0f / area;
-        inter.ray->SetColor(inter.material->Emit());
+        inter.ray->SetColor(material->Emit());
     }
     float Sphere::GetArea() const
     {

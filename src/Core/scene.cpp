@@ -53,7 +53,7 @@ namespace platinum
         this->bvh_accel.reset();
         this->destroyAll();
     }
-    Intersection Scene ::intersectAll(std::shared_ptr<Ray> &r) const
+    Intersection Scene::intersectAll(std::shared_ptr<Ray> &r) const
     {
         return this->bvh_accel->RayCast(r);
     }
@@ -87,26 +87,29 @@ namespace platinum
     }
     glm::vec3 Scene::CastRay(std::shared_ptr<Ray> &r) const
     {
-        return CastRay(r, max_depth);
+        return castRay(r, max_depth);
     }
-    glm::vec3 Scene::CastRay(std::shared_ptr<Ray> &ray, int dep) const
+    glm::vec3 Scene::castRay(std::shared_ptr<Ray> &ray, int dep) const
     {
 
-        // auto rec = intersectAll(ray);
-        // if (!rec.happened || dep == 0)
-        // {
-        //     return glm::vec3(1.0001f / 255.0f);
-        // }
+        auto rec = intersectAll(ray);
+        if (!rec.happened || dep == 0)
+        {
+            return glm::vec3(1.0001f / 255.0f);
+        }
 
-        // if (rec.happened)
-        // {
-        //     if (rec.material == NULL)
-        //         return glm::vec3(0, 1, 0);
-        //     if (rec.material->Scatter(rec))
-        //         return CastRay(ray, dep - 1);
-        //     else
-        //         return ray->GetColor();
-        // }
+        if (rec.happened)
+        {
+            if (rec.material == NULL)
+                return glm::vec3(0, 1, 0);
+            if (rec.material->Scatter(rec))
+                return castRay(ray, dep - 1);
+            else
+                return ray->GetColor();
+        }
+    }
+    glm::vec3 Scene::castRayPdf(std::shared_ptr<Ray> &ray) const
+    {
 
         //求一条光线与场景的交点
         Intersection objInter = intersectAll(ray);
@@ -117,11 +120,11 @@ namespace platinum
         glm::vec3 hitColor(0.f);
         if (objInter.material->IsEmit())
         {
-            hitColor += objInter.material->Emit();
+            return objInter.material->Emit();
         }
         // 采样光源点
         float light_pdf;
-        Intersection lightInter;
+        Intersection lightInter = Intersection(true);
         sampleLight(lightInter, light_pdf);
         glm::vec3 obj2light = lightInter.vert.pos - objInter.vert.pos;
         glm::vec3 obj2lightDir = glm::normalize(obj2light);
@@ -130,7 +133,9 @@ namespace platinum
         glm::vec3 w_o = -glm::normalize(ray->GetDirection()), w_i;
         glm::vec3 objN = glm::normalize(objInter.vert.normal);
         glm::vec3 lightN = normalize(lightInter.vert.normal);
-        if (intersectAll(toLightRay).ray->GetMaxTime() - glm::length(obj2light) > -EPSILON)
+        auto inter_tmp = intersectAll(toLightRay);
+        //测试是否有遮挡
+        if (inter_tmp.happened && inter_tmp.ray->GetMaxTime() - glm::length(obj2light) > -EPSILON)
         {
             //直接光照
             //入射方向为光源射向物体，出射方向（所求的方向)为参数ray的方向
@@ -150,7 +155,7 @@ namespace platinum
             glm::vec3 f_r = objInter.material->ScatterPdf(w_o, w_i, objInter);
             float pdf = objInter.material->Pdf(w_o, w_i, objInter);
             auto next_ray = std::make_shared<Ray>(objInter.vert.pos, w_i);
-            Lo_indir = CastRay(next_ray, dep) * f_r * cos / pdf / RussianRoulette;
+            Lo_indir = castRayPdf(next_ray) * f_r * cos / pdf / RussianRoulette;
         }
         hitColor += Lo_indir;
         return hitColor;
