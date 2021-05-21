@@ -87,7 +87,10 @@ namespace platinum
     }
     glm::vec3 Scene::CastRay(std::shared_ptr<Ray> &r) const
     {
-        return castRay(r, max_depth);
+        if (mode == 0)
+            return castRay(r, max_depth);
+        else if (mode == 1)
+            return castRayPdf(r);
     }
     glm::vec3 Scene::castRay(std::shared_ptr<Ray> &ray, int dep) const
     {
@@ -106,6 +109,16 @@ namespace platinum
                 return castRay(ray, dep - 1);
             else
                 return ray->GetColor();
+        }
+        else
+        {
+            if (!default_light)
+                return glm::vec3(1.0001f / 255.0f);
+
+            //TODO: Make it configurable
+            glm::vec3 unit_direction = glm::normalize(ray->GetDirection());
+            float t = 0.5f * (unit_direction.y + 1.0f);
+            return ray->GetColor() * ((1.0f - t) * glm::vec3(1.0, 1.0, 1.0) + t * glm::vec3(0.75, 0.85, 1.0));
         }
     }
     glm::vec3 Scene::castRayPdf(std::shared_ptr<Ray> &ray) const

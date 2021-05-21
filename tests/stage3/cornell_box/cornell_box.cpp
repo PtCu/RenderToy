@@ -31,13 +31,6 @@ void createWorld(Scene &world)
     auto right = make_shared<TriMesh>("../../../../../assets/cornellbox/right.obj", greenMat);
     auto light_ = make_shared<TriMesh>("../../../../../assets/cornellbox/light.obj", lightMat);
 
-    //auto floor = make_shared<TriMesh>("../../../../../assets/cornellbox/floor.obj", lightMat);
-    // auto shortbox = make_shared<TriMesh>("../../../../../assets/cornellbox/shortbox.obj", lightMat);
-    // auto tallbox = make_shared<TriMesh>("../../../../../assets/cornellbox/tallbox.obj", lightMat);
-    // auto left = make_shared<TriMesh>("../../../../../assets/cornellbox/left.obj", lightMat);
-    // auto right = make_shared<TriMesh>("../../../../../assets/cornellbox/right.obj", lightMat);
-    // auto light_ = make_shared<TriMesh>("../../../../../assets/cornellbox/light.obj", lightMat);
-
     world.AddObject(floor);
     world.AddObject(shortbox);
     world.AddObject(tallbox);
@@ -48,10 +41,10 @@ void createWorld(Scene &world)
 
 int main()
 {
-    int nx = 800;
-    int ny = 800;
-    int ns = 50;
-    Scene world(false);
+    int nx = 500;
+    int ny = 500;
+    int ns = 10;
+    Scene world(false, 1);
     createWorld(world);
     vec3 lookfrom(278, 273, -800);
     vec3 lookat(278, 273, 0);

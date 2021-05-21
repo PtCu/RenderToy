@@ -37,8 +37,7 @@ namespace platinum
     {
     public:
         Scene() : max_depth(10), default_light(true), RussianRoulette(0.8) {}
-        Scene(bool d_l) : max_depth(10), default_light(d_l), RussianRoulette(0.8) {}
-        Scene(bool d_l, int max_dep) : max_depth(max_dep), default_light(d_l), RussianRoulette(0.8) {}
+        Scene(bool d_l, int _mode = 0) : max_depth(10), default_light(d_l), mode(_mode), RussianRoulette(0.8) {}
         ~Scene();
         bool IntersectAll(std::shared_ptr<Ray> &r, Intersection &rec) const; //Brute method for stage 1
         void AddObject(const std::shared_ptr<Object> &obj);
@@ -60,6 +59,7 @@ namespace platinum
         std::vector<std::shared_ptr<Object>> objects;
         bool default_light;
         float RussianRoulette;
+        int mode;
     };
 
 } // namespace platinum
