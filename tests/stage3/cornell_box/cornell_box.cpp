@@ -41,9 +41,9 @@ void createWorld(Scene &world)
 
 int main()
 {
-    int nx = 500;
-    int ny = 500;
-    int ns = 10;
+    int nx = 784;
+    int ny = 784;
+    int ns = 4;
     Scene world(false, 1);
     createWorld(world);
     vec3 lookfrom(278, 273, -800);
@@ -52,7 +52,7 @@ int main()
     float aperture = 0.05f;
 
     shared_ptr<Camera> cam = make_shared<Camera>(lookfrom, lookat, vec3(0, -1, 0), 45, float(nx) / float(ny), aperture, dist_to_focus);
-    Renderer render(nx, ny, 3, "obj_loader.png", ns);
+    Renderer render(nx, ny, 3, "cornell.png", ns);
     render.Render(world, cam);
 
     world.Reset();

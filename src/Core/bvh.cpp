@@ -136,8 +136,6 @@ shared_ptr<BVH_Node> BVHAccel::recursiveBuild(vector<shared_ptr<Object>>::iterat
 Intersection BVHAccel::RayCast(std::shared_ptr<Ray> &r) const
 {
     Intersection isect;
-    if (!root)
-        return isect;
     // isect = BVHAccel::getIntersection(r);
     isect = BVHAccel::getIntersection_rec(root, r);
     return isect;
