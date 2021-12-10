@@ -20,15 +20,14 @@ void some_spheres(Scene &world)
 {
     auto sph1 = make_shared<Sphere>(vec3(0, 0, -1), 0.5, make_shared<Lambertian>(make_shared<ImgTexture>("../../../../../assets/earthmap.jpg")));
     world.AddObject(sph1);
-    
 }
 
 int main()
 {
-    int nx = 1200;
-    int ny = 800;
+    int nx = 800;
+    int ny = 600;
     int ns = 10;
-        Scene world(true);
+    Scene world(true);
     some_spheres(world);
 
     shared_ptr<Camera> cam = make_shared<Camera>();

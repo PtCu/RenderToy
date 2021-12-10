@@ -96,7 +96,7 @@ namespace platinum
     {
 
         auto rec = intersectAll(ray);
-        if (!rec.happened || dep == 0)
+        if (dep == 0)
         {
             return glm::vec3(1.0001f / 255.0f);
         }

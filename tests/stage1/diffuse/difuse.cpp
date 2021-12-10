@@ -50,7 +50,6 @@ int main()
     Camera cam;
     for (int j = 0; j < ny; ++j)
     {
-
         for (int i = 0; i < nx; ++i)
         {
             vec3 col(0, 0, 0);

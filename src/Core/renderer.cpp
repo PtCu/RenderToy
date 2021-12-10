@@ -59,39 +59,42 @@ namespace platinum
         int ny = img.GetHeight();
         float u = 0, v = 0;
         int img_size = ny * nx;
+        //不是这里的问题
         for (int cnt = 1; cnt <= iterations; ++cnt)
         {
-//#pragma omp parallel for schedule(dynamic, 1024)
+            #pragma omp parallel for schedule(dynamic, 1024)
             for (int px_id = 0; px_id < img_size; ++px_id)
             {
                 int i = px_id % nx;
                 int j = px_id / nx;
                 u = static_cast<float>(i + Random::RandomInUnitFloat()) / static_cast<float>(nx);
                 v = static_cast<float>(j + Random::RandomInUnitFloat()) / static_cast<float>(ny);
+
                 auto r = cam->GetRay(u, v);
                 auto rst = scene.CastRay(r);
-                auto col = img.GetPixel_F(i, j);
-                glm::vec3 new_col(col.r, col.g, col.b);
-                new_col += rst / (static_cast<float>(iterations));
+                auto _col = img.GetPixel_F(i, j);
+                glm::vec3 col(_col.r, _col.g, _col.b);
+                //极限收敛至真实颜色
+                glm::vec3 new_col = (col * (static_cast<float>(cnt)) + rst) / (static_cast<float>(cnt) + 1);
                 Image::Pixel pix(new_col.r, new_col.g, new_col.b);
                 img.SetPixel(i, j, pix);
             }
             UpdateProgress(static_cast<float>(cnt) / iterations);
         }
-//#pragma omp parallel for schedule(dynamic, 1024)
-        for (int px_id = 0; px_id < img_size; ++px_id)
-        {
-            int i = px_id % nx;
-            int j = px_id / nx;
-            auto col = img.GetPixel_F(i, j);
-            col.r = std::pow(clamp(0,1,col.r), 0.6);
-            col.g = std::pow(clamp(0,1,col.g), 0.6);
-            col.b = std::pow(clamp(0,1,col.b), 0.6);
-            glm::vec3 new_col(col.r, col.g, col.b);
+        //#pragma omp parallel for schedule(dynamic, 1024)
+        // for (int px_id = 0; px_id < img_size; ++px_id)
+        // {
+        //     int i = px_id % nx;
+        //     int j = px_id / nx;
+        //     auto col = img.GetPixel_F(i, j);
+        //     col.r = std::pow(clamp(0,1,col.r), 0.6);
+        //     col.g = std::pow(clamp(0,1,col.g), 0.6);
+        //     col.b = std::pow(clamp(0,1,col.b), 0.6);
+        //     glm::vec3 new_col(col.r, col.g, col.b);
 
-            img.SetPixel(i, j, new_col);
-        }
-        UpdateProgress(1.f);
+        //     img.SetPixel(i, j, new_col);
+        // }
+        // UpdateProgress(1.f);
         img.SaveAsPNG(filename);
     }
 }

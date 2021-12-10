@@ -43,8 +43,8 @@ int main()
 {
     int nx = 784;
     int ny = 784;
-    int ns = 4;
-    Scene world(false, 1);
+    int ns = 100;
+    Scene world(false);
     createWorld(world);
     vec3 lookfrom(278, 273, -800);
     vec3 lookat(278, 273, 0);

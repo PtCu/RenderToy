@@ -42,9 +42,9 @@ void some_spheres(Scene &world)
 
 int main()
 {
-    int nx = 1200;
-    int ny = 600;
-    int ns = 30;
+    int nx = 500;
+    int ny = 400;
+    int ns = 10;
     Scene world(false);
     some_spheres(world);
     vec3 lookfrom(13, 2, 3);
