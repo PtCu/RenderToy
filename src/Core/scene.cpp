@@ -128,7 +128,7 @@ namespace platinum
         Intersection objInter = intersectAll(ray);
         if (!objInter.happened)
         {
-            return glm::vec3(0.f);
+            return glm::vec3(1.0001f / 255.0f);
         }
         glm::vec3 hitColor(0.f);
         if (objInter.material->IsEmit())
@@ -149,6 +149,7 @@ namespace platinum
         auto inter_tmp = intersectAll(toLightRay);
         //测试是否有遮挡
         if (inter_tmp.happened && inter_tmp.ray->GetMaxTime() - glm::length(obj2light) > -EPSILON)
+        //应当为if (inter_tmp.ray->GetMaxTime() - glm::length(obj2light) > -EPSILON)，但是有bug，会出现inter_tmp无相交的情况
         {
             //直接光照
             //入射方向为光源射向物体，出射方向（所求的方向)为参数ray的方向
