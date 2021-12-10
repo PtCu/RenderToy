@@ -68,7 +68,7 @@ int main()
 {
     int nx = 1200;
     int ny = 800;
-    int ns = 1000;
+    int ns = 100;
     Scene world(true);
     random_scene(world);
 

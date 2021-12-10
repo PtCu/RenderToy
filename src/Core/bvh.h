@@ -35,9 +35,9 @@ namespace platinum
     {
         AABB bounding_box;
         std::shared_ptr<BVH_Node> left, right;
-        std::vector<std::shared_ptr<Object>> objects;
+        std::shared_ptr<Object> objects;
         float area;
-        BVH_Node() : bounding_box(AABB()), left(NULL), right(NULL),area(0) {}
+        BVH_Node() : bounding_box(AABB()), left(NULL), right(NULL), area(0) {}
     };
 
     class BVHAccel
@@ -66,9 +66,9 @@ namespace platinum
     protected:
         // BVHAccel Private Methods
         std::shared_ptr<BVH_Node> recursiveBuild(std::vector<std::shared_ptr<Object>>::iterator begin, std::vector<std::shared_ptr<Object>>::iterator end);
-        Intersection BVHAccel::getIntersection_rec(std::shared_ptr<BVH_Node>node,std::shared_ptr<Ray> &r) const;
+        Intersection BVHAccel::getIntersection_rec(std::shared_ptr<BVH_Node> node, std::shared_ptr<Ray> &r) const;
         Intersection getIntersection(std::shared_ptr<Ray> &r) const;
-        void getSample(std::shared_ptr<BVH_Node>node, float p, Intersection &pos, float &pdf)const;
+        void getSample(std::shared_ptr<BVH_Node> node, float p, Intersection &pos, float &pdf) const;
         // BVHAccel Private Data
         const SplitMethod splitMethod;
         std::shared_ptr<BVH_Node> root;

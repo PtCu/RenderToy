@@ -72,10 +72,10 @@ shared_ptr<BVH_Node> BVHAccel::recursiveBuild(vector<shared_ptr<Object>>::iterat
     {
         // Create leaf _BVHBuildNode_
         node->bounding_box = (*begin)->GetBoundingBox();
-        node->objects.push_back(*begin);
+        node->objects = *begin;
         node->left = nullptr;
         node->right = nullptr;
-        node->area += (*begin)->GetArea();
+        node->area = (*begin)->GetArea();
         return node;
     }
     else if (num == 2)
@@ -83,7 +83,7 @@ shared_ptr<BVH_Node> BVHAccel::recursiveBuild(vector<shared_ptr<Object>>::iterat
         node->left = recursiveBuild(begin, begin + 1);
         node->right = recursiveBuild(begin + 1, end);
         node->bounding_box = Union(node->left->bounding_box, node->right->bounding_box);
-        node->area += node->left->area + node->right->area;
+        node->area = node->left->area + node->right->area;
         return node;
     }
     else
@@ -105,19 +105,21 @@ shared_ptr<BVH_Node> BVHAccel::recursiveBuild(vector<shared_ptr<Object>>::iterat
         case SplitMethod::MIDDLE:
             p_mid = centroidBounds.Centroid()[dim];
             middle = std::partition(begin, end,
-                                    [dim, p_mid](auto p) { return p->GetBoundingBox().Centroid()[dim] < p_mid; });
+                                    [dim, p_mid](auto p)
+                                    { return p->GetBoundingBox().Centroid()[dim] < p_mid; });
 
-            //Edge case: if identical bounding boxes exist
-            if (middle - begin == 0)
-            {
-                node->left = node->right = NULL;
-                node->bounding_box = (*begin)->GetBoundingBox();
-                for (auto &iter = begin; iter != end; ++iter)
-                {
-                    node->objects.push_back(*iter);
-                }
-                return node;
-            }
+            // //Edge case: if identical bounding boxes exist
+            // if (middle - begin == 0)
+            // {
+            //     node->left = node->right = NULL;
+            //     node->bounding_box = (*begin)->GetBoundingBox();
+            // for (auto &iter = begin; iter != end; ++iter)
+            // {
+            //     node->objects.push_back(*iter);
+            // }
+            //     node->objects = *begin;
+            //     return node;
+            // }
             break;
         case SplitMethod::SAH:
             break;
@@ -149,18 +151,19 @@ Intersection BVHAccel::getIntersection_rec(std::shared_ptr<BVH_Node> node, std::
 
     if (!node->left && !node->right)
     {
-        Intersection tmp_inter, inter;
-        for (auto &obj : node->objects)
-        {
-            tmp_inter = obj->Intersect(r);
+        return node->objects->Intersect(r);
+        // Intersection tmp_inter, inter;
+        // for (auto &obj : node->objects)
+        // {
+        //     tmp_inter = obj->Intersect(r);
 
-            if (tmp_inter.happened && (inter.happened == false || tmp_inter.ray->GetMaxTime() < inter.ray->GetMaxTime()))
-            {
-                // inter = std::move(tmp_inter);
-                inter = tmp_inter;
-            }
-        }
-        return inter;
+        //     if (tmp_inter.happened && (inter.happened == false || tmp_inter.ray->GetMaxTime() < inter.ray->GetMaxTime()))
+        //     {
+        //         // inter = std::move(tmp_inter);
+        //         inter = tmp_inter;
+        //     }
+        // }
+        // return inter;
     }
 
     Intersection hit1, hit2;
@@ -198,15 +201,11 @@ Intersection BVHAccel::getIntersection(std::shared_ptr<Ray> &r) const
             continue;
         if (p->left == NULL && p->right == NULL)
         {
-            for (auto &obj : p->objects)
+            tmp_inter = p->objects->Intersect(r);
+            if (tmp_inter.happened && (inter.happened == false || tmp_inter.ray->GetMaxTime() < inter.ray->GetMaxTime()))
             {
-                tmp_inter = obj->Intersect(r);
-
-                if (tmp_inter.happened && (inter.happened == false || tmp_inter.ray->GetMaxTime() < inter.ray->GetMaxTime()))
-                {
-                    // inter = std::move(tmp_inter);
-                    inter = tmp_inter;
-                }
+                // inter = std::move(tmp_inter);
+                inter = tmp_inter;
             }
         }
 
@@ -228,7 +227,7 @@ void BVHAccel::getSample(std::shared_ptr<BVH_Node> node, float p, Intersection &
 {
     if (node->left == nullptr || node->right == nullptr)
     {
-        (*node->objects.begin())->Sample(pos, pdf);
+        node->objects->Sample(pos, pdf);
         pdf *= node->area;
         return;
     }
