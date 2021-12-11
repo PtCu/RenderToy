@@ -53,11 +53,11 @@ namespace platinum
         this->bvh_accel.reset();
         this->destroyAll();
     }
-    Intersection Scene::intersectAll(std::shared_ptr<Ray> &r) const
+    HitRst Scene::intersectAll(std::shared_ptr<Ray> &r) const
     {
         return this->bvh_accel->RayCast(r);
     }
-    void Scene::sampleLight(Intersection &inter, float &pdf) const
+    void Scene::sampleLight(HitRst &inter, float &pdf) const
     {
         float emit_area_sum = 0;
         for (uint32_t k = 0; k < objects.size(); ++k)
@@ -95,17 +95,18 @@ namespace platinum
     glm::vec3 Scene::castRay(std::shared_ptr<Ray> &ray, int dep) const
     {
 
-        auto rec = intersectAll(ray);
+        auto rst = intersectAll(ray);
         if (dep == 0)
         {
             return glm::vec3(1.0001f / 255.0f);
         }
 
-        if (rec.happened)
+        if (rst.isHit)
         {
-            if (rec.material == NULL)
+            if (rst.material == NULL)
                 return glm::vec3(0, 1, 0);
-            if (rec.material->Scatter(rec))
+            //不管什么材质都进行反射，继续追踪
+            if (rst.material->Scatter(rst))
                 return castRay(ray, dep - 1);
             else
                 return ray->GetColor();
@@ -125,67 +126,67 @@ namespace platinum
     {
 
         //求一条光线与场景的交点
-        Intersection objInter = intersectAll(ray);
-        if (!objInter.happened)
+        HitRst objRst = intersectAll(ray);
+        if (!objRst.isHit)
         {
             return glm::vec3(0.f);
         }
         glm::vec3 hitColor(0.f);
-        if (objInter.material->IsEmit())
+        if (objRst.material->IsEmit())
         {
-            return objInter.material->Emit();
+            return objRst.material->Emit();
         }
         //采样光源点
-        float light_pdf;
-        Intersection lightInter = Intersection(true);
-        sampleLight(lightInter, light_pdf);
-        glm::vec3 obj2light = lightInter.vert.pos - objInter.vert.pos;
+        float light_pdf=1;
+        HitRst lightRst;
+        sampleLight(lightRst, light_pdf);
+        glm::vec3 obj2light = lightRst.record.vert.pos - objRst.record.vert.pos;
         glm::vec3 obj2lightDir = glm::normalize(obj2light);
-        auto toLightRay = std::make_shared<Ray>(objInter.vert.pos, obj2lightDir);
+        auto toLightRay = std::make_shared<Ray>(objRst.record.vert.pos, obj2lightDir);
         glm::vec3 Lo_dir(0.f), Lo_indir(0.f);
         glm::vec3 w_o = -glm::normalize(ray->GetDirection()), w_i;
-        glm::vec3 objN = glm::normalize(objInter.vert.normal);
-        glm::vec3 lightN = normalize(lightInter.vert.normal);
+        glm::vec3 objN = glm::normalize(objRst.record.vert.normal);
+        glm::vec3 lightN = normalize(lightRst.record.vert.normal);
         auto inter_tmp = intersectAll(toLightRay);
         //测试是否有遮挡
-        if (inter_tmp.happened && inter_tmp.ray->GetMaxTime() - glm::length(obj2light) > -EPSILON)
+        if (inter_tmp.isHit && inter_tmp.record.ray->GetMaxTime() - glm::length(obj2light) > -EPSILON)
         {
             //直接光照
             //入射方向为光源射向物体，出射方向（所求的方向)为参数ray的方向
-            glm::vec3 f_r = objInter.material->ScatterPdf(obj2lightDir, w_o, objInter);
+            glm::vec3 f_r = objRst.material->ScatterPdf(obj2lightDir, w_o, objRst);
             //对光源采样
             float r2 = glm::dot(obj2light, obj2light);
             float cosA = std::max(.0f, glm::dot(objN, obj2lightDir));
             float cosB = std::max(.0f, glm::dot(lightN, -obj2lightDir));
-            Lo_dir = lightInter.ray->GetColor() * f_r * cosA * cosB / r2 / light_pdf;
+            Lo_dir = lightRst.emit * f_r * cosA * cosB / r2 / light_pdf;
         }
         hitColor += Lo_dir;
-        if (Random::RandomInUnitFloat() < RussianRoulette)
-        {
-            //间接光照
-            w_i = glm::normalize(objInter.material->Sample(w_o, objInter));
-            float cos = std::max(.0f, glm::dot(w_i, objN));
-            glm::vec3 f_r = objInter.material->ScatterPdf(w_o, w_i, objInter);
-            float pdf = objInter.material->Pdf(w_o, w_i, objInter);
-            auto next_ray = std::make_shared<Ray>(objInter.vert.pos, w_i);
-            Lo_indir = castRayPdf(next_ray) * f_r * cos / pdf / RussianRoulette;
-        }
+        // if (Random::RandomInUnitFloat() < RussianRoulette)
+        // {
+        //     //间接光照
+        //     w_i = glm::normalize(objRst.material->Sample(w_o, objRst));
+        //     float cos = std::max(.0f, glm::dot(w_i, objN));
+        //     glm::vec3 f_r = objRst.material->ScatterPdf(w_o, w_i, objRst);
+        //     float pdf = objRst.material->Pdf(w_o, w_i, objRst);
+        //     auto next_ray = std::make_shared<Ray>(objRst.vert.pos, w_i);
+        //     Lo_indir = castRayPdf(next_ray) * f_r * cos / pdf / RussianRoulette;
+        // }
         hitColor += Lo_indir;
         return hitColor;
     }
-    bool Scene::IntersectAll(std::shared_ptr<Ray> &r, Intersection &rec) const
+    bool Scene::IntersectAll(std::shared_ptr<Ray> &r, HitRst &rst) const
     {
-        Intersection temp_rec;
+        HitRst temp_rec;
         bool hit_anything = false;
         float closest_so_far = std::numeric_limits<float>::max();
         for (int i = 0; i < objects.size(); i++)
         {
             temp_rec = objects[i]->Intersect(r);
-            if (temp_rec.happened && temp_rec.ray->GetMaxTime() < closest_so_far)
+            if (temp_rec.isHit && temp_rec.record.ray->GetMaxTime() < closest_so_far)
             {
                 hit_anything = true;
-                closest_so_far = temp_rec.ray->GetMaxTime();
-                rec = temp_rec;
+                closest_so_far = temp_rec.record.ray->GetMaxTime();
+                rst = temp_rec;
             }
         }
         return hit_anything;

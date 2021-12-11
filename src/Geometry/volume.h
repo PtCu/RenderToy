@@ -40,8 +40,8 @@ namespace platinum
 
         ~Volume() = default;
         virtual float GetArea() const;
-        virtual void Sample(Intersection &inter, float &pdf) const;
-        virtual Intersection Intersect(std::shared_ptr<Ray> &r);
+        virtual void Sample(HitRst &inter, float &pdf) const;
+        virtual HitRst Intersect(std::shared_ptr<Ray> &r);
         virtual AABB GetBoundingBox() const { return boundary->GetBoundingBox(); }
 
     private:

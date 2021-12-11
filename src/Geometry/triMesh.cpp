@@ -25,10 +25,10 @@
 
 namespace platinum
 {
-    void TriMesh::Sample(Intersection &inter, float &pdf) const
+    void TriMesh::Sample(HitRst &rst, float &pdf) const
     {
-        bvh_accel->Sample(inter, pdf);
-        inter.ray->SetColor(material->Emit());
+        bvh_accel->Sample(rst, pdf);
+        rst.emit=material->Emit();
     }
     float TriMesh::GetArea() const
     {
@@ -90,15 +90,15 @@ namespace platinum
         bvh_accel = std::make_unique<BVHAccel>(triangles);
     }
 
-    Intersection TriMesh::Intersect(std::shared_ptr<Ray> &r)
+    HitRst TriMesh::Intersect(std::shared_ptr<Ray> &r)
     {
-        Intersection intersec;
+        HitRst rst;
 
         if (bvh_accel)
         {
-            intersec = bvh_accel->RayCast(r);
+            rst = bvh_accel->RayCast(r);
         }
-        return intersec;
+        return rst;
         // Intersection rec;
 
         // for (auto &tri : triangles)
@@ -107,7 +107,7 @@ namespace platinum
 
         //     if (tmp_inter.happened && (rec.happened == false || tmp_inter.ray->GetMaxTime() < rec.ray->GetMaxTime()))
         //     {
-        //         // inter = std::move(tmp_inter);
+        //         // rst = std::move(tmp_inter);
 
         //         rec = tmp_inter;
         //     }

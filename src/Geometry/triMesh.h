@@ -23,12 +23,10 @@
 #ifndef GEOMETRY_TRIMESH_H_
 #define GEOMETRY_TRIMESH_H_
 
-
 #include "../Core/bvh.h"
 #include "../Core/vertex.h"
 // #include <OBJ_Loader.hpp>
 #include "triangle.h"
-
 
 namespace objl
 {
@@ -42,10 +40,10 @@ namespace platinum
     public:
         TriMesh(const std::string &filename, std::shared_ptr<Material> m = NULL);
         TriMesh(const std::vector<Vertex> &vertexs, std::shared_ptr<Material> m = NULL);
-        virtual Intersection Intersect(std::shared_ptr<Ray> &r);
+        virtual HitRst Intersect(std::shared_ptr<Ray> &r);
         virtual AABB GetBoundingBox() const { return bounding_box; }
         virtual float GetArea() const;
-        virtual void Sample(Intersection &inter, float &pdf) const;
+        virtual void Sample(HitRst &inter, float &pdf) const;
         inline bool IsValid() const { return isValid; };
         std::vector<std::shared_ptr<Object>> &GetTriangles() { return triangles; }
 

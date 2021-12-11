@@ -79,7 +79,7 @@ namespace platinum
                 // glm::vec3 new_col = (col * (static_cast<float>(cnt)) + rst) / (static_cast<float>(cnt) + 1);
                 // framebuffer[px_id] = new_col;
 
-                framebuffer[px_id] += rst / static_cast<float>(iterations);
+                framebuffer[px_id] += rst;
 
                 //极限收敛至真实颜色
                 // auto _col = img.GetPixel_F(i, j);
@@ -97,7 +97,7 @@ namespace platinum
         {
             int i = px_id % nx;
             int j = px_id / nx;
-            auto col = framebuffer[px_id];
+            auto col = framebuffer[px_id] / static_cast<float>(iterations);
             col.r = std::pow(clamp(0, 1, col.r), 0.6f);
             col.g = std::pow(clamp(0, 1, col.g), 0.6f);
             col.b = std::pow(clamp(0, 1, col.b), 0.6f);

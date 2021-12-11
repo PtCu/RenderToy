@@ -47,7 +47,7 @@ int main()
 {
     int nx = 500;
     int ny = 500;
-    int ns = 1024;
+    int ns = 20;
     Scene world(false);
     createWorld(world);
     vec3 lookfrom(278, 273, -800);

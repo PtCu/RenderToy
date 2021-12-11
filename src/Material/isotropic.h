@@ -34,13 +34,13 @@ namespace platinum
     {
     public:
         Isotropic(const std::shared_ptr<Texture> &a);
-        virtual bool Scatter(Intersection &rec) const;
+        virtual bool Scatter(HitRst &rst) const;
         // Sample a ray by Material properties
-        virtual glm::vec3 Sample(const glm::vec3 &d, Intersection &rec) const;
+        virtual glm::vec3 Sample(const glm::vec3 &d, HitRst &rst) const;
         //Given a ray, calculate the PdF of this ray
-        virtual float Pdf(const glm::vec3 &wi, const glm::vec3 &wo, Intersection &rec) const;
+        virtual float Pdf(const glm::vec3 &wi, const glm::vec3 &wo, HitRst &rst) const;
         // brdf. Given a ray, calculate the contribution of this ray
-        virtual glm::vec3 ScatterPdf(const glm::vec3 &wi, const glm::vec3 &wo, Intersection &rec) const;
+        virtual glm::vec3 ScatterPdf(const glm::vec3 &wi, const glm::vec3 &wo, HitRst &rst) const;
         //The material itself emits light.
         virtual glm::vec3 Emit() const;
         virtual bool IsEmit() const;

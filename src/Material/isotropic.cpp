@@ -26,24 +26,24 @@ namespace platinum
 {
     Isotropic::Isotropic(const std::shared_ptr<Texture> &a) : tex(a) {}
 
-    bool Isotropic::Scatter(Intersection &rec) const
+    bool Isotropic::Scatter(HitRst &rst) const
     {
-        auto attenuation = tex->GetValue(rec.vert.u, rec.vert.v, rec.vert.pos);
-        rec.ray->Update(rec.vert.pos, Random::RandomInUnitSphere(), attenuation);
+        auto attenuation = tex->GetValue(rst.record.vert.u, rst.record.vert.v, rst.record.vert.pos);
+        rst.record.ray->Update(rst.record.vert.pos, Random::RandomInUnitSphere(), attenuation);
         return true;
     }
     // Sample a ray by Material properties
-    glm::vec3 Isotropic::Sample(const glm::vec3 &d, Intersection &rec) const
+    glm::vec3 Isotropic::Sample(const glm::vec3 &d, HitRst &rst) const
     {
         return glm::vec3(0, 0, 0);
     }
     //Given a ray, calculate the PdF of this ray
-    float Isotropic::Pdf(const glm::vec3 &wi, const glm::vec3 &wo, Intersection &rec) const
+    float Isotropic::Pdf(const glm::vec3 &wi, const glm::vec3 &wo, HitRst &rst) const
     {
         return 0;
     }
     // brdf. Given a ray, calculate the contribution of this ray
-    glm::vec3 Isotropic::ScatterPdf(const glm::vec3 &wi, const glm::vec3 &wo, Intersection &rec) const
+    glm::vec3 Isotropic::ScatterPdf(const glm::vec3 &wi, const glm::vec3 &wo, HitRst &rst) const
     {
         return glm::vec3(0, 0, 0);
     }

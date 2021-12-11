@@ -37,10 +37,10 @@ namespace platinum
     public:
         Triangle(const glm::vec3 &a, const glm::vec3 &b, const glm::vec3 &c, const std::shared_ptr<Material> &material = NULL);
         Triangle(const Vertex &a, const Vertex &b, const Vertex &c, const std::shared_ptr<Material> &material = NULL);
-        virtual Intersection Intersect(std::shared_ptr<Ray> &r);
+        virtual HitRst Intersect(std::shared_ptr<Ray> &r);
         virtual AABB GetBoundingBox() const;
         virtual float GetArea() const;
-        virtual void Sample(Intersection &inter, float &pdf) const;
+        virtual void Sample(HitRst &inter, float &pdf) const;
         const Vertex &GetA() const { return A; }
         const Vertex &GetB() const { return B; }
         const Vertex &GetC() const { return C; }

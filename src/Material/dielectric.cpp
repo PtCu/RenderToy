@@ -25,30 +25,30 @@
 namespace platinum
 {
    Dielectric::Dielectric(float ri) : ref_idx(ri) {}
-   bool Dielectric::Scatter(Intersection &rec) const
+   bool Dielectric::Scatter(HitRst &rst) const
    {
       glm::vec3 outward_normal;
-      auto r_in = rec.ray;
-      glm::vec3 reflected = Reflect(r_in->GetDirection(), rec.vert.normal);
+      auto r_in = rst.record.ray;
+      glm::vec3 reflected = Reflect(r_in->GetDirection(), rst.record.vert.normal);
       float ni_over_nt;
       auto attenuation = glm::vec3(1.0, 1.0, 1.0);
       glm::vec3 refracted;
       float reflect_prob;
       float cosine;
       //From inner to outer
-      if (glm::dot(r_in->GetDirection(), rec.vert.normal) > 0)
+      if (glm::dot(r_in->GetDirection(), rst.record.vert.normal) > 0)
       {
-         outward_normal = -rec.vert.normal;
+         outward_normal = -rst.record.vert.normal;
          ni_over_nt = ref_idx;
-         cosine = glm::dot(r_in->GetDirection(), rec.vert.normal) / r_in->GetDirection().length();
+         cosine = glm::dot(r_in->GetDirection(), rst.record.vert.normal) / r_in->GetDirection().length();
          cosine = std::sqrt(1 - ref_idx * ref_idx * (1 - cosine * cosine));
       }
       //From outer to inner
       else
       {
-         outward_normal = rec.vert.normal;
+         outward_normal = rst.record.vert.normal;
          ni_over_nt = 1.0f / ref_idx;
-         cosine = -glm::dot(r_in->GetDirection(), rec.vert.normal) / r_in->GetDirection().length();
+         cosine = -glm::dot(r_in->GetDirection(), rst.record.vert.normal) / r_in->GetDirection().length();
       }
       if (Refract(r_in->GetDirection(), outward_normal, ni_over_nt, refracted))
          reflect_prob = Schlick(cosine, ref_idx);
@@ -56,25 +56,25 @@ namespace platinum
          reflect_prob = 1.0;
 
       if (Random::RandomInUnitFloat() < reflect_prob)
-         r_in->Update(rec.vert.pos, reflected, attenuation);
+         r_in->Update(rst.record.vert.pos, reflected, attenuation);
       else
-         r_in->Update(rec.vert.pos, refracted, attenuation);
+         r_in->Update(rst.record.vert.pos, refracted, attenuation);
 
       return true;
    }
 
    // Sample a ray by Material properties
-   glm::vec3 Dielectric::Sample(const glm::vec3 &d, Intersection &rec) const
+   glm::vec3 Dielectric::Sample(const glm::vec3 &d, HitRst &rst) const
    {
       return glm::vec3(0, 0, 0);
    }
    //Given a ray, calculate the PdF of this ray
-   float Dielectric::Pdf(const glm::vec3 &wi, const glm::vec3 &wo, Intersection &rec) const
+   float Dielectric::Pdf(const glm::vec3 &wi, const glm::vec3 &wo, HitRst &rst) const
    {
       return 0;
    }
    // brdf. Given a ray, calculate the contribution of this ray
-   glm::vec3 Dielectric::ScatterPdf(const glm::vec3 &wi, const glm::vec3 &wo, Intersection &rec) const
+   glm::vec3 Dielectric::ScatterPdf(const glm::vec3 &wi, const glm::vec3 &wo, HitRst &rst) const
    {
       return glm::vec3(0, 0, 0);
    }

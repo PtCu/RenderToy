@@ -30,9 +30,9 @@ namespace platinum
     Light::Light(std::shared_ptr<Texture> lightTex, float linear, float quadratic)
         : tex(lightTex), linear(linear), quadratic(quadratic) {}
 
-    bool Light::Scatter(Intersection &rec) const
+    bool Light::Scatter(HitRst &rst) const
     {
-        float d = rec.ray->GetMaxTime() * glm::length(rec.ray->GetDirection());
+        float d = rst.record.ray->GetMaxTime() * glm::length(rst.record.ray->GetDirection());
         float attDis;
         if (linear == 0.0 && quadratic == 0.0)
             attDis = 1;
@@ -43,21 +43,21 @@ namespace platinum
             else
                 attDis = 1.0f / (1.0f + d * (linear + quadratic * d));
         }
-        float attAngle = abs(glm::dot(glm::normalize(rec.ray->GetDirection()), rec.vert.normal));
-        rec.ray->SetColor(attDis * attAngle * tex->GetValue(rec.vert.u, rec.vert.v, rec.vert.pos));
+        float attAngle = abs(glm::dot(glm::normalize(rst.record.ray->GetDirection()), rst.record.vert.normal));
+        rst.record.ray->SetColor(attDis * attAngle * tex->GetValue(rst.record.vert.u, rst.record.vert.v, rst.record.vert.pos));
         return false;
     }
-    glm::vec3 Light::ScatterPdf(const glm::vec3 &wi, const glm::vec3 &wo, Intersection &rec) const
+    glm::vec3 Light::ScatterPdf(const glm::vec3 &wi, const glm::vec3 &wo, HitRst &rst) const
     {
         return glm::vec3(0, 0, 0);
     }
     // Sample a ray by Material properties
-    glm::vec3 Light::Sample(const glm::vec3 &d, Intersection &rec) const
+    glm::vec3 Light::Sample(const glm::vec3 &d, HitRst &rst) const
     {
         return glm::vec3(0, 0, 0);
     }
     //Given a ray, calculate the PdF of this ray
-    float Light::Pdf(const glm::vec3 &wi, const glm::vec3 &wo, Intersection &rec) const
+    float Light::Pdf(const glm::vec3 &wi, const glm::vec3 &wo, HitRst &rst) const
     {
         return 0;
     }

@@ -43,7 +43,7 @@ int main()
 {
     int nx = 784;
     int ny = 784;
-    int ns = 40;
+    int ns = 4;
     Scene world(false,1);
     createWorld(world);
     vec3 lookfrom(278, 273, -800);

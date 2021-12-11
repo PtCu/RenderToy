@@ -17,7 +17,7 @@ using namespace std;
 vec3 color(shared_ptr<Ray> &ray, Scene &world, int dep)
 {
 
-    Intersection rec;
+    HitRecord rec;
     if (world.IntersectAll(ray, rec))
     {
         if (dep == 0)

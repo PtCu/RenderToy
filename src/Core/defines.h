@@ -75,7 +75,8 @@ namespace platinum
     class Camera;
     class TCamera;
     class Material;
-    struct Intersection;
+    struct HitRecord;
+    struct HitRst;
     class Scene;
     class Ray;
     class Object;

@@ -25,13 +25,12 @@
 namespace platinum
 {
 
-    void Triangle::Sample(Intersection &inter, float &pdf) const
+    void Triangle::Sample(HitRst &rst, float &pdf) const
     {
         float x = std::sqrt(Random::RandomInUnitFloat()), y = Random::RandomInUnitFloat();
-        inter.vert.pos = A.pos * (1.0f - x) + B.pos * (x * (1.0f - y)) + C.pos * (x * y);
-        inter.vert.normal = this->normal;
+        rst.record.vert.pos = A.pos * (1.0f - x) + B.pos * (x * (1.0f - y)) + C.pos * (x * y);
+        rst.record.vert.normal = this->normal;
         pdf = 1.0f / area;
-        // inter.ray->SetColor(material->Emit());
     }
     AABB Triangle::GetBoundingBox() const
     {
@@ -58,17 +57,6 @@ namespace platinum
         e2 = B.pos - A.pos;
         normal = -glm::normalize(glm::cross(e1, e2));
         area = 0.5f * glm::cross(e1, e2).length();
-        // glm::vec3 minP = min(min(A.pos, B.pos), C.pos);
-        // glm::vec3 maxP = max(max(A.pos, B.pos), C.pos);
-        // for (size_t i = 0; i < 3; i++)
-        // {
-        //     if (minP[i] == maxP[i])
-        //     {
-        //         minP[i] -= 0.001f;
-        //         maxP[i] += 0.001f;
-        //     }
-        // }
-        // bounding_box = AABB(minP, maxP);
         bounding_box = AABB(A.pos, B.pos);
         bounding_box.Expand(C.pos);
     }
@@ -85,55 +73,54 @@ namespace platinum
         return glm::vec4(alpha, equation_X);
     }
 
-    Intersection Triangle::Intersect(std::shared_ptr<Ray> &r)
+    HitRst Triangle::Intersect(std::shared_ptr<Ray> &r)
     {
         // //moller trumbore algorithm
-        // Intersection inter;
+        // Intersection rst;
 
         // if (glm::dot(r->GetDirection(), normal) > 0)
-        //     return inter;
+        //     return rst;
         // float u, v, t_tmp = 0;
         // glm::vec3 pvec = glm::cross(r->GetDirection(), e2);
         // float det = glm::dot(e1, pvec);
         // // This r is parallel to this triangle.
         // if (fabs(det) < EPSILON)
-        //     return inter;
+        //     return rst;
 
         // float det_inv = 1. / det;
         // glm::vec3 tvec = r->GetOrigin() - A.pos;
         // u = glm::dot(tvec, pvec) * det_inv;
         // if (u < 0 || u > 1)
-        //     return inter;
+        //     return rst;
         // glm::vec3 qvec = glm::cross(tvec, e1);
         // v = glm::dot(r->GetDirection(), qvec) * det_inv;
         // if (v < 0 || u + v > 1)
-        //     return inter;
+        //     return rst;
         // // At this stage we can compute t to find out where the intersection point is on the line.
         // t_tmp = glm::dot(e2, qvec) * det_inv;
 
         // // This means that there is a line intersection but not a ray intersection.
         // if (t_tmp < EPSILON)
         // {
-        //     return inter;
+        //     return rst;
         // }
-        // inter.ray = r;
+        // rst.ray = r;
         // r->SetTMax(t_tmp);
-        // inter.vert = r->GetOrigin() + r->GetDirection() * t_tmp;
-        // inter.happened = true;
-        // inter.material = GetMaterial(); //材料
-        // return inter;
+        // rst.vert = r->GetOrigin() + r->GetDirection() * t_tmp;
+        // rst.happened = true;
+        // rst.material = GetMaterial(); //材料
+        // return rst;
 
-        Intersection rec;
+        HitRst rst;
         glm::vec4 abgt = this->intersectRay(r->GetOrigin(), r->GetDirection());
         if (abgt == glm::vec4(0) || abgt[0] < 0 || abgt[0] > 1 || abgt[1] < 0 || abgt[1] > 1 || abgt[2] < 0 || abgt[2] > 1 || abgt[3] < r->GetMinTime() || abgt[3] > r->GetMaxTime())
-            return rec;
+            return HitRst::InValid;
 
-        rec.vert = Vertex::GenVert(glm::vec3(abgt[0], abgt[1], abgt[2]), A, B, C);
-        rec.vert.normal = normal;
-        rec.ray = r;
-        rec.material = GetMaterial();
-        rec.happened = true;
+        rst.record.vert = Vertex::GenVert(glm::vec3(abgt[0], abgt[1], abgt[2]), A, B, C);
+        rst.record.ray = r;
+        rst.material = GetMaterial();
+        rst.isHit = true;
         r->SetTMax(abgt[3]);
-        return rec;
+        return rst;
     }
 }

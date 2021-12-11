@@ -39,7 +39,7 @@ namespace platinum
         Scene() : max_depth(10), default_light(true), RussianRoulette(0.8) {}
         Scene(bool d_l, int _mode = 0) : max_depth(10), default_light(d_l), mode(_mode), RussianRoulette(0.8) {}
         ~Scene();
-        bool IntersectAll(std::shared_ptr<Ray> &r, Intersection &rec) const; //Brute method for stage 1
+        bool IntersectAll(std::shared_ptr<Ray> &r, HitRst &rec) const; //Brute method for stage 1
         void AddObject(const std::shared_ptr<Object> &obj);
         void AddObject(const std::vector<std::shared_ptr<Object>> &obj);
         void AddObject(const std::vector<std::shared_ptr<Object>>::iterator &begin, const std::vector<std::shared_ptr<Object>>::iterator &end);
@@ -52,8 +52,8 @@ namespace platinum
         void destroyAll();
         glm::vec3 castRayPdf(std::shared_ptr<Ray> &r) const;
         glm::vec3 castRay(std::shared_ptr<Ray> &r, int depth) const; //Using BVH tree to accelerate.
-        Intersection intersectAll(std::shared_ptr<Ray> &r) const;
-        void sampleLight(Intersection &inter, float &pdf) const;
+        HitRst intersectAll(std::shared_ptr<Ray> &r) const;
+        void sampleLight(HitRst &inter, float &pdf) const;
         int max_depth;
         std::unique_ptr<BVHAccel> bvh_accel;
         std::vector<std::shared_ptr<Object>> objects;

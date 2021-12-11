@@ -56,7 +56,7 @@ namespace platinum
 
         glm::vec3 GetColor() const { return color; }
 
-        glm::vec3 PointAtT(float t) const { return origin + t * direction; }
+        glm::vec3 PointAt(float t) const { return origin + t * direction; }
 
         int IsDirNeg(size_t i) const { return dirIsNeg[i]; }
 

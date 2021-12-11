@@ -135,24 +135,24 @@ shared_ptr<BVH_Node> BVHAccel::recursiveBuild(vector<shared_ptr<Object>>::iterat
     return node;
 }
 
-Intersection BVHAccel::RayCast(std::shared_ptr<Ray> &r) const
+HitRst BVHAccel::RayCast(std::shared_ptr<Ray> &r) const
 {
-    Intersection isect;
+    HitRst isect;
     // isect = BVHAccel::getIntersection(r);
     isect = BVHAccel::getIntersection_rec(root, r);
     return isect;
 }
-Intersection BVHAccel::getIntersection_rec(std::shared_ptr<BVH_Node> node, std::shared_ptr<Ray> &r) const
+HitRst BVHAccel::getIntersection_rec(std::shared_ptr<BVH_Node> node, std::shared_ptr<Ray> &r) const
 {
     // TODO Traverse the BVH to find intersection
     //如果和盒子没相交，就必不可能和盒子内的物体相交
     if (!node->bounding_box.IsHit(r))
-        return Intersection();
+        return HitRst();
 
     if (!node->left && !node->right)
     {
         return node->objects->Intersect(r);
-        // Intersection tmp_inter, inter;
+        // HitRecord tmp_inter, inter;
         // for (auto &obj : node->objects)
         // {
         //     tmp_inter = obj->Intersect(r);
@@ -166,28 +166,28 @@ Intersection BVHAccel::getIntersection_rec(std::shared_ptr<BVH_Node> node, std::
         // return inter;
     }
 
-    Intersection hit1, hit2;
+    HitRst hit1, hit2;
     hit1 = getIntersection_rec(node->left, r);
     hit2 = getIntersection_rec(node->right, r);
-    if (!hit1.happened)
+    if (!hit1.isHit)
     {
         return hit2;
     }
-    else if (!hit2.happened)
+    else if (!hit2.isHit)
     {
         return hit1;
     }
     else
     {
-        return hit1.ray->GetMaxTime() < hit2.ray->GetMaxTime() ? hit1 : hit2;
+        return hit1.record.ray->GetMaxTime() < hit2.record.ray->GetMaxTime() ? hit1 : hit2;
     }
 }
-Intersection BVHAccel::getIntersection(std::shared_ptr<Ray> &r) const
+HitRst BVHAccel::getIntersection(std::shared_ptr<Ray> &r) const
 {
     // TODO Traverse the BVH to find intersection
     if (!root->bounding_box.IsHit(r))
-        return Intersection();
-    Intersection inter, tmp_inter;
+        return HitRst();
+    HitRst inter, tmp_inter;
     stack<shared_ptr<BVH_Node>> s;
     s.push(root);
     while (!s.empty())
@@ -202,7 +202,7 @@ Intersection BVHAccel::getIntersection(std::shared_ptr<Ray> &r) const
         if (p->left == NULL && p->right == NULL)
         {
             tmp_inter = p->objects->Intersect(r);
-            if (tmp_inter.happened && (inter.happened == false || tmp_inter.ray->GetMaxTime() < inter.ray->GetMaxTime()))
+            if (tmp_inter.isHit && (inter.isHit == false || tmp_inter.record.ray->GetMaxTime() < inter.record.ray->GetMaxTime()))
             {
                 // inter = std::move(tmp_inter);
                 inter = tmp_inter;
@@ -217,13 +217,13 @@ Intersection BVHAccel::getIntersection(std::shared_ptr<Ray> &r) const
     return inter;
 }
 
-void BVHAccel::Sample(Intersection &inter, float &pdf) const
+void BVHAccel::Sample(HitRst &inter, float &pdf) const
 {
     float p = std::sqrt(Random::RandomInUnitFloat()) * root->area;
     getSample(root, p, inter, pdf);
     pdf /= root->area;
 }
-void BVHAccel::getSample(std::shared_ptr<BVH_Node> node, float p, Intersection &pos, float &pdf) const
+void BVHAccel::getSample(std::shared_ptr<BVH_Node> node, float p, HitRst &pos, float &pdf) const
 {
     if (node->left == nullptr || node->right == nullptr)
     {
