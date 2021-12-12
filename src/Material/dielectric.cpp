@@ -40,7 +40,7 @@ namespace platinum
       {
          outward_normal = -rst.record.vert.normal;
          ni_over_nt = ref_idx;
-         cosine = glm::dot(r_in->GetDirection(), rst.record.vert.normal) / r_in->GetDirection().length();
+         cosine = glm::length(glm::dot(r_in->GetDirection(), rst.record.vert.normal) / r_in->GetDirection());
          cosine = std::sqrt(1 - ref_idx * ref_idx * (1 - cosine * cosine));
       }
       //From outer to inner
@@ -48,7 +48,7 @@ namespace platinum
       {
          outward_normal = rst.record.vert.normal;
          ni_over_nt = 1.0f / ref_idx;
-         cosine = -glm::dot(r_in->GetDirection(), rst.record.vert.normal) / r_in->GetDirection().length();
+         cosine = -glm::length(glm::dot(r_in->GetDirection(), rst.record.vert.normal) / r_in->GetDirection());
       }
       if (Refract(r_in->GetDirection(), outward_normal, ni_over_nt, refracted))
          reflect_prob = Schlick(cosine, ref_idx);

@@ -30,7 +30,6 @@
 
 namespace platinum
 {
-
     struct HitRecord
     {
         HitRecord(std::shared_ptr<Ray> _ray = NULL, const glm::vec3 &pos = glm::vec3(0),

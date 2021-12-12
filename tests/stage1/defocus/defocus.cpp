@@ -51,7 +51,7 @@ int main()
     Image img(nx, ny, 3);
     vec3 lookfrom(3, 3, 2);
     vec3 lookat(0, 0, -1);
-    float dist_to_focus = (lookfrom - lookat).length() * 1.0f;
+    float dist_to_focus = glm::length(lookfrom - lookat) * 1.0f;
     float aperture = 2.0f;
     Camera cam(lookfrom, lookat, vec3(0, -1, 0), 20, float(nx) / float(ny), aperture, dist_to_focus);
     for (int j = 0; j < ny; ++j)

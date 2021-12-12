@@ -66,6 +66,7 @@ namespace platinum
     {
         // calculate the contribution of diffuse model
         float cosalpha = glm::dot(rst.record.vert.normal, wo);
+        //出射方向和法线方程成钝角时，不在上半球面内，不计算
         if (cosalpha > 0.0f)
         {
             //f_r=albedo/PI

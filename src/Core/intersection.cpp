@@ -14,10 +14,9 @@
 
 #include "intersection.h"
 
-namespace std
+namespace platinum
 {
 
-    const HitRst HitRst::InValid = HitRst(false);
+    const HitRst HitRst::InValid(false);
 
-   
 }

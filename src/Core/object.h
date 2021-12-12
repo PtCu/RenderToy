@@ -45,6 +45,8 @@ namespace platinum
     protected:
         std::shared_ptr<const Material> material;
     };
+
+ 
 } // namespace platinum
 
 #endif

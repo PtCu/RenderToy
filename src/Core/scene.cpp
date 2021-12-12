@@ -137,7 +137,7 @@ namespace platinum
             return objRst.material->Emit();
         }
         //采样光源点
-        float light_pdf=1;
+        float light_pdf = 1;
         HitRst lightRst;
         sampleLight(lightRst, light_pdf);
         glm::vec3 obj2light = lightRst.record.vert.pos - objRst.record.vert.pos;
@@ -148,7 +148,7 @@ namespace platinum
         glm::vec3 objN = glm::normalize(objRst.record.vert.normal);
         glm::vec3 lightN = normalize(lightRst.record.vert.normal);
         auto inter_tmp = intersectAll(toLightRay);
-        //测试是否有遮挡
+        // //测试是否有遮挡
         if (inter_tmp.isHit && inter_tmp.record.ray->GetMaxTime() - glm::length(obj2light) > -EPSILON)
         {
             //直接光照
@@ -161,16 +161,16 @@ namespace platinum
             Lo_dir = lightRst.emit * f_r * cosA * cosB / r2 / light_pdf;
         }
         hitColor += Lo_dir;
-        // if (Random::RandomInUnitFloat() < RussianRoulette)
-        // {
-        //     //间接光照
-        //     w_i = glm::normalize(objRst.material->Sample(w_o, objRst));
-        //     float cos = std::max(.0f, glm::dot(w_i, objN));
-        //     glm::vec3 f_r = objRst.material->ScatterPdf(w_o, w_i, objRst);
-        //     float pdf = objRst.material->Pdf(w_o, w_i, objRst);
-        //     auto next_ray = std::make_shared<Ray>(objRst.vert.pos, w_i);
-        //     Lo_indir = castRayPdf(next_ray) * f_r * cos / pdf / RussianRoulette;
-        // }
+        if (Random::RandomInUnitFloat() < RussianRoulette)
+        {
+            //间接光照
+            w_i = glm::normalize(objRst.material->Sample(w_o, objRst));
+            float cos = std::max(.0f, glm::dot(w_i, objN));
+            glm::vec3 f_r = objRst.material->ScatterPdf(w_o, w_i, objRst);
+            float pdf = objRst.material->Pdf(w_o, w_i, objRst);
+            auto next_ray = std::make_shared<Ray>(objRst.record.vert.pos, w_i);
+            Lo_indir = castRayPdf(next_ray) * f_r * cos / pdf / RussianRoulette;
+        }
         hitColor += Lo_indir;
         return hitColor;
     }

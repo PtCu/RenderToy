@@ -43,20 +43,20 @@ namespace platinum
     Triangle::Triangle(const glm::vec3 &a, const glm::vec3 &b, const glm::vec3 &c, const std::shared_ptr<Material> &material)
         : A(a), B(b), C(c), Object(material)
     {
-        e1 = C.pos - A.pos;
-        e2 = B.pos - A.pos;
-        normal = -glm::normalize(glm::cross(e1, e2));
-        area = 0.5f * glm::cross(e1, e2).length();
+        e1 = B.pos - A.pos;
+        e2 = C.pos - A.pos;
+        normal = glm::normalize(glm::cross(e1, e2));
+        area = 0.5f * glm::length(glm::cross(e1, e2));
         bounding_box = AABB(A.pos, B.pos);
         bounding_box.Expand(C.pos);
     }
     Triangle::Triangle(const Vertex &a, const Vertex &b, const Vertex &c, const std::shared_ptr<Material> &material)
         : A(a), B(b), C(c), Object(material)
     {
-        e1 = C.pos - A.pos;
-        e2 = B.pos - A.pos;
-        normal = -glm::normalize(glm::cross(e1, e2));
-        area = 0.5f * glm::cross(e1, e2).length();
+        e1 = B.pos - A.pos;
+        e2 = C.pos - A.pos;
+        normal = glm::normalize(glm::cross(e1, e2));
+        area = 0.5f * glm::length(glm::cross(e1, e2));
         bounding_box = AABB(A.pos, B.pos);
         bounding_box.Expand(C.pos);
     }
@@ -117,6 +117,7 @@ namespace platinum
             return HitRst::InValid;
 
         rst.record.vert = Vertex::GenVert(glm::vec3(abgt[0], abgt[1], abgt[2]), A, B, C);
+        rst.record.vert.normal = this->normal;
         rst.record.ray = r;
         rst.material = GetMaterial();
         rst.isHit = true;
