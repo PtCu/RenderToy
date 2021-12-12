@@ -94,18 +94,16 @@ namespace platinum
     }
     glm::vec3 Scene::castRay(std::shared_ptr<Ray> &ray, int dep) const
     {
+        if (dep == 0)
+            return glm::vec3(1.0001f / 255.0f);
 
         auto rst = intersectAll(ray);
-        if (dep == 0)
-        {
-            return glm::vec3(1.0001f / 255.0f);
-        }
 
         if (rst.isHit)
         {
             if (rst.material == NULL)
                 return glm::vec3(0, 1, 0);
-            //不管什么材质都进行反射，继续追踪
+            //正常情况下，对于漫反射物质继续反射追踪，直到遇到光源则更新颜色并返回
             if (rst.material->Scatter(rst))
                 return castRay(ray, dep - 1);
             else

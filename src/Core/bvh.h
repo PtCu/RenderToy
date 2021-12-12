@@ -52,15 +52,10 @@ namespace platinum
         BVHAccel(SplitMethod sm = SplitMethod::MIDDLE) : splitMethod(sm) {}
         // BVHAccel Public Methods
         BVHAccel(std::vector<std::shared_ptr<Object>> &p, SplitMethod splitMethod = SplitMethod::MIDDLE);
-
         BVHAccel(std::vector<std::shared_ptr<Object>>::iterator &begin, std::vector<std::shared_ptr<Object>>::iterator &end, SplitMethod splitMethod = SplitMethod::MIDDLE);
-
         ~BVHAccel() = default;
-
         HitRst RayCast(std::shared_ptr<Ray> &r) const;
-
         std::shared_ptr<BVH_Node> GetRoot() { return root; }
-
         void Sample(HitRst &inter, float &pdf) const;
 
     protected:

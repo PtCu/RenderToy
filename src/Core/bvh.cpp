@@ -48,8 +48,7 @@ BVHAccel::BVHAccel(vector<shared_ptr<Object>>::iterator &begin, vector<shared_pt
                    SplitMethod splitMethod)
     : splitMethod(splitMethod)
 {
-    // time_t start, stop;
-    // time(&start);
+
     if (begin == end)
         return;
 
@@ -78,7 +77,7 @@ shared_ptr<BVH_Node> BVHAccel::recursiveBuild(vector<shared_ptr<Object>>::iterat
         node->area = (*begin)->GetArea();
         return node;
     }
-    else if (num == 2)
+    if (num == 2)
     {
         node->left = recursiveBuild(begin, begin + 1);
         node->right = recursiveBuild(begin + 1, end);
@@ -86,51 +85,49 @@ shared_ptr<BVH_Node> BVHAccel::recursiveBuild(vector<shared_ptr<Object>>::iterat
         node->area = node->left->area + node->right->area;
         return node;
     }
-    else
+
+    //Choose split dimension
+    AABB centroidBounds;
+    for (auto iter = begin; iter != end; ++iter)
+        centroidBounds.Expand((*iter)->GetBoundingBox().Centroid());
+    int dim = centroidBounds.MaxExtent();
+
+    // if (centroidBounds.GetMax()[dim] == centroidBounds.GetMin()[dim])
+    // {
+    // }
+    //Do partition according to split method
+    std::vector<shared_ptr<Object>>::iterator middle;
+    float p_mid = 0;
+    switch (splitMethod)
     {
-        //Choose split dimension
-        AABB centroidBounds;
-        for (auto iter = begin; iter != end; ++iter)
-            centroidBounds.Expand((*iter)->GetBoundingBox().Centroid());
-        int dim = centroidBounds.MaxExtent();
+    case SplitMethod::MIDDLE:
+        p_mid = centroidBounds.Centroid()[dim];
+        middle = std::partition(begin, end,
+                                [dim, p_mid](auto p)
+                                { return p->GetBoundingBox().Centroid()[dim] < p_mid; });
 
-        // if (centroidBounds.GetMax()[dim] == centroidBounds.GetMin()[dim])
+        // //Edge case: if identical bounding boxes exist
+        // if (middle - begin == 0)
         // {
+        //     node->left = node->right = NULL;
+        //     node->bounding_box = (*begin)->GetBoundingBox();
+        // for (auto &iter = begin; iter != end; ++iter)
+        // {
+        //     node->objects.push_back(*iter);
         // }
-        //Do partition according to split method
-        std::vector<shared_ptr<Object>>::iterator middle;
-        float p_mid = 0;
-        switch (splitMethod)
-        {
-        case SplitMethod::MIDDLE:
-            p_mid = centroidBounds.Centroid()[dim];
-            middle = std::partition(begin, end,
-                                    [dim, p_mid](auto p)
-                                    { return p->GetBoundingBox().Centroid()[dim] < p_mid; });
-
-            // //Edge case: if identical bounding boxes exist
-            // if (middle - begin == 0)
-            // {
-            //     node->left = node->right = NULL;
-            //     node->bounding_box = (*begin)->GetBoundingBox();
-            // for (auto &iter = begin; iter != end; ++iter)
-            // {
-            //     node->objects.push_back(*iter);
-            // }
-            //     node->objects = *begin;
-            //     return node;
-            // }
-            break;
-        case SplitMethod::SAH:
-            break;
-        default:
-            break;
-        }
-        node->left = recursiveBuild(begin, middle);
-        node->right = recursiveBuild(middle, end);
-        node->bounding_box = Union(node->left->bounding_box, node->right->bounding_box);
-        node->area = node->left->area + node->right->area;
+        //     node->objects = *begin;
+        //     return node;
+        // }
+        break;
+    case SplitMethod::SAH:
+        break;
+    default:
+        break;
     }
+    node->left = recursiveBuild(begin, middle);
+    node->right = recursiveBuild(middle, end);
+    node->bounding_box = Union(node->left->bounding_box, node->right->bounding_box);
+    node->area = node->left->area + node->right->area;
 
     return node;
 }
@@ -138,7 +135,6 @@ shared_ptr<BVH_Node> BVHAccel::recursiveBuild(vector<shared_ptr<Object>>::iterat
 HitRst BVHAccel::RayCast(std::shared_ptr<Ray> &r) const
 {
     HitRst isect;
-    // isect = BVHAccel::getIntersection(r);
     isect = BVHAccel::getIntersection_rec(root, r);
     return isect;
 }

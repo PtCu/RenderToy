@@ -31,40 +31,22 @@ namespace platinum
     {
     public:
         Ray() {}
-        Ray(const glm::vec3 &o, const glm::vec3 &d) : origin(o), direction(d)
-        {
-            t_min = 0.0;
-            t_max = std::numeric_limits<float>::max();
-            color = glm::vec3(1.0);
-            inv_d = {1.0f / d.x, 1.0f / d.y, 1.0f / d.z};
-            dirIsNeg = {d.x < 0, d.y < 0, d.z < 0};
-           
-        }
+        Ray(const glm::vec3 &o, const glm::vec3 &d);
         virtual ~Ray() = default;
         void Init(const glm::vec3 &o, const glm::vec3 &d);
         void Update(const glm::vec3 &o, const glm::vec3 &d, const glm::vec3 &a);
-
         glm::vec3 GetOrigin() const { return origin; }
-
         glm::vec3 GetDirection() const { return direction; }
-
         glm::vec3 GetInvDirection() const { return inv_d; }
-
         float GetMinTime() const { return t_min; }
-
         float GetMaxTime() const { return t_max; }
-
         glm::vec3 GetColor() const { return color; }
-
         glm::vec3 PointAt(float t) const { return origin + t * direction; }
-
         int IsDirNeg(size_t i) const { return dirIsNeg[i]; }
-
         void SetColor(const glm::vec3 &c);
-
         void SetTMax(float t) { t_max = t; }
-
         void Transform(const glm::mat4 &transform);
+        static const float t_min;
 
     protected:
         virtual void DoNothing() {}
@@ -73,7 +55,7 @@ namespace platinum
         glm::vec3 origin;
         glm::vec3 direction, inv_d;
         glm::vec3 color;
-        float t_min, t_max;
+        float t_max;
         std::array<int, 3> dirIsNeg;
        
     };

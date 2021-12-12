@@ -35,7 +35,6 @@ namespace platinum
         virtual ~TRay() = default;
         void SetTime(float t) { _time = t; }
         float GetTime() const { return _time; }
-
     protected:
         virtual void DoNothing() {}
 

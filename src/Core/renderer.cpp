@@ -61,10 +61,9 @@ namespace platinum
         int img_size = ny * nx;
 
         std::vector<glm::vec3> framebuffer(img_size);
-
+#pragma omp parallel for schedule(dynamic, 1024)
         for (int cnt = 1; cnt <= iterations; ++cnt)
         {
-#pragma omp parallel for schedule(dynamic, 1024)
             for (int px_id = 0; px_id < img_size; ++px_id)
             {
                 int i = px_id % nx;
@@ -74,11 +73,7 @@ namespace platinum
 
                 auto r = cam->GetRay(u, v);
                 auto rst = scene.CastRay(r);
-                // auto _col = framebuffer[px_id];
-                // glm::vec3 col(_col.r, _col.g, _col.b);
-                // glm::vec3 new_col = (col * (static_cast<float>(cnt)) + rst) / (static_cast<float>(cnt) + 1);
-                // framebuffer[px_id] = new_col;
-
+                
                 framebuffer[px_id] += (rst / static_cast<float>(iterations));
 
                 //极限收敛至真实颜色

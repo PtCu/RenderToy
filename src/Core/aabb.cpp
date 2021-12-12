@@ -24,6 +24,20 @@
 
 namespace platinum
 {
+    AABB::AABB()
+    {
+        float _min = std::numeric_limits<float>::lowest();
+        float _max = std::numeric_limits<float>::max();
+        p_min = glm::vec3(_max, _max, _max);
+        p_max = glm::vec3(_min, _min, _min);
+        is_valid = false;
+    }
+    AABB::AABB(const glm::vec3 &a, const glm::vec3 &b)
+    {
+        p_min = glm::min(a, b);
+        p_max = glm::max(a, b);
+        is_valid = true;
+    }
     bool AABB::IsHit(const std::shared_ptr<Ray> &r) const
     {
         if (is_valid == false)
@@ -69,14 +83,13 @@ namespace platinum
                 p_min = glm::min(p_min, aabb.p_min);
                 p_max = glm::max(p_max, aabb.p_max);
             }
-            else{
+            else
+            {
                 p_min = aabb.GetMin();
                 p_max = aabb.GetMax();
                 is_valid = true;
             }
         }
-
-        
     }
     void AABB::Expand(const glm::vec3 &p)
     {

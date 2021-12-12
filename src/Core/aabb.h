@@ -31,56 +31,31 @@ namespace platinum
     class AABB
     {
     public:
-        AABB()
-        {
-            float _min = std::numeric_limits<float>::lowest();
-            float _max = std::numeric_limits<float>::max();
-            p_min = glm::vec3(_max, _max, _max);
-            p_max = glm::vec3(_min, _min, _min);
-            is_valid = false;
-        }
-        AABB(const glm::vec3 &a, const glm::vec3 &b)
-        {
-            p_min = glm::min(a, b);
-            p_max = glm::max(a, b);
-            is_valid = true;
-        }
+        AABB();
+        AABB(const glm::vec3 &a, const glm::vec3 &b);
         ~AABB() = default;
         AABB Intersect(const AABB &b) const;
-
         void Expand(const glm::vec3 &p);
-
         void Expand(const AABB &aabb);
-
         glm::vec3 Offset(const glm::vec3 &p) const;
-
         bool Overlaps(const AABB &p) const;
-
         bool Inside(const glm::vec3 &p) const;
-
         //For best partition when building BVH tree.
         int MaxExtent() const;
-
         bool IsHit(const std::shared_ptr<Ray> &r) const;
-
         const glm::vec3 operator[](int i) const
         {
             return i == 0 ? p_min : p_max;
         }
         glm::vec3 Diagonal() const { return p_max - p_min; }
-
         glm::vec3 Centroid() const { return 0.5f * p_min + 0.5f * p_max; }
-
         float SurfaceArea() const
         {
             auto d = Diagonal();
             return 2 * (d.x * d.y + d.x * d.z + d.y * d.z);
         }
-
         glm::vec3 GetMin() const { return p_min; }
-
         glm::vec3 GetMax() const { return p_max; }
-
         bool IsValid() const { return is_valid; }
 
     protected:
