@@ -86,6 +86,7 @@ namespace platinum
     class CheckerTexture;
     class BVHAccel;
     struct BVH_Node;
+    class Integrator;
 
 } // namespace platinum
 #endif
