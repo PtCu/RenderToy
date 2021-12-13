@@ -32,14 +32,14 @@ namespace platinum
     {
     public:
         TCamera(glm::vec3 lookfrom, glm::vec3 lookat, glm::vec3 vup, float vfov, float aspect, float aperture, float focusDist, float t0, float t1)
-            : Camera(lookfrom, lookat, vup, vfov, aspect, aperture, focusDist), time0(t0), time1(t1) {}
+            : Camera(lookfrom, lookat, vup, vfov, aspect, aperture, focusDist), time0_(t0), time1_(t1) {}
         virtual ~TCamera() = default;
-        float GetT0() const { return time0; }
-        float GetT1() const { return time1; }
+        float GetT0() const { return time0_; }
+        float GetT1() const { return time1_; }
         virtual std::shared_ptr<Ray> GetRay(float s, float t) const;
 
     private:
-        float time0, time1; // new variables for shutter open/close times
+        float time0_, time1_; // new variables for shutter open/close times
     };
 }
 

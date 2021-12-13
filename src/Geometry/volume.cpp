@@ -26,30 +26,30 @@ namespace platinum
 {
     void Volume::Sample(HitRst &inter, float &pdf) const
     {
-        boundary->Sample(inter, pdf);
+        boundary_->Sample(inter, pdf);
     }
     float Volume::GetArea() const
     {
-        return boundary->GetArea();
+        return boundary_->GetArea();
     }
     HitRst Volume::Intersect(std::shared_ptr<Ray> &r)
     {
 
-        if (boundary == NULL)
+        if (boundary_ == NULL)
             return HitRst::InValid;
 
         float origin_t_max = r->GetMaxTime();
 
-        auto bound_rst = boundary->Intersect(r);
-        if (!bound_rst.isHit)
+        auto bound_rst = boundary_->Intersect(r);
+        if (!bound_rst.is_hit)
             return HitRst::InValid;
 
         auto reverse_ray = std::make_shared<Ray>(r->PointAt(r->GetMinTime() * 1.5f), -r->GetDirection());
-        auto reverse_rec = boundary->Intersect(reverse_ray);
+        auto reverse_rec = boundary_->Intersect(reverse_ray);
 
         float t0;
         float t_max_from_t0;
-        if (reverse_rec.isHit)
+        if (reverse_rec.is_hit)
         {
             // 反向光线撞击到边界, 说明光线在内部, 则此时体积内部的起点为 光线起点
             // 此时以该起点的撞击结果即为前边的 bound_rst
@@ -63,10 +63,10 @@ namespace platinum
             // 此时以该起点的撞击结果需计算
             t0 = bound_rst.record.ray->GetMaxTime();
             auto t0Ray = std::make_shared<Ray>(r->PointAt(t0), r->GetDirection());
-            HitRst t0_rec = boundary->Intersect(t0Ray);
+            HitRst t0_rec = boundary_->Intersect(t0Ray);
 
             //太薄
-            if (!t0_rec.isHit)
+            if (!t0_rec.is_hit)
             {
                 r->SetTMax(origin_t_max);
                 return HitRst::InValid;
@@ -82,7 +82,7 @@ namespace platinum
         // p = C * dL
         // p(L) = lim(n->inf, (1 - CL/n)^n) = exp(-CL)
         // L = -(1/C)ln(pL)
-        float hit_dis = -(1.0f / density) * log(Random::RandomInUnitFloat());
+        float hit_dis = -(1.0f / density_) * log(Random::RandomInUnitFloat());
 
         if (hit_dis >= dis_in_vol)
         {
@@ -94,9 +94,9 @@ namespace platinum
         r->SetTMax(tFinal);
 
         HitRst rst;
-        rst.isHit = 1;
+        rst.is_hit = 1;
         rst.record = HitRecord(r, r->PointAt(tFinal));
-        rst.material = GetMaterial();
+        rst.material_ = GetMaterial();
 
         return rst;
     }

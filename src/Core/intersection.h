@@ -40,11 +40,11 @@ namespace platinum
 
     struct HitRst
     {
-        HitRst(bool hit = false) : isHit(hit), material(NULL) {}
-        bool isHit;
+        HitRst(bool hit = false) : is_hit(hit), material_(NULL) {}
+        bool is_hit;
         glm::vec3 emit;
         HitRecord record;
-        std::shared_ptr<const Material> material;
+        std::shared_ptr<const Material> material_;
         static const HitRst InValid;
     };
 

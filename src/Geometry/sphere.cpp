@@ -27,40 +27,40 @@ namespace platinum
     {
         float theta = 2.0f * PI * Random::RandomInUnitFloat(), phi = PI * Random::RandomInUnitFloat();
         glm::vec3 dir(std::cos(phi), std::sin(phi) * std::cos(theta), std::sin(phi) * std::sin(theta));
-        rst.record.vert.pos = center + radius * dir;
-        rst.record.vert.normal = dir;
-        pdf = 1.0f / area;
-        rst.emit = material->Emit();
+        rst.record.vert.position_ = center_ + radius_ * dir;
+        rst.record.vert.normal_ = dir;
+        pdf = 1.0f / area_;
+        rst.emit = material_->Emit();
     }
     float Sphere::GetArea() const
     {
-        return area;
+        return area_;
     }
     AABB Sphere::GetBoundingBox() const
     {
-        return bounding_box;
+        return bounding_box_;
     }
     glm::vec3 Sphere::getCenter(const std::shared_ptr<Ray> &r) const
     {
-        return center;
+        return center_;
     }
     Sphere::Sphere(glm::vec3 cen, float r, const std::shared_ptr<Material> &m)
-        : center(cen), radius(r), Object(m)
+        : center_(cen), radius_(r), Object(m)
     {
-        glm::vec3 minP = center - glm::vec3(radius);
-        glm::vec3 maxP = center + glm::vec3(radius);
-        bounding_box = AABB(minP, maxP);
-        area = PI * 4.0f * r * r;
+        glm::vec3 minP = center_ - glm::vec3(radius_);
+        glm::vec3 maxP = center_ + glm::vec3(radius_);
+        bounding_box_ = AABB(minP, maxP);
+        area_ = PI * 4.0f * r * r;
     };
     void Sphere::setIntersection(float t, HitRst &rst, const std::shared_ptr<Ray> &r) const
     {
         rst.record.ray = r;
         rst.record.ray->SetTMax(t);
-        rst.record.vert.pos = r->PointAt(rst.record.ray->GetMaxTime());
-        rst.record.vert.normal = glm::vec3((rst.record.vert.pos - getCenter(r)) / radius);
-        getSphereUV(rst.record.vert.normal, rst.record.vert.u, rst.record.vert.v);
-        rst.material = GetMaterial();
-        rst.isHit = true;
+        rst.record.vert.position_ = r->PointAt(rst.record.ray->GetMaxTime());
+        rst.record.vert.normal_ = glm::vec3((rst.record.vert.position_ - getCenter(r)) / radius_);
+        getSphereUV(rst.record.vert.normal_, rst.record.vert.u_, rst.record.vert.v_);
+        rst.material_ = GetMaterial();
+        rst.is_hit = true;
     }
 
     HitRst Sphere::Intersect(std::shared_ptr<Ray> &r)
@@ -69,7 +69,7 @@ namespace platinum
         glm::vec3 oc = r->GetOrigin() - getCenter(r);
         float a = glm::dot(r->GetDirection(), r->GetDirection());
         float b = glm::dot(oc, r->GetDirection());
-        float c = glm::dot(oc, oc) - radius * radius;
+        float c = glm::dot(oc, oc) - radius_ * radius_;
         float discriminant = b * b - a * c;
         if (discriminant > 0)
         {

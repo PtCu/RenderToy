@@ -23,16 +23,16 @@
 #include "lambertian.h"
 namespace platinum
 {
-    Lambertian::Lambertian(const std::shared_ptr<Texture> &a) : albedo(a) {}
+    Lambertian::Lambertian(const std::shared_ptr<Texture> &a) : albedo_(a) {}
     Lambertian::Lambertian(const glm::vec3 &a)
     {
-        albedo = std::make_shared<ConstTexture>(a);
+        albedo_ = std::make_shared<ConstTexture>(a);
     }
     bool Lambertian::Scatter(HitRst &rst) const
     {
-        auto reflected = glm::vec3(rst.record.vert.normal) + Random::RandomInUnitSphere();
-        auto attenuation = albedo->GetValue(rst.record.vert.u, rst.record.vert.v, rst.record.vert.pos);
-        rst.record.ray->Update(rst.record.vert.pos, reflected, attenuation);
+        auto reflected = glm::vec3(rst.record.vert.normal_) + Random::RandomInUnitSphere();
+        auto attenuation = albedo_->GetValue(rst.record.vert.u_, rst.record.vert.v_, rst.record.vert.position_);
+        rst.record.ray->Update(rst.record.vert.position_, reflected, attenuation);
         return true;
     }
 
@@ -46,12 +46,12 @@ namespace platinum
         float cos_theta = std::fabs(1.0f - 2.0f * x_1);
         float r = std::sqrt(1.0f - cos_theta * cos_theta), phi = 2 * PI * x_2;
         glm::vec3 local_ray(r * std::cos(phi), r * std::sin(phi), cos_theta);
-        return toWorld(local_ray, rst.record.vert.normal);
+        return toWorld(local_ray, rst.record.vert.normal_);
     }
     // given a ray, calculate the PdF of this ray
     float Lambertian::Pdf(const glm::vec3 &wi, const glm::vec3 &wo, HitRst &rst) const
     {
-        float cosine = glm::dot(wo, rst.record.vert.normal);
+        float cosine = glm::dot(wo, rst.record.vert.normal_);
         if (cosine > 0.0f)
         {
             return 0.5f / PI;
@@ -65,12 +65,12 @@ namespace platinum
     glm::vec3 Lambertian::ScatterPdf(const glm::vec3 &wi, const glm::vec3 &wo, HitRst &rst) const
     {
         // calculate the contribution of diffuse model
-        float cosalpha = glm::dot(rst.record.vert.normal, wo);
+        float cosalpha = glm::dot(rst.record.vert.normal_, wo);
         //出射方向和法线方程成钝角时，不在上半球面内，不计算
         if (cosalpha > 0.0f)
         {
             //f_r=albedo/PI
-            auto attenuation = albedo->GetValue(rst.record.vert.u, rst.record.vert.v, rst.record.vert.pos) / PI;
+            auto attenuation = albedo_->GetValue(rst.record.vert.u_, rst.record.vert.v_, rst.record.vert.position_) / PI;
             return attenuation;
         }
         else

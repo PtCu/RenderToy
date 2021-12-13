@@ -28,46 +28,46 @@ namespace platinum
     void Triangle::Sample(HitRst &rst, float &pdf) const
     {
         float x = std::sqrt(Random::RandomInUnitFloat()), y = Random::RandomInUnitFloat();
-        rst.record.vert.pos = A.pos * (1.0f - x) + B.pos * (x * (1.0f - y)) + C.pos * (x * y);
-        rst.record.vert.normal = this->normal;
-        pdf = 1.0f / area;
+        rst.record.vert.position_ = A.position_ * (1.0f - x) + B.position_ * (x * (1.0f - y)) + C.position_ * (x * y);
+        rst.record.vert.normal_ = this->normal_;
+        pdf = 1.0f / area_;
     }
     AABB Triangle::GetBoundingBox() const
     {
-        return bounding_box;
+        return bounding_box_;
     }
     float Triangle::GetArea() const
     {
-        return area;
+        return area_;
     }
-    Triangle::Triangle(const glm::vec3 &a, const glm::vec3 &b, const glm::vec3 &c, const std::shared_ptr<Material> &material)
-        : A(a), B(b), C(c), Object(material)
+    Triangle::Triangle(const glm::vec3 &a, const glm::vec3 &b, const glm::vec3 &c, const std::shared_ptr<Material> &material_)
+        : A(a), B(b), C(c), Object(material_)
     {
-        e1 = B.pos - A.pos;
-        e2 = C.pos - A.pos;
-        normal = glm::normalize(glm::cross(e1, e2));
-        area = 0.5f * glm::length(glm::cross(e1, e2));
-        bounding_box = AABB(A.pos, B.pos);
-        bounding_box.Expand(C.pos);
+        e1 = B.position_ - A.position_;
+        e2 = C.position_ - A.position_;
+        normal_ = glm::normalize(glm::cross(e1, e2));
+        area_ = 0.5f * glm::length(glm::cross(e1, e2));
+        bounding_box_ = AABB(A.position_, B.position_);
+        bounding_box_.Expand(C.position_);
     }
-    Triangle::Triangle(const Vertex &a, const Vertex &b, const Vertex &c, const std::shared_ptr<Material> &material)
-        : A(a), B(b), C(c), Object(material)
+    Triangle::Triangle(const Vertex &a, const Vertex &b, const Vertex &c, const std::shared_ptr<Material> &material_)
+        : A(a), B(b), C(c), Object(material_)
     {
-        e1 = B.pos - A.pos;
-        e2 = C.pos - A.pos;
-        normal = glm::normalize(glm::cross(e1, e2));
-        area = 0.5f * glm::length(glm::cross(e1, e2));
-        bounding_box = AABB(A.pos, B.pos);
-        bounding_box.Expand(C.pos);
+        e1 = B.position_ - A.position_;
+        e2 = C.position_ - A.position_;
+        normal_ = glm::normalize(glm::cross(e1, e2));
+        area_ = 0.5f * glm::length(glm::cross(e1, e2));
+        bounding_box_ = AABB(A.position_, B.position_);
+        bounding_box_.Expand(C.position_);
     }
     glm::vec4 Triangle::intersectRay(const glm::vec3 &o, const glm::vec3 &d)
     {
-        glm::mat3 equation_A(glm::vec3(A.pos - B.pos), glm::vec3(A.pos - C.pos), d);
+        glm::mat3 equation_A(glm::vec3(A.position_ - B.position_), glm::vec3(A.position_ - C.position_), d);
 
         if (glm::abs(glm::determinant(equation_A)) < EPSILON)
             return glm::vec4(0, 0, 0, 0);
 
-        glm::vec3 equation_b = A.pos - o;
+        glm::vec3 equation_b = A.position_ - o;
         glm::vec3 equation_X = glm::inverse(equation_A) * equation_b;
         float alpha = 1 - equation_X[0] - equation_X[1];
         return glm::vec4(alpha, equation_X);
@@ -78,7 +78,7 @@ namespace platinum
         // //moller trumbore algorithm
         // Intersection rst;
 
-        // if (glm::dot(r->GetDirection(), normal) > 0)
+        // if (glm::dot(r->GetDirection(), normal_) > 0)
         //     return rst;
         // float u, v, t_tmp = 0;
         // glm::vec3 pvec = glm::cross(r->GetDirection(), e2);
@@ -108,7 +108,7 @@ namespace platinum
         // r->SetTMax(t_tmp);
         // rst.vert = r->GetOrigin() + r->GetDirection() * t_tmp;
         // rst.happened = true;
-        // rst.material = GetMaterial(); //材料
+        // rst.material_ = GetMaterial(); //材料
         // return rst;
 
         HitRst rst;
@@ -117,10 +117,10 @@ namespace platinum
             return HitRst::InValid;
 
         rst.record.vert = Vertex::GenVert(glm::vec3(abgt[0], abgt[1], abgt[2]), A, B, C);
-        rst.record.vert.normal = this->normal;
+        rst.record.vert.normal_ = this->normal_;
         rst.record.ray = r;
-        rst.material = GetMaterial();
-        rst.isHit = true;
+        rst.material_ = GetMaterial();
+        rst.is_hit = true;
         r->SetTMax(abgt[3]);
         return rst;
     }

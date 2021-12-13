@@ -35,8 +35,8 @@ namespace platinum
     class Triangle : public Object
     {
     public:
-        Triangle(const glm::vec3 &a, const glm::vec3 &b, const glm::vec3 &c, const std::shared_ptr<Material> &material = NULL);
-        Triangle(const Vertex &a, const Vertex &b, const Vertex &c, const std::shared_ptr<Material> &material = NULL);
+        Triangle(const glm::vec3 &a, const glm::vec3 &b, const glm::vec3 &c, const std::shared_ptr<Material> &material_ = NULL);
+        Triangle(const Vertex &a, const Vertex &b, const Vertex &c, const std::shared_ptr<Material> &material_ = NULL);
         virtual HitRst Intersect(std::shared_ptr<Ray> &r);
         virtual AABB GetBoundingBox() const;
         virtual float GetArea() const;
@@ -50,9 +50,9 @@ namespace platinum
 
     private:
         Vertex A, B, C;
-        glm::vec3 normal, e1, e2;
-        float area;
-        AABB bounding_box;
+        glm::vec3 normal_, e1, e2;
+        float area_;
+        AABB bounding_box_;
     };
 }
 

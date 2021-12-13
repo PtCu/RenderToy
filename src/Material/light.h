@@ -33,7 +33,7 @@ namespace platinum
     class Light : public Material
     {
     public:
-        Light(const glm::vec3 &color, float linear = 0.0f, float quadratic = 0.0f);
+        Light(const glm::vec3 &color_, float linear = 0.0f, float quadratic = 0.0f);
         Light(std::shared_ptr<Texture> lightTex, float linear = 0.0f, float quadratic = 0.0f);
 
         bool Scatter(HitRst &rst) const final;
@@ -43,14 +43,14 @@ namespace platinum
         float Pdf(const glm::vec3 &wi, const glm::vec3 &wo, HitRst &rst) const override;
         // brdf. Given a ray, calculate the contribution of this ray
         glm::vec3 ScatterPdf(const glm::vec3 &wi, const glm::vec3 &wo, HitRst &rst) const override;
-        //The material itself emits light.
+        //The material_ itself emits light.
         glm::vec3 Emit() const override;
         bool IsEmit() const override;
 
     private:
-        std::shared_ptr<Texture> tex;
-        float linear;
-        float quadratic;
+        std::shared_ptr<Texture> texure_;
+        float linear_;
+        float quadratic_;
     };
 
 } // namespace platinum

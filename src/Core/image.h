@@ -62,7 +62,7 @@ namespace platinum
 		static Pixel<float> Pixel_UB2F(const Pixel<unsigned char> &pixel);
 		static Pixel<double> Pixel_UB2D(const Pixel<unsigned char> &pixel);
 		//------------
-		Image &operator=(const Image &img) = delete;
+		Image &operator=(const Image &img_) = delete;
 
 	private:
 		enum ENUM_SRC_TYPE
@@ -73,8 +73,8 @@ namespace platinum
 		};
 
 		unsigned char *data;
-		size_t width;
-		size_t height;
+		size_t width_;
+		size_t height_;
 		size_t channel;
 		ENUM_SRC_TYPE type;
 	};

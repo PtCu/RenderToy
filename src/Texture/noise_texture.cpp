@@ -26,19 +26,19 @@ namespace platinum
     glm::vec3 NoiseTexture::GetValue(float u, float v, const glm::vec3 &p) const
     {
         glm::vec3 c;
-        switch (mode)
+        switch (mode_)
         {
         case 0:
-            c = color * 0.5f * (1.0f + sin(scale * p.x + 10 * Perlin::Turb(scale * p)));
+            c = color_ * 0.5f * (1.0f + sin(scale_ * p.x + 10 * Perlin::Turb(scale_ * p)));
             break;
         case 1:
-            c = color * 0.5f * (1.0f + sin(10 * Perlin::Turb(scale * p)));
+            c = color_ * 0.5f * (1.0f + sin(10 * Perlin::Turb(scale_ * p)));
             break;
         case 2:
-            c = color * 0.5f * (1.0f + Perlin::Turb(scale * p));
+            c = color_ * 0.5f * (1.0f + Perlin::Turb(scale_ * p));
             break;
         case 3:
-            c = color * Perlin::Turb(scale * p);
+            c = color_ * Perlin::Turb(scale_ * p);
             break;
         default:
             break;

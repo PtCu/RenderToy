@@ -36,8 +36,8 @@ namespace platinum
     class Scene
     {
     public:
-        Scene() : max_depth(10), default_light(true), RussianRoulette(0.8) {}
-        Scene(bool d_l, int _mode = 0) : max_depth(10), default_light(d_l), mode(_mode), RussianRoulette(0.8) {}
+        Scene() : max_depth_(10), default_light(true), RussianRoulette(0.8) {}
+        Scene(bool d_l, int _mode = 0) : max_depth_(10), default_light(d_l), mode(_mode), RussianRoulette(0.8) {}
         ~Scene();
         void AddObject(const std::shared_ptr<Object> &obj);
         void AddObject(const std::vector<std::shared_ptr<Object>> &obj);
@@ -45,7 +45,7 @@ namespace platinum
         void Reset();
         void BuildBVH();
         glm::vec3 CastRay(std::shared_ptr<Ray> &r) const;
-        const std::vector<std::shared_ptr<Object>> &GetObjects() const { return objects; }
+        const std::vector<std::shared_ptr<Object>> &GetObjects() const { return objects_; }
 
     private:
         void destroyAll();
@@ -53,9 +53,9 @@ namespace platinum
         glm::vec3 castRay(std::shared_ptr<Ray> &r, int depth) const; //Using BVH tree to accelerate.
         HitRst intersectAll(std::shared_ptr<Ray> &r) const;
         void sampleLight(HitRst &inter, float &pdf) const;
-        int max_depth;
-        std::unique_ptr<BVHAccel> bvh_accel;
-        std::vector<std::shared_ptr<Object>> objects;
+        int max_depth_;
+        std::unique_ptr<BVHAccel> bvh_accel_;
+        std::vector<std::shared_ptr<Object>> objects_;
         bool default_light;
         float RussianRoulette;
         int mode;

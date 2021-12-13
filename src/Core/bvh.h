@@ -49,13 +49,13 @@ namespace platinum
             SAH,
             HLBVH
         };
-        BVHAccel(SplitMethod sm = SplitMethod::MIDDLE) : splitMethod(sm) {}
+        BVHAccel(SplitMethod sm = SplitMethod::MIDDLE) : split_method_(sm) {}
         // BVHAccel Public Methods
-        BVHAccel(std::vector<std::shared_ptr<Object>> &p, SplitMethod splitMethod = SplitMethod::MIDDLE);
-        BVHAccel(std::vector<std::shared_ptr<Object>>::iterator &begin, std::vector<std::shared_ptr<Object>>::iterator &end, SplitMethod splitMethod = SplitMethod::MIDDLE);
+        BVHAccel(std::vector<std::shared_ptr<Object>> &p, SplitMethod split_method_ = SplitMethod::MIDDLE);
+        BVHAccel(std::vector<std::shared_ptr<Object>>::iterator &begin, std::vector<std::shared_ptr<Object>>::iterator &end, SplitMethod split_method_ = SplitMethod::MIDDLE);
         ~BVHAccel() = default;
         HitRst RayCast(std::shared_ptr<Ray> &r) const;
-        std::shared_ptr<BVH_Node> GetRoot() { return root; }
+        std::shared_ptr<BVH_Node> GetRoot() { return root_; }
         void Sample(HitRst &inter, float &pdf) const;
 
     protected:
@@ -65,8 +65,8 @@ namespace platinum
         HitRst getIntersection(std::shared_ptr<Ray> &r) const;
         void getSample(std::shared_ptr<BVH_Node> node, float p, HitRst &pos, float &pdf) const;
         // BVHAccel Private Data
-        const SplitMethod splitMethod;
-        std::shared_ptr<BVH_Node> root;
+        const SplitMethod split_method_;
+        std::shared_ptr<BVH_Node> root_;
     };
 
 }

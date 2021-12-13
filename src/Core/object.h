@@ -33,8 +33,8 @@ namespace platinum
     {
     public:
         Object() {}
-        Object(std::shared_ptr<const Material> mat = NULL) : material(mat) {}
-        const std::shared_ptr<const Material> GetMaterial() const { return material; }
+        Object(std::shared_ptr<const Material> mat = NULL) : material_(mat) {}
+        const std::shared_ptr<const Material> GetMaterial() const { return material_; }
         virtual ~Object() {}
         //TODO: 考虑将虚拟函数声明为非公用的，将公用函数声明为非虚拟的
         virtual HitRst Intersect(std::shared_ptr<Ray> &r) = 0;
@@ -43,7 +43,7 @@ namespace platinum
         virtual float GetArea() const = 0;
 
     protected:
-        std::shared_ptr<const Material> material;
+        std::shared_ptr<const Material> material_;
     };
 
  

@@ -42,13 +42,13 @@ namespace platinum
     {
         if (former == NULL)
         {
-            bounding_box = AABB();
+            bounding_box_ = AABB();
             return;
         }
         auto childBox = former->GetBoundingBox();
         if (!childBox.IsValid())
         {
-            bounding_box = AABB();
+            bounding_box_ = AABB();
             return;
         }
 
@@ -67,7 +67,7 @@ namespace platinum
             max_p = glm::max(max_p, tmp);
         }
 
-        bounding_box = AABB(min_p, max_p);
+        bounding_box_ = AABB(min_p, max_p);
     }
 
     HitRst Instance::Intersect(std::shared_ptr<Ray> &r)
@@ -80,11 +80,11 @@ namespace platinum
 
         rst = former->Intersect(r);
 
-        if (rst.isHit)
+        if (rst.is_hit)
         {
             if (GetMaterial() != NULL)
             {
-                rst.material = GetMaterial();
+                rst.material_ = GetMaterial();
             }
             rst.record.vert.Transform(transform, normalTransform);
         }

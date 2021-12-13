@@ -40,7 +40,7 @@ namespace platinum
         
     protected:
         void GetRay(float s, float t, std::shared_ptr<Ray> ray) const;
-        glm::vec3 origin;
+        glm::vec3 origin_;
         glm::vec3 lower_left_corner;
         glm::vec3 horizontal;
         glm::vec3 vertical;

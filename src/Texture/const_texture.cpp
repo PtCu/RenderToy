@@ -26,6 +26,6 @@ namespace platinum
 {
     glm::vec3 ConstTexture::GetValue(float u, float v, const glm::vec3 &p) const
     {
-        return color;
+        return color_;
     }
 }

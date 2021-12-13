@@ -32,15 +32,15 @@ namespace platinum
     class Renderer
     {
     public:
-        Renderer(int img_w, int img_h, int channel, const std::string &fname, int iters);
+        Renderer(int img_w, int img_h, int channel, const std::string &fname, int spp);
         ~Renderer() = default;
         void Render(Scene &scene, const std::shared_ptr<Camera> &cam);
 
     private:
         void UpdateProgress(float progress);
-        Image img;
-        std::string filename;
-        int iterations;
+        Image img_;
+        std::string filename_;
+        int spp_;
     };
 }
 

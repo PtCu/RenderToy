@@ -42,13 +42,13 @@ namespace platinum
       float Pdf(const glm::vec3 &wi, const glm::vec3 &wo, HitRst &rst) const override;
       // brdf. Given a ray, calculate the contribution of this ray
       glm::vec3 ScatterPdf(const glm::vec3 &wi, const glm::vec3 &wo, HitRst &rst) const override;
-      //The material itself emits light.
+      //The material_ itself emits light.
       glm::vec3 Emit() const override;
       bool IsEmit() const override;
 
    private:
-      std::shared_ptr<Texture> albedo;
-      float fuzz; //Zero is no perturbation
+      std::shared_ptr<Texture> albedo_;
+      float fuzz_; //Zero is no perturbation
    };
 } // namespace platinum
 

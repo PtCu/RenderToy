@@ -24,12 +24,12 @@
 
 namespace platinum
 {
-    Isotropic::Isotropic(const std::shared_ptr<Texture> &a) : tex(a) {}
+    Isotropic::Isotropic(const std::shared_ptr<Texture> &a) : texure_(a) {}
 
     bool Isotropic::Scatter(HitRst &rst) const
     {
-        auto attenuation = tex->GetValue(rst.record.vert.u, rst.record.vert.v, rst.record.vert.pos);
-        rst.record.ray->Update(rst.record.vert.pos, Random::RandomInUnitSphere(), attenuation);
+        auto attenuation = texure_->GetValue(rst.record.vert.u_, rst.record.vert.v_, rst.record.vert.position_);
+        rst.record.ray->Update(rst.record.vert.position_, Random::RandomInUnitSphere(), attenuation);
         return true;
     }
     // Sample a ray by Material properties
@@ -47,7 +47,7 @@ namespace platinum
     {
         return glm::vec3(0, 0, 0);
     }
-    //The material itself emits light.
+    //The material_ itself emits light.
     glm::vec3 Isotropic::Emit() const
     {
         return glm::vec3(0, 0, 0);

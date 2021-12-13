@@ -39,13 +39,14 @@ namespace platinum
       virtual float Pdf(const glm::vec3 &wi, const glm::vec3 &wo, HitRst &rst) const;
       // brdf. Given a ray, calculate the contribution of this ray
       virtual glm::vec3 ScatterPdf(const glm::vec3 &wi, const glm::vec3 &wo, HitRst &rst) const;
-      //The material itself emits light.
+      //The material_ itself emits light.
       virtual glm::vec3 Emit() const;
       virtual bool IsEmit() const;
 
    private:
-      std::shared_ptr<Texture> albedo;
-      float ref_idx;
+      std::shared_ptr<Texture> albedo_;
+      //ref_idx: 物体外部介质的折射率η和物体内部折射率η'之比：η/η'。
+      float ref_idx_;
    };
 
 } // namespace platinum

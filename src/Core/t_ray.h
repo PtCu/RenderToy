@@ -31,15 +31,15 @@ namespace platinum
     {
     public:
         TRay() {}
-        TRay(const glm::vec3 &o, const glm::vec3 &d, float ti = 0.0) : Ray(o, d), _time(ti) {}
+        TRay(const glm::vec3 &o, const glm::vec3 &d, float ti = 0.0) : Ray(o, d), time_(ti) {}
         virtual ~TRay() = default;
-        void SetTime(float t) { _time = t; }
-        float GetTime() const { return _time; }
+        void SetTime(float t) { time_ = t; }
+        float GetTime() const { return time_; }
     protected:
         virtual void DoNothing() {}
 
     private:
-        float _time;
+        float time_;
     };
 }
 

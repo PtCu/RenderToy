@@ -32,10 +32,10 @@ namespace platinum
     class TaskSynchronizer
     {
     private:
-        int m_x, m_y;
-        std::vector<RenderTile> m_tiles;
+        int x_, y_;
+        std::vector<RenderTile> tiles_;
 
-        bool m_abort;
+        bool abort_;
 
     public:
         TaskSynchronizer(const int x, const int y)
@@ -45,10 +45,10 @@ namespace platinum
 
         void init(const int x, const int y)
         {
-            m_x = x;
-            m_y = y;
-            m_tiles.clear();
-            m_abort = false;
+            x_ = x;
+            y_ = y;
+            tiles_.clear();
+            abort_ = false;
 
             for (int i = 0; i < y; i += RenderTile::TILE_SIZE)
             {
@@ -59,35 +59,35 @@ namespace platinum
                     int max_x = glm::min(min_x + RenderTile::TILE_SIZE, x);
                     int max_y = glm::min(min_y + RenderTile::TILE_SIZE, y);
 
-                    m_tiles.emplace_back(min_x, min_y, max_x, max_y);
+                    tiles_.emplace_back(min_x, min_y, max_x, max_y);
                 }
             }
         }
 
         inline const RenderTile &getTile(const int idx) const
         {
-            assert(idx < (int)m_tiles.size());
-            return m_tiles[idx];
+            assert(idx < (int)tiles_.size());
+            return tiles_[idx];
         }
         inline int getTilesCount() const
         {
-            return (int)m_tiles.size();
+            return (int)tiles_.size();
         }
         inline int getX() const
         {
-            return m_x;
+            return x_;
         }
         inline int getY() const
         {
-            return m_y;
+            return y_;
         }
         inline void setAbort(const bool ab)
         {
-            m_abort = ab;
+            abort_ = ab;
         }
         inline const bool aborted() const
         {
-            return m_abort;
+            return abort_;
         }
     };
 
@@ -95,14 +95,14 @@ namespace platinum
     {
     public:
         Integrator(const TaskSynchronizer &task, const uint32_t &spp)
-            : m_task(task), m_spp(spp) {}
+            : task_(task), spp_(spp) {}
 
         virtual void render(const Scene *scene, const Camera *camera) = 0;
         virtual ~Integrator() {}
 
     protected:
-        const TaskSynchronizer &m_task;
-        const uint32_t &m_spp;
+        const TaskSynchronizer &task_;
+        const uint32_t &spp_;
     };
 }
 

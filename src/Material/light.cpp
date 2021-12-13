@@ -24,27 +24,27 @@
 
 namespace platinum
 {
-    Light::Light(const glm::vec3 &color, float linear, float quadratic)
-        : tex(std::make_shared<ConstTexture>(color)), linear(linear), quadratic(quadratic) {}
+    Light::Light(const glm::vec3 &color_, float linear, float quadratic)
+        : texure_(std::make_shared<ConstTexture>(color_)), linear_(linear), quadratic_(quadratic) {}
 
     Light::Light(std::shared_ptr<Texture> lightTex, float linear, float quadratic)
-        : tex(lightTex), linear(linear), quadratic(quadratic) {}
+        : texure_(lightTex), linear_(linear), quadratic_(quadratic) {}
 
     bool Light::Scatter(HitRst &rst) const
     {
         float d = rst.record.ray->GetMaxTime() * glm::length(rst.record.ray->GetDirection());
         float attDis;
-        if (linear == 0.0 && quadratic == 0.0)
+        if (linear_ == 0.0 && quadratic_ == 0.0)
             attDis = 1;
         else
         {
             if (isnan(d))
                 attDis = 0;
             else
-                attDis = 1.0f / (1.0f + d * (linear + quadratic * d));
+                attDis = 1.0f / (1.0f + d * (linear_ + quadratic_ * d));
         }
-        float attAngle = abs(glm::dot(glm::normalize(rst.record.ray->GetDirection()), rst.record.vert.normal));
-        rst.record.ray->SetColor(attDis * attAngle * tex->GetValue(rst.record.vert.u, rst.record.vert.v, rst.record.vert.pos));
+        float attAngle = abs(glm::dot(glm::normalize(rst.record.ray->GetDirection()), rst.record.vert.normal_));
+        rst.record.ray->SetColor(attDis * attAngle * texure_->GetValue(rst.record.vert.u_, rst.record.vert.v_, rst.record.vert.position_));
         return false;
     }
     glm::vec3 Light::ScatterPdf(const glm::vec3 &wi, const glm::vec3 &wo, HitRst &rst) const
@@ -61,10 +61,10 @@ namespace platinum
     {
         return 0;
     }
-    //The material itself emits light.
+    //The material_ itself emits light.
     glm::vec3 Light::Emit() const
     {
-        return tex->GetValue(0, 0, glm::vec3(0));
+        return texure_->GetValue(0, 0, glm::vec3(0));
     }
     bool Light::IsEmit() const
     {

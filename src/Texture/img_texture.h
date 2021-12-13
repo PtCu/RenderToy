@@ -38,7 +38,7 @@ namespace platinum
     
 
   private:
-    std::shared_ptr<const Image> img;
+    std::shared_ptr<const Image> img_;
   };
 }
 

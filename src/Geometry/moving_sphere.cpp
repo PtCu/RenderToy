@@ -26,18 +26,18 @@ namespace platinum
 {
 
     MovingSphere::MovingSphere(glm::vec3 cen0, glm::vec3 cen1, float t0, float t1, float r, const std::shared_ptr<Material> &m)
-        : center0(cen0), center1(cen1), time0(t0), time1(t1), Sphere(glm::vec3(0), r, m)
+        : center0(cen0), center1(cen1), time0_(t0), time1_(t1), Sphere(glm::vec3(0), r, m)
     {
-        glm::vec3 minP = glm::min(center0 - glm::vec3(radius), center1 - glm::vec3(radius));
-        glm::vec3 maxP = glm::max(center0 + glm::vec3(radius), center1 + glm::vec3(radius));
-        bounding_box = AABB(minP, maxP);
+        glm::vec3 minP = glm::min(center0 - glm::vec3(radius_), center1 - glm::vec3(radius_));
+        glm::vec3 maxP = glm::max(center0 + glm::vec3(radius_), center1 + glm::vec3(radius_));
+        bounding_box_ = AABB(minP, maxP);
     }
 
     glm::vec3 MovingSphere::getCenter(const std::shared_ptr<Ray> &r) const
     {
         std::shared_ptr<TRay> tRay = std::dynamic_pointer_cast<TRay>(r);
         float t = tRay->GetTime();
-        return center0 + ((t - time0) / (time1 - time0)) * (center1 - center0);
+        return center0 + ((t - time0_) / (time1_ - time0_)) * (center1 - center0);
     }
 
 } // namespace platinum

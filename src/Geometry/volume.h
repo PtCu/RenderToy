@@ -36,18 +36,18 @@ namespace platinum
     {
     public:
         Volume(std::shared_ptr<Object> obj = NULL, float dense = 1.0f, std::shared_ptr<Material> m = NULL)
-            : boundary(obj), density(dense), Object(m) {}
+            : boundary_(obj), density_(dense), Object(m) {}
 
         ~Volume() = default;
         virtual float GetArea() const;
         virtual void Sample(HitRst &inter, float &pdf) const;
         virtual HitRst Intersect(std::shared_ptr<Ray> &r);
-        virtual AABB GetBoundingBox() const { return boundary->GetBoundingBox(); }
+        virtual AABB GetBoundingBox() const { return boundary_->GetBoundingBox(); }
 
     private:
-        std::shared_ptr<Object> boundary;
-        float density;
-        std::shared_ptr<Material> phase_f;
+        std::shared_ptr<Object> boundary_;
+        float density_;
+        std::shared_ptr<Material> phase_;
     };
 }
 

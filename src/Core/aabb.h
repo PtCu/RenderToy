@@ -45,23 +45,23 @@ namespace platinum
         bool IsHit(const std::shared_ptr<Ray> &r) const;
         const glm::vec3 operator[](int i) const
         {
-            return i == 0 ? p_min : p_max;
+            return i == 0 ? p_min_ : p_max_;
         }
-        glm::vec3 Diagonal() const { return p_max - p_min; }
-        glm::vec3 Centroid() const { return 0.5f * p_min + 0.5f * p_max; }
+        glm::vec3 Diagonal() const { return p_max_ - p_min_; }
+        glm::vec3 Centroid() const { return 0.5f * p_min_ + 0.5f * p_max_; }
         float SurfaceArea() const
         {
             auto d = Diagonal();
             return 2 * (d.x * d.y + d.x * d.z + d.y * d.z);
         }
-        glm::vec3 GetMin() const { return p_min; }
-        glm::vec3 GetMax() const { return p_max; }
-        bool IsValid() const { return is_valid; }
+        glm::vec3 GetMin() const { return p_min_; }
+        glm::vec3 GetMax() const { return p_max_; }
+        bool IsValid() const { return is_valid_; }
 
     protected:
-        glm::vec3 p_min;
-        glm::vec3 p_max;
-        bool is_valid;
+        glm::vec3 p_min_;
+        glm::vec3 p_max_;
+        bool is_valid_;
     };
 
     inline AABB Union(const AABB &b1, const AABB &b2)

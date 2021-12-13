@@ -25,17 +25,17 @@
 namespace platinum
 {
     ImgTexture::ImgTexture(const std::string &fileName, bool flip)
-        : img(new Image(fileName.c_str(), flip)) {}
+        : img_(new Image(fileName.c_str(), flip)) {}
 
     glm::vec3 ImgTexture::GetValue(float u, float v, const glm::vec3 &p) const
     {
-        if (!img->IsValid())
+        if (!img_->IsValid())
             return glm::vec3(0);
 
-        size_t i = glm::clamp<float>(u * img->GetWidth(), 0, img->GetWidth() - 1);
-        size_t j = glm::clamp<float>(v * img->GetHeight(), 0, img->GetHeight() - 1);
+        size_t i = glm::clamp<float>(u * img_->GetWidth(), 0, img_->GetWidth() - 1);
+        size_t j = glm::clamp<float>(v * img_->GetHeight(), 0, img_->GetHeight() - 1);
 
-        auto pixel = img->GetPixel_F(i, j);
+        auto pixel = img_->GetPixel_F(i, j);
         return glm::vec3(pixel.r, pixel.g, pixel.b);
     }
 

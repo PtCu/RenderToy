@@ -42,12 +42,12 @@ namespace platinum
         virtual float Pdf(const glm::vec3 &wi, const glm::vec3 &wo, HitRst &rst) const;
         // brdf. Given a ray, calculate the contribution of this ray
         virtual glm::vec3 ScatterPdf(const glm::vec3 &wi, const glm::vec3 &wo, HitRst &rst) const;
-        //The material itself emits light.
+        //The material_ itself emits light.
         virtual glm::vec3 Emit() const;
         virtual bool IsEmit() const;
 
     private:
-        std::shared_ptr<Texture> albedo;
+        std::shared_ptr<Texture> albedo_;
     };
 } // namespace platinum
 

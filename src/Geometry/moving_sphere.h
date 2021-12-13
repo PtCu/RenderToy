@@ -38,16 +38,16 @@ namespace platinum
         MovingSphere() = default;
         ~MovingSphere() = default;
         MovingSphere(glm::vec3 cen0, glm::vec3 cen1, float t0, float t1, float r, const std::shared_ptr<Material> &m = nullptr);
-        virtual AABB GetBoundingBox() const { return bounding_box; }
+        virtual AABB GetBoundingBox() const { return bounding_box_; }
 
     protected:
         virtual glm::vec3 getCenter(const std::shared_ptr<Ray> &r) const;
 
     private:
         glm::vec3 center0, center1;
-        float time0, time1;
-        float radius;
-        AABB bounding_box;
+        float time0_, time1_;
+        float radius_;
+        AABB bounding_box_;
     };
 
 } // namespace platinum
