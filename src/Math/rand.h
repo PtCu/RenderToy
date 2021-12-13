@@ -36,7 +36,7 @@ namespace platinum
         {
             static std::random_device seed_gen;
             static std::mt19937 engine(seed_gen());
-            static std::uniform_real_distribution<> dist(0.0, 1.0);
+            static std::uniform_real_distribution<> dist(0.f, 1.f);
             return static_cast<float>(dist(engine));
         }
         static glm::vec3 RandomInUnitDisk()

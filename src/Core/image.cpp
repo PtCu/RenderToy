@@ -54,7 +54,7 @@ Image::Pixel<double> Image::Pixel_UB2D(const Pixel<unsigned char> &pixel)
 //------------
 
 Image::Image()
-    : data(NULL), width(0), height(0), channel(0), type(ENUM_SRC_TYPE_INVALID) {}
+    : data(NULL), width_(0), height_(0), channel(0), type(ENUM_SRC_TYPE_INVALID) {}
 
 Image::Image(size_t width, size_t height, size_t channel)
 {
@@ -98,12 +98,12 @@ const unsigned char *Image::GetConstData() const
 
 size_t Image::GetWidth() const
 {
-    return width;
+    return width_;
 }
 
 size_t Image::GetHeight() const
 {
-    return height;
+    return height_;
 }
 
 size_t Image::GetChannel() const
@@ -115,12 +115,12 @@ size_t Image::GetChannel() const
 
 unsigned char &Image::At(size_t x, size_t y, size_t channel)
 {
-    return data[(y * width + x) * this->channel + channel];
+    return data[(y * width_ + x) * this->channel + channel];
 }
 
 const unsigned char &Image::At(size_t x, size_t y, size_t channel) const
 {
-    return data[(y * width + x) * this->channel + channel];
+    return data[(y * width_ + x) * this->channel + channel];
 }
 
 bool Image::SetPixel(size_t x, size_t y, const Pixel<unsigned char> &pixel)
@@ -178,8 +178,8 @@ bool Image::Load(const std::string &fileName, bool flip)
 
     int tmpW, tmpH, tmpC;
     data = stbi_load(fileName.c_str(), &tmpW, &tmpH, &tmpC, 0);
-    width = tmpW;
-    height = tmpH;
+    width_ = tmpW;
+    height_ = tmpH;
     channel = tmpC;
 
     if (data == NULL)
@@ -194,8 +194,8 @@ bool Image::Load(const std::string &fileName, bool flip)
 void Image::GenBuffer(size_t width, size_t height, size_t channel)
 {
     Free();
-    this->width = width;
-    this->height = height;
+    this->width_ = width;
+    this->height_ = height;
     this->channel = channel;
 
     data = new unsigned char[width * height * channel]();
@@ -220,8 +220,8 @@ void Image::Free()
         }
     }
 
-    width = 0;
-    height = 0;
+    width_ = 0;
+    height_ = 0;
     channel = 0;
     data = NULL;
     type = ENUM_SRC_TYPE_INVALID;
@@ -230,5 +230,5 @@ void Image::Free()
 bool Image::SaveAsPNG(const string &fileName, bool flip) const
 {
     stbi_flip_vertically_on_write(flip);
-    return stbi_write_png(fileName.c_str(), width, height, channel, data, width * 3);
+    return stbi_write_png(fileName.c_str(), width_, height_, channel, data, width_ * 3);
 }

@@ -1,14 +1,14 @@
 
 #include "../src/Core/image.h"
 #include "../src/Core/ray.h"
-#include "../src/Core/tCamera.h"
+#include "../src/Core/t_camera.h"
 #include "../src/Core/object.h"
 #include "../src/Material/dielectric.h"
 #include "../src/Material/lambertian.h"
 #include "../src/Material/metal.h"
 #include "../src/Math/rand.h"
 #include "../src/Geometry/sphere.h"
-#include "../src/Geometry/movingSphere.h"
+#include "../src/Geometry/moving_sphere.h"
 #include "../src/Core/scene.h"
 #include "../src/Core/renderer.h"
 
@@ -29,7 +29,7 @@ void random_scene(Scene &world)
         {
             float choose_mat = Random::RandomInUnitFloat();
             vec3 center(a + 0.9 * Random::RandomInUnitFloat(), 0.2, b + 0.9 * Random::RandomInUnitFloat());
-            if ((center - vec3(4, 0.2, 0)).length() > 0.9)
+            if (length(center - vec3(4, 0.2, 0)) > 0.9)
             {
                 if (choose_mat < 0.8)
                 { // diffuse
@@ -68,7 +68,7 @@ int main()
 {
     int nx = 1200;
     int ny = 800;
-    int ns = 1000;
+    int ns = 100;
     Scene world(true);
     random_scene(world);
 

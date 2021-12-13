@@ -25,29 +25,29 @@
 namespace platinum
 {
     Vertex::Vertex(glm::vec3 pos, glm::vec3 normal, float u, float v)
-        : pos(pos), normal(normal), u(u), v(v) {}
+        : position_(pos), normal_(normal), u_(u), v_(v) {}
 
     void Vertex::Transform(const glm::mat4 &transform)
     {
-        auto posQ = transform * glm::vec4(pos, 1.0);
-        pos = glm::vec3(posQ) / posQ.w;
-        normal = glm::normalize(glm::transpose(glm::inverse(glm::mat3(transform))) * normal);
+        auto posQ = transform * glm::vec4(position_, 1.0);
+        position_ = glm::vec3(posQ) / posQ.w;
+        normal_ = glm::normalize(glm::transpose(glm::inverse(glm::mat3(transform))) * normal_);
     }
 
     void Vertex::Transform(const glm::mat4 &transform, const glm::mat3 &normalTransform)
     {
-        auto posQ = transform * glm::vec4(pos, 1.0);
-        pos = glm::vec3(posQ) / posQ.w;
-        normal = glm::normalize(normalTransform * normal);
+        auto posQ = transform * glm::vec4(position_, 1.0);
+        position_ = glm::vec3(posQ) / posQ.w;
+        normal_ = glm::normalize(normalTransform * normal_);
     }
 
     const Vertex Vertex::GenVert(const glm::vec3 &abg, const Vertex &A, const Vertex &B, const Vertex &C)
     {
         Vertex rst;
-        rst.u = glm::dot(abg, glm::vec3(A.u, B.u, C.u));
-        rst.v = glm::dot(abg, glm::vec3(A.v, B.v, C.v));
-        rst.pos = abg[0] * A.pos + abg[1] * B.pos + abg[2] * C.pos;
-        rst.normal = abg[0] * A.normal + abg[1] * B.normal + abg[2] * C.normal;
+        rst.u_ = glm::dot(abg, glm::vec3(A.u_, B.u_, C.u_));
+        rst.v_ = glm::dot(abg, glm::vec3(A.v_, B.v_, C.v_));
+        rst.position_ = abg[0] * A.position_ + abg[1] * B.position_ + abg[2] * C.position_;
+        rst.normal_ = abg[0] * A.normal_ + abg[1] * B.normal_ + abg[2] * C.normal_;
 
         return rst;
     }

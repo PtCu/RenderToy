@@ -30,28 +30,23 @@
 
 namespace platinum
 {
-    struct Intersection
+    struct HitRecord
     {
-        Vertex vert;
-        std::shared_ptr<const Material> material;
+        HitRecord(std::shared_ptr<Ray> _ray = NULL, const glm::vec3 &pos = glm::vec3(0),
+                  const glm::vec3 &normal = glm::vec3(0, 0, 1), float u = 0, float v = 0) : ray(_ray), vert(pos, normal, u, v) {}
         std::shared_ptr<Ray> ray;
-        bool happened;
-        Intersection()
-        {
-            material = NULL;
-            ray = NULL;
-            happened = false;
-        };
-        Intersection(bool default_ray)
-        {
-            material = NULL;
-            if (default_ray)
-                ray = std::make_shared<Ray>();
-            else
-                ray = NULL;
-            happened = false;
-        };
+        Vertex vert;
+    };
 
-    }; // namespace platinum
+    struct HitRst
+    {
+        HitRst(bool hit = false) : is_hit(hit), material_(NULL) {}
+        bool is_hit;
+        glm::vec3 emit;
+        HitRecord record;
+        std::shared_ptr<const Material> material_;
+        static const HitRst InValid;
+    };
+
 }
 #endif

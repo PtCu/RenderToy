@@ -29,34 +29,33 @@ using namespace glm;
 using namespace platinum;
 
 BVHAccel::BVHAccel(vector<shared_ptr<Object>> &p,
-                   SplitMethod splitMethod)
-    : splitMethod(splitMethod)
+                   SplitMethod split_method_)
+    : split_method_(split_method_)
 {
     // time_t start, stop;
     // time(&start);
     if (p.empty())
         return;
 
-    if (splitMethod == SplitMethod::HLBVH)
+    if (split_method_ == SplitMethod::HLBVH)
         ;
     else
-        root = recursiveBuild(p.begin(), p.end());
+        root_ = recursiveBuild(p.begin(), p.end());
     //TODO:
     //Other building method
 }
 BVHAccel::BVHAccel(vector<shared_ptr<Object>>::iterator &begin, vector<shared_ptr<Object>>::iterator &end,
-                   SplitMethod splitMethod)
-    : splitMethod(splitMethod)
+                   SplitMethod split_method_)
+    : split_method_(split_method_)
 {
-    // time_t start, stop;
-    // time(&start);
+
     if (begin == end)
         return;
 
-    if (splitMethod == SplitMethod::HLBVH)
+    if (split_method_ == SplitMethod::HLBVH)
         ;
     else
-        root = recursiveBuild(begin, end);
+        root_ = recursiveBuild(begin, end);
     //TODO:
     //Other building method
 }
@@ -72,123 +71,121 @@ shared_ptr<BVH_Node> BVHAccel::recursiveBuild(vector<shared_ptr<Object>>::iterat
     {
         // Create leaf _BVHBuildNode_
         node->bounding_box = (*begin)->GetBoundingBox();
-        node->objects.push_back(*begin);
+        node->objects = *begin;
         node->left = nullptr;
         node->right = nullptr;
-        node->area += (*begin)->GetArea();
+        node->area = (*begin)->GetArea();
         return node;
     }
-    else if (num == 2)
+    if (num == 2)
     {
         node->left = recursiveBuild(begin, begin + 1);
         node->right = recursiveBuild(begin + 1, end);
         node->bounding_box = Union(node->left->bounding_box, node->right->bounding_box);
-        node->area += node->left->area + node->right->area;
+        node->area = node->left->area + node->right->area;
         return node;
     }
-    else
+
+    //Choose split dimension
+    AABB centroidBounds;
+    for (auto iter = begin; iter != end; ++iter)
+        centroidBounds.Expand((*iter)->GetBoundingBox().Centroid());
+    int dim = centroidBounds.MaxExtent();
+
+    // if (centroidBounds.GetMax()[dim] == centroidBounds.GetMin()[dim])
+    // {
+    // }
+    //Do partition according to split method
+    std::vector<shared_ptr<Object>>::iterator middle;
+    float p_mid = 0;
+    switch (split_method_)
     {
-        //Choose split dimension
-        AABB centroidBounds;
-        for (auto iter = begin; iter != end; ++iter)
-            centroidBounds.Expand((*iter)->GetBoundingBox().Centroid());
-        int dim = centroidBounds.MaxExtent();
+    case SplitMethod::MIDDLE:
+        p_mid = centroidBounds.Centroid()[dim];
+        middle = std::partition(begin, end,
+                                [dim, p_mid](auto p)
+                                { return p->GetBoundingBox().Centroid()[dim] < p_mid; });
 
-        // if (centroidBounds.GetMax()[dim] == centroidBounds.GetMin()[dim])
+        // //Edge case: if identical bounding boxes exist
+        // if (middle - begin == 0)
         // {
+        //     node->left = node->right = NULL;
+        //     node->bounding_box = (*begin)->GetBoundingBox();
+        // for (auto &iter = begin; iter != end; ++iter)
+        // {
+        //     node->objects_.push_back(*iter);
         // }
-        //Do partition according to split method
-        std::vector<shared_ptr<Object>>::iterator middle;
-        float p_mid = 0;
-        switch (splitMethod)
-        {
-        case SplitMethod::MIDDLE:
-            p_mid = centroidBounds.Centroid()[dim];
-            middle = std::partition(begin, end,
-                                    [dim, p_mid](auto p) { return p->GetBoundingBox().Centroid()[dim] < p_mid; });
-
-            //Edge case: if identical bounding boxes exist
-            if (middle - begin == 0)
-            {
-                node->left = node->right = NULL;
-                node->bounding_box = (*begin)->GetBoundingBox();
-                for (auto &iter = begin; iter != end; ++iter)
-                {
-                    node->objects.push_back(*iter);
-                }
-                return node;
-            }
-            break;
-        case SplitMethod::SAH:
-            break;
-        default:
-            break;
-        }
-        node->left = recursiveBuild(begin, middle);
-        node->right = recursiveBuild(middle, end);
-        node->bounding_box = Union(node->left->bounding_box, node->right->bounding_box);
-        node->area = node->left->area + node->right->area;
+        //     node->objects_ = *begin;
+        //     return node;
+        // }
+        break;
+    case SplitMethod::SAH:
+        break;
+    default:
+        break;
     }
+    node->left = recursiveBuild(begin, middle);
+    node->right = recursiveBuild(middle, end);
+    node->bounding_box = Union(node->left->bounding_box, node->right->bounding_box);
+    node->area = node->left->area + node->right->area;
 
     return node;
 }
 
-Intersection BVHAccel::RayCast(std::shared_ptr<Ray> &r) const
+HitRst BVHAccel::RayCast(std::shared_ptr<Ray> &r) const
 {
-    Intersection isect;
-    if (!root)
-        return isect;
-    // isect = BVHAccel::getIntersection(r);
-    isect = BVHAccel::getIntersection_rec(root, r);
+    HitRst isect;
+    isect = BVHAccel::getIntersection_rec(root_, r);
     return isect;
 }
-Intersection BVHAccel::getIntersection_rec(std::shared_ptr<BVH_Node> node, std::shared_ptr<Ray> &r) const
+HitRst BVHAccel::getIntersection_rec(std::shared_ptr<BVH_Node> node, std::shared_ptr<Ray> &r) const
 {
     // TODO Traverse the BVH to find intersection
     //如果和盒子没相交，就必不可能和盒子内的物体相交
     if (!node->bounding_box.IsHit(r))
-        return Intersection();
+        return HitRst();
 
     if (!node->left && !node->right)
     {
-        Intersection tmp_inter, inter;
-        for (auto &obj : node->objects)
-        {
-            tmp_inter = obj->Intersect(r);
+        return node->objects->Intersect(r);
+        // HitRecord tmp_inter, inter;
+        // for (auto &obj : node->objects_)
+        // {
+        //     tmp_inter = obj->Intersect(r);
 
-            if (tmp_inter.happened && (inter.happened == false || tmp_inter.ray->GetMaxTime() < inter.ray->GetMaxTime()))
-            {
-                // inter = std::move(tmp_inter);
-                inter = tmp_inter;
-            }
-        }
-        return inter;
+        //     if (tmp_inter.happened && (inter.happened == false || tmp_inter.ray->GetMaxTime() < inter.ray->GetMaxTime()))
+        //     {
+        //         // inter = std::move(tmp_inter);
+        //         inter = tmp_inter;
+        //     }
+        // }
+        // return inter;
     }
 
-    Intersection hit1, hit2;
+    HitRst hit1, hit2;
     hit1 = getIntersection_rec(node->left, r);
     hit2 = getIntersection_rec(node->right, r);
-    if (!hit1.happened)
+    if (!hit1.is_hit)
     {
         return hit2;
     }
-    else if (!hit2.happened)
+    else if (!hit2.is_hit)
     {
         return hit1;
     }
     else
     {
-        return hit1.ray->GetMaxTime() < hit2.ray->GetMaxTime() ? hit1 : hit2;
+        return hit1.record.ray->GetMaxTime() < hit2.record.ray->GetMaxTime() ? hit1 : hit2;
     }
 }
-Intersection BVHAccel::getIntersection(std::shared_ptr<Ray> &r) const
+HitRst BVHAccel::getIntersection(std::shared_ptr<Ray> &r) const
 {
     // TODO Traverse the BVH to find intersection
-    if (!root->bounding_box.IsHit(r))
-        return Intersection();
-    Intersection inter, tmp_inter;
+    if (!root_->bounding_box.IsHit(r))
+        return HitRst();
+    HitRst inter, tmp_inter;
     stack<shared_ptr<BVH_Node>> s;
-    s.push(root);
+    s.push(root_);
     while (!s.empty())
     {
         //如果单独为unqiue_ptr就会被自动释放掉。可以用unique_ptr + raw pointer
@@ -200,15 +197,11 @@ Intersection BVHAccel::getIntersection(std::shared_ptr<Ray> &r) const
             continue;
         if (p->left == NULL && p->right == NULL)
         {
-            for (auto &obj : p->objects)
+            tmp_inter = p->objects->Intersect(r);
+            if (tmp_inter.is_hit && (inter.is_hit == false || tmp_inter.record.ray->GetMaxTime() < inter.record.ray->GetMaxTime()))
             {
-                tmp_inter = obj->Intersect(r);
-
-                if (tmp_inter.happened && (inter.happened == false || tmp_inter.ray->GetMaxTime() < inter.ray->GetMaxTime()))
-                {
-                    // inter = std::move(tmp_inter);
-                    inter = tmp_inter;
-                }
+                // inter = std::move(tmp_inter);
+                inter = tmp_inter;
             }
         }
 
@@ -220,17 +213,17 @@ Intersection BVHAccel::getIntersection(std::shared_ptr<Ray> &r) const
     return inter;
 }
 
-void BVHAccel::Sample(Intersection &inter, float &pdf) const
+void BVHAccel::Sample(HitRst &inter, float &pdf) const
 {
-    float p = std::sqrt(Random::RandomInUnitFloat()) * root->area;
-    getSample(root, p, inter, pdf);
-    pdf /= root->area;
+    float p = std::sqrt(Random::RandomInUnitFloat()) * root_->area;
+    getSample(root_, p, inter, pdf);
+    pdf /= root_->area;
 }
-void BVHAccel::getSample(std::shared_ptr<BVH_Node> node, float p, Intersection &pos, float &pdf) const
+void BVHAccel::getSample(std::shared_ptr<BVH_Node> node, float p, HitRst &pos, float &pdf) const
 {
     if (node->left == nullptr || node->right == nullptr)
     {
-        (*node->objects.begin())->Sample(pos, pdf);
+        node->objects->Sample(pos, pdf);
         pdf *= node->area;
         return;
     }
@@ -239,11 +232,11 @@ void BVHAccel::getSample(std::shared_ptr<BVH_Node> node, float p, Intersection &
     else
         getSample(node->right, p - node->left->area, pos, pdf);
 }
-// BVH_Node::BVH_Node(vector<shared_ptr<Object>> &objects)
+// BVH_Node::BVH_Node(vector<shared_ptr<Object>> &objects_)
 // {
-//     if (objects.size() == 0)
+//     if (objects_.size() == 0)
 //         return;
-//     Build(objects.begin(), objects.end());
+//     Build(objects_.begin(), objects_.end());
 // }
 // BVH_Node::BVH_Node(std::vector<std::shared_ptr<Object>>::iterator begin, std::vector<std::shared_ptr<Object>>::iterator end)
 // {

@@ -24,44 +24,44 @@
 
 namespace platinum
 {
-    Metal::Metal(const std::shared_ptr<Texture> &a, float f) : albedo(a)
+    Metal::Metal(const std::shared_ptr<Texture> &a, float f) : albedo_(a)
     {
-        f < 1 ? fuzz = f : fuzz = 1;
+        f < 1 ? fuzz_ = f : fuzz_ = 1;
     }
     Metal::Metal(const glm::vec3 &a, float f)
     {
-        albedo = std::make_shared<ConstTexture>(a);
-        f < 1 ? fuzz = f : fuzz = 1;
+        albedo_ = std::make_shared<ConstTexture>(a);
+        f < 1 ? fuzz_ = f : fuzz_ = 1;
     }
 
-    bool Metal::Scatter(Intersection &rec) const
+    bool Metal::Scatter(HitRst &rst) const
     {
-        glm::vec3 reflected = Reflect(rec.ray->GetDirection(), rec.vert.normal) + fuzz * Random::RandomInUnitSphere();
-        if (glm::dot(reflected, rec.vert.normal) < 0)
+        glm::vec3 reflected = Reflect(rst.record.ray->GetDirection(), rst.record.vert.normal_) + fuzz_ * Random::RandomInUnitSphere();
+        if (glm::dot(reflected, rst.record.vert.normal_) < 0)
         {
-            rec.ray->SetColor(glm::vec3(0, 0, 0));
+            rst.record.ray->SetColor(glm::vec3(0, 0, 0));
             return false;
         }
-        auto attenuation = albedo->GetValue(rec.vert.u, rec.vert.v, rec.vert.pos);
-        rec.ray->Update(rec.vert.pos, reflected, attenuation);
+        auto attenuation = albedo_->GetValue(rst.record.vert.u_, rst.record.vert.v_, rst.record.vert.position_);
+        rst.record.ray->Update(rst.record.vert.position_, reflected, attenuation);
         return true;
     }
     // Sample a ray by Material properties
-    glm::vec3 Metal::Sample(const glm::vec3 &d, Intersection &rec) const
+    glm::vec3 Metal::Sample(const glm::vec3 &d, HitRst &rst) const
     {
         return glm::vec3(0, 0, 0);
     }
     //Given a ray, calculate the PdF of this ray
-    float Metal::Pdf(const glm::vec3 &wi, const glm::vec3 &wo, Intersection &rec) const
+    float Metal::Pdf(const glm::vec3 &wi, const glm::vec3 &wo, HitRst &rst) const
     {
         return 0;
     }
     // brdf. Given a ray, calculate the contribution of this ray
-    glm::vec3 Metal::ScatterPdf(const glm::vec3 &wi, const glm::vec3 &wo, Intersection &rec) const
+    glm::vec3 Metal::ScatterPdf(const glm::vec3 &wi, const glm::vec3 &wo, HitRst &rst) const
     {
         return glm::vec3(0, 0, 0);
     }
-    //The material itself emits light.
+    //The material_ itself emits light.
     glm::vec3 Metal::Emit() const
     {
         return glm::vec3(0, 0, 0);

@@ -24,7 +24,7 @@
 
 namespace platinum
 {
-    void Instance::Sample(Intersection &inter, float &pdf) const
+    void Instance::Sample(HitRst &inter, float &pdf) const
     {
         former->Sample(inter, pdf);
     }
@@ -42,13 +42,13 @@ namespace platinum
     {
         if (former == NULL)
         {
-            bounding_box = AABB();
+            bounding_box_ = AABB();
             return;
         }
         auto childBox = former->GetBoundingBox();
         if (!childBox.IsValid())
         {
-            bounding_box = AABB();
+            bounding_box_ = AABB();
             return;
         }
 
@@ -67,31 +67,31 @@ namespace platinum
             max_p = glm::max(max_p, tmp);
         }
 
-        bounding_box = AABB(min_p, max_p);
+        bounding_box_ = AABB(min_p, max_p);
     }
 
-    Intersection Instance::Intersect(std::shared_ptr<Ray> &r)
+    HitRst Instance::Intersect(std::shared_ptr<Ray> &r)
     {
-        Intersection rec;
+        HitRst rst;
         if (former == NULL)
-            return rec;
+            return rst;
 
         r->Transform(inverseTransform);
 
-        rec = former->Intersect(r);
+        rst = former->Intersect(r);
 
-        if (rec.happened)
+        if (rst.is_hit)
         {
             if (GetMaterial() != NULL)
             {
-                rec.material = GetMaterial();
+                rst.material_ = GetMaterial();
             }
-            rec.vert.Transform(transform, normalTransform);
+            rst.record.vert.Transform(transform, normalTransform);
         }
 
         r->Transform(transform);
 
-        return rec;
+        return rst;
     }
 
 }

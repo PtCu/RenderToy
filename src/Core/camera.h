@@ -33,15 +33,14 @@ namespace platinum
     {
     public:
         //For test
-        Camera();
-       
+        Camera();     
         Camera(const glm::vec3& lookfrom,const glm::vec3& lookat, const glm::vec3& vup, float vfov, float aspect, float aperture, float focusDist);
-        virtual ~Camera() = default;
+        virtual ~Camera() = default;        
         virtual std::shared_ptr<Ray> GetRay(float s, float t) const;
-
+        
     protected:
         void GetRay(float s, float t, std::shared_ptr<Ray> ray) const;
-        glm::vec3 origin;
+        glm::vec3 origin_;
         glm::vec3 lower_left_corner;
         glm::vec3 horizontal;
         glm::vec3 vertical;

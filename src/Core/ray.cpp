@@ -24,33 +24,42 @@
 
 namespace platinum
 {
+    const float Ray::min_t_ = 10e-4;
+
+    Ray::Ray(const glm::vec3 &o, const glm::vec3 &d) : origin_(o), direction_(d)
+    {
+        max_t_ = std::numeric_limits<float>::max();
+        color_ = glm::vec3(1.0);
+        inv_direction_ = {1.0f / d.x, 1.0f / d.y, 1.0f / d.z};
+        is_neg_dir_ = {d.x < 0, d.y < 0, d.z < 0};
+    }
     void Ray::Init(const glm::vec3 &o, const glm::vec3 &d)
     {
-        this->origin = o;
-        this->direction = d;
-        this->inv_d = {1.0f / d.x, 1.0f / d.y, 1.0f / d.z};
-        this->dirIsNeg = {d.x < 0, d.y < 0, d.z < 0};
-        this->color=glm::vec3(1.0);
-        this->t_max = std::numeric_limits<float>::max();
+        this->origin_ = o;
+        this->direction_ = d;
+        this->inv_direction_ = {1.0f / d.x, 1.0f / d.y, 1.0f / d.z};
+        this->is_neg_dir_ = {d.x < 0, d.y < 0, d.z < 0};
+        this->color_ = glm::vec3(1.0);
+        this->max_t_ = std::numeric_limits<float>::max();
     }
     void Ray::Update(const glm::vec3 &o, const glm::vec3 &d, const glm::vec3 &a)
     {
-        this->origin = o;
-        this->direction = d;
-        this->inv_d = {1.0f / d.x, 1.0f / d.y, 1.0f / d.z};
-        this->dirIsNeg = {d.x < 0, d.y < 0, d.z < 0};
-        this->color *= a;
-        this->t_max = std::numeric_limits<float>::max();
+        this->origin_ = o;
+        this->direction_ = d;
+        this->inv_direction_ = {1.0f / d.x, 1.0f / d.y, 1.0f / d.z};
+        this->is_neg_dir_ = {d.x < 0, d.y < 0, d.z < 0};
+        this->color_ *= a;
+        this->max_t_ = std::numeric_limits<float>::max();
     }
     void Ray::SetColor(const glm::vec3 &c)
     {
-        color *= c;
+        color_ *= c;
     }
 
     void Ray::Transform(const glm::mat4 &transform)
     {
-        this->direction = glm::mat3(transform) * direction;
-        auto originQ = transform * glm::vec4(origin, 1.0f);
-        this->origin = glm::vec3(originQ) / originQ.w;
+        this->direction_ = glm::mat3(transform) * direction_;
+        auto originQ = transform * glm::vec4(origin_, 1.0f);
+        this->origin_ = glm::vec3(originQ) / originQ.w;
     }
 }

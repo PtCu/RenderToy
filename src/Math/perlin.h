@@ -40,12 +40,12 @@ namespace platinum
         static std::vector<size_t> GenPermute(size_t n);
         static std::vector<glm::vec3> GenRandVec(size_t n);
 
-        static std::vector<glm::vec3> rand_vec;
+        static std::vector<glm::vec3> rand_vec_;
 
         // 0, 1, ... , 255 变更顺序后的序列
-        static std::vector<size_t> perm_x;
-        static std::vector<size_t> perm_y;
-        static std::vector<size_t> perm_z;
+        static std::vector<size_t> perm_x_;
+        static std::vector<size_t> perm_y_;
+        static std::vector<size_t> perm_z_;
     };
 }
 

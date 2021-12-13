@@ -25,115 +25,103 @@
 namespace platinum
 {
 
-    void Triangle::Sample(Intersection &inter, float &pdf) const
+    void Triangle::Sample(HitRst &rst, float &pdf) const
     {
         float x = std::sqrt(Random::RandomInUnitFloat()), y = Random::RandomInUnitFloat();
-        inter.vert.pos = A.pos * (1.0f - x) + B.pos * (x * (1.0f - y)) + C.pos * (x * y);
-        inter.vert.normal = this->normal;
-        pdf = 1.0f / area;
-        // inter.ray->SetColor(material->Emit());
+        rst.record.vert.position_ = A.position_ * (1.0f - x) + B.position_ * (x * (1.0f - y)) + C.position_ * (x * y);
+        rst.record.vert.normal_ = this->normal_;
+        pdf = 1.0f / area_;
     }
     AABB Triangle::GetBoundingBox() const
     {
-        return bounding_box;
+        return bounding_box_;
     }
     float Triangle::GetArea() const
     {
-        return area;
+        return area_;
     }
-    Triangle::Triangle(const glm::vec3 &a, const glm::vec3 &b, const glm::vec3 &c, const std::shared_ptr<Material> &material)
-        : A(a), B(b), C(c), Object(material)
+    Triangle::Triangle(const glm::vec3 &a, const glm::vec3 &b, const glm::vec3 &c, const std::shared_ptr<Material> &material_)
+        : A(a), B(b), C(c), Object(material_)
     {
-        e1 = C.pos - A.pos;
-        e2 = B.pos - A.pos;
-        normal = -glm::normalize(glm::cross(e1, e2));
-        area = 0.5f * glm::cross(e1, e2).length();
-        bounding_box = AABB(A.pos, B.pos);
-        bounding_box.Expand(C.pos);
+        e1 = B.position_ - A.position_;
+        e2 = C.position_ - A.position_;
+        normal_ = glm::normalize(glm::cross(e1, e2));
+        area_ = 0.5f * glm::length(glm::cross(e1, e2));
+        bounding_box_ = AABB(A.position_, B.position_);
+        bounding_box_.Expand(C.position_);
     }
-    Triangle::Triangle(const Vertex &a, const Vertex &b, const Vertex &c, const std::shared_ptr<Material> &material)
-        : A(a), B(b), C(c), Object(material)
+    Triangle::Triangle(const Vertex &a, const Vertex &b, const Vertex &c, const std::shared_ptr<Material> &material_)
+        : A(a), B(b), C(c), Object(material_)
     {
-        e1 = C.pos - A.pos;
-        e2 = B.pos - A.pos;
-        normal = -glm::normalize(glm::cross(e1, e2));
-        area = 0.5f * glm::cross(e1, e2).length();
-        // glm::vec3 minP = min(min(A.pos, B.pos), C.pos);
-        // glm::vec3 maxP = max(max(A.pos, B.pos), C.pos);
-        // for (size_t i = 0; i < 3; i++)
-        // {
-        //     if (minP[i] == maxP[i])
-        //     {
-        //         minP[i] -= 0.001f;
-        //         maxP[i] += 0.001f;
-        //     }
-        // }
-        // bounding_box = AABB(minP, maxP);
-        bounding_box = AABB(A.pos, B.pos);
-        bounding_box.Expand(C.pos);
+        e1 = B.position_ - A.position_;
+        e2 = C.position_ - A.position_;
+        normal_ = glm::normalize(glm::cross(e1, e2));
+        area_ = 0.5f * glm::length(glm::cross(e1, e2));
+        bounding_box_ = AABB(A.position_, B.position_);
+        bounding_box_.Expand(C.position_);
     }
     glm::vec4 Triangle::intersectRay(const glm::vec3 &o, const glm::vec3 &d)
     {
-        glm::mat3 equation_A(glm::vec3(A.pos - B.pos), glm::vec3(A.pos - C.pos), d);
+        glm::mat3 equation_A(glm::vec3(A.position_ - B.position_), glm::vec3(A.position_ - C.position_), d);
 
         if (glm::abs(glm::determinant(equation_A)) < EPSILON)
             return glm::vec4(0, 0, 0, 0);
 
-        glm::vec3 equation_b = A.pos - o;
+        glm::vec3 equation_b = A.position_ - o;
         glm::vec3 equation_X = glm::inverse(equation_A) * equation_b;
         float alpha = 1 - equation_X[0] - equation_X[1];
         return glm::vec4(alpha, equation_X);
     }
 
-    Intersection Triangle::Intersect(std::shared_ptr<Ray> &r)
+    HitRst Triangle::Intersect(std::shared_ptr<Ray> &r)
     {
         // //moller trumbore algorithm
-        // Intersection inter;
+        // Intersection rst;
 
-        // if (glm::dot(r->GetDirection(), normal) > 0)
-        //     return inter;
+        // if (glm::dot(r->GetDirection(), normal_) > 0)
+        //     return rst;
         // float u, v, t_tmp = 0;
         // glm::vec3 pvec = glm::cross(r->GetDirection(), e2);
         // float det = glm::dot(e1, pvec);
         // // This r is parallel to this triangle.
         // if (fabs(det) < EPSILON)
-        //     return inter;
+        //     return rst;
 
         // float det_inv = 1. / det;
         // glm::vec3 tvec = r->GetOrigin() - A.pos;
         // u = glm::dot(tvec, pvec) * det_inv;
         // if (u < 0 || u > 1)
-        //     return inter;
+        //     return rst;
         // glm::vec3 qvec = glm::cross(tvec, e1);
         // v = glm::dot(r->GetDirection(), qvec) * det_inv;
         // if (v < 0 || u + v > 1)
-        //     return inter;
+        //     return rst;
         // // At this stage we can compute t to find out where the intersection point is on the line.
         // t_tmp = glm::dot(e2, qvec) * det_inv;
 
         // // This means that there is a line intersection but not a ray intersection.
         // if (t_tmp < EPSILON)
         // {
-        //     return inter;
+        //     return rst;
         // }
-        // inter.ray = r;
+        // rst.ray = r;
         // r->SetTMax(t_tmp);
-        // inter.vert = r->GetOrigin() + r->GetDirection() * t_tmp;
-        // inter.happened = true;
-        // inter.material = GetMaterial(); //材料
-        // return inter;
+        // rst.vert = r->GetOrigin() + r->GetDirection() * t_tmp;
+        // rst.happened = true;
+        // rst.material_ = GetMaterial(); //材料
+        // return rst;
 
-        Intersection rec;
+        HitRst rst;
         glm::vec4 abgt = this->intersectRay(r->GetOrigin(), r->GetDirection());
         if (abgt == glm::vec4(0) || abgt[0] < 0 || abgt[0] > 1 || abgt[1] < 0 || abgt[1] > 1 || abgt[2] < 0 || abgt[2] > 1 || abgt[3] < r->GetMinTime() || abgt[3] > r->GetMaxTime())
-            return rec;
+            return HitRst::InValid;
 
-        rec.vert = Vertex::GenVert(glm::vec3(abgt[0], abgt[1], abgt[2]), A, B, C);
-        rec.vert.normal = normal;
-        rec.ray = r;
-        rec.material = GetMaterial();
-        rec.happened = true;
+        rst.record.vert = Vertex::GenVert(glm::vec3(abgt[0], abgt[1], abgt[2]), A, B, C);
+        rst.record.vert.normal_ = this->normal_;
+        rst.record.ray = r;
+        rst.material_ = GetMaterial();
+        rst.is_hit = true;
         r->SetTMax(abgt[3]);
-        return rec;
+        return rst;
     }
 }

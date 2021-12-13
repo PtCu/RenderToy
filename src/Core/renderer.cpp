@@ -22,12 +22,17 @@
 
 #include "renderer.h"
 #include <fstream>
+inline float clamp(const float &lo, const float &hi, const float &v)
+{
+    return std::max(lo, std::min(hi, v));
+}
+
 namespace platinum
 {
     Renderer::Renderer(int img_w, int img_h, int channel, const std::string &fname, int iters)
-        : filename(fname), iterations(iters)
+        : filename_(fname), spp_(iters)
     {
-        img.GenBuffer(img_w, img_h, channel);
+        img_.GenBuffer(img_w, img_h, channel);
     }
     void Renderer::UpdateProgress(float progress)
     {
@@ -50,83 +55,52 @@ namespace platinum
     void Renderer::Render(Scene &scene, const std::shared_ptr<Camera> &cam)
     {
         scene.BuildBVH();
-        int nx = img.GetWidth();
-        int ny = img.GetHeight();
+        int nx = img_.GetWidth();
+        int ny = img_.GetHeight();
         float u = 0, v = 0;
         int img_size = ny * nx;
 
-        for (int cnt = 1; cnt <= iterations; ++cnt)
-        {
-
+        std::vector<glm::vec3> framebuffer(img_size);
 #pragma omp parallel for schedule(dynamic, 1024)
+        for (int cnt = 1; cnt <= spp_; ++cnt)
+        {
             for (int px_id = 0; px_id < img_size; ++px_id)
             {
                 int i = px_id % nx;
                 int j = px_id / nx;
                 u = static_cast<float>(i + Random::RandomInUnitFloat()) / static_cast<float>(nx);
                 v = static_cast<float>(j + Random::RandomInUnitFloat()) / static_cast<float>(ny);
+
                 auto r = cam->GetRay(u, v);
                 auto rst = scene.CastRay(r);
-                auto col = img.GetPixel_F(i, j);
-                glm::vec3 new_col(col.r, col.g, col.b);
-                new_col += rst / (static_cast<float>(iterations));
-                Image::Pixel pix(new_col.r, new_col.g, new_col.b);
-                img.SetPixel(i, j, pix);
+                
+                framebuffer[px_id] += (rst / static_cast<float>(spp_));
+
+                //极限收敛至真实颜色
+                // auto _col = img_.GetPixel_F(i, j);
+                // glm::vec3 col(_col.r, _col.g, _col.b);
+                // glm::vec3 new_col = (col * (static_cast<float>(cnt)) + rst) / (static_cast<float>(cnt) + 1);
+                // Image::Pixel pix(new_col.r, new_col.g, new_col.b);
+
+                // img_.SetPixel(i, j, pix);
             }
-            UpdateProgress(static_cast<float>(cnt) / iterations);
+            UpdateProgress(static_cast<float>(cnt) / spp_);
         }
+
+#pragma omp parallel for schedule(dynamic, 1024)
         for (int px_id = 0; px_id < img_size; ++px_id)
         {
             int i = px_id % nx;
             int j = px_id / nx;
-            auto col = img.GetPixel_F(i, j);
-            col.r = std::pow(col.r, 0.6);
-            col.g = std::pow(col.g, 0.6);
-            col.b = std::pow(col.b, 0.6);
+            auto col = framebuffer[px_id];
+            col.r = std::pow(clamp(0, 1, col.r), 0.6f);
+            col.g = std::pow(clamp(0, 1, col.g), 0.6f);
+            col.b = std::pow(clamp(0, 1, col.b), 0.6f);
             glm::vec3 new_col(col.r, col.g, col.b);
 
-            img.SetPixel(i, j, new_col);
+            img_.SetPixel(i, j, new_col);
         }
-
-        // #pragma omp parallel for schedule(dynamic, 1024)
-        //         for (int px_id = 0; px_id < img_size; ++px_id)
-        //         {
-        //             int i = px_id % nx;
-        //             int j = px_id / nx;
-        //             glm::vec3 col(0, 0, 0);
-        //             for (int cnt = 1; cnt <= iterations; ++cnt)
-        //             {
-        //                 u = static_cast<float>(i + Random::RandomInUnitFloat()) / static_cast<float>(nx);
-        //                 v = static_cast<float>(j + Random::RandomInUnitFloat()) / static_cast<float>(ny);
-        //                 auto r = cam->GetRay(u, v);
-        //                 auto rst = scene.CastRay(r);
-        //                 col += rst;
-        //             }
-        //             col /= (static_cast<float>(iterations));
-        //             col = glm::vec3(sqrt(col[0]), sqrt(col[1]), sqrt(col[2]));
-        //             img.SetPixel(i, j, Image::Pixel<unsigned char>(static_cast<int>(255.99f * col.x), static_cast<int>(255.99f * col.y), static_cast<int>(255.99f * col.z)));
-        //             // UpdateProgress(static_cast<float>(cnt) / iterations);
-        //         }
-
-        // for (int j = 0; j < ny; ++j)
-        // {
-        //     for (int i = 0; i < nx; ++i)
-        //     {
-        //         glm::vec3 col(0, 0, 0);
-        //         for (int s = 0; s < iterations; ++s)
-        //         {
-        //             u = static_cast<float>(i + Random::RandomInUnitFloat()) / static_cast<float>(nx);
-        //             v = static_cast<float>(j + Random::RandomInUnitFloat()) / static_cast<float>(ny);
-        //             auto r = cam->GetRay(u, v);
-        //             col += scene.CastRay(r);
-        //         }
-        //         col /= static_cast<float>(iterations);
-        //         col = glm::vec3(sqrt(col[0]), sqrt(col[1]), sqrt(col[2]));
-        //         img.SetPixel(i, j, Image::Pixel<unsigned char>(static_cast<int>(255.99f * col.x), static_cast<int>(255.99f * col.y), static_cast<int>(255.99f * col.z)));
-        //     }
-        //     UpdateProgress(j / (float)ny);
-        // }
-        UpdateProgress(1.f);
-        img.SaveAsPNG(filename);
+        // UpdateProgress(1.f);
+        img_.SaveAsPNG(filename_);
     }
 }

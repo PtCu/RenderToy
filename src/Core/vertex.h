@@ -31,14 +31,13 @@ namespace platinum
     struct Vertex
     {
         Vertex(glm::vec3 pos = glm::vec3(0), glm::vec3 normal = glm::vec3(0, 0, 1), float u = 0, float v = 0);
-        glm::vec3 pos;
-        glm::vec3 normal;
-        float u;
-        float v;
-
         void Transform(const glm::mat4 &transform);
         void Transform(const glm::mat4 &transform, const glm::mat3 &normalTransform);
         static const Vertex GenVert(const glm::vec3 &abg, const Vertex &A, const Vertex &B, const Vertex &C);
+        glm::vec3 position_;
+        glm::vec3 normal_;
+        float u_;
+        float v_;
     };
 }
 

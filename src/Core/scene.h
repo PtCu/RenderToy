@@ -36,30 +36,29 @@ namespace platinum
     class Scene
     {
     public:
-        Scene() : max_depth(10), default_light(true), RussianRoulette(0.8) {}
-        Scene(bool d_l) : max_depth(10), default_light(d_l), RussianRoulette(0.8) {}
-        Scene(bool d_l, int max_dep) : max_depth(max_dep), default_light(d_l), RussianRoulette(0.8) {}
+        Scene() : max_depth_(10), default_light(true), RussianRoulette(0.8) {}
+        Scene(bool d_l, int _mode = 0) : max_depth_(10), default_light(d_l), mode(_mode), RussianRoulette(0.8) {}
         ~Scene();
-        bool IntersectAll(std::shared_ptr<Ray> &r, Intersection &rec) const; //Brute method for stage 1
         void AddObject(const std::shared_ptr<Object> &obj);
         void AddObject(const std::vector<std::shared_ptr<Object>> &obj);
         void AddObject(const std::vector<std::shared_ptr<Object>>::iterator &begin, const std::vector<std::shared_ptr<Object>>::iterator &end);
         void Reset();
         void BuildBVH();
         glm::vec3 CastRay(std::shared_ptr<Ray> &r) const;
-        const std::vector<std::shared_ptr<Object>> &GetObjects() const { return objects; }
+        const std::vector<std::shared_ptr<Object>> &GetObjects() const { return objects_; }
 
     private:
         void destroyAll();
         glm::vec3 castRayPdf(std::shared_ptr<Ray> &r) const;
         glm::vec3 castRay(std::shared_ptr<Ray> &r, int depth) const; //Using BVH tree to accelerate.
-        Intersection intersectAll(std::shared_ptr<Ray> &r) const;
-        void sampleLight(Intersection &inter, float &pdf) const;
-        int max_depth;
-        std::unique_ptr<BVHAccel> bvh_accel;
-        std::vector<std::shared_ptr<Object>> objects;
+        HitRst intersectAll(std::shared_ptr<Ray> &r) const;
+        void sampleLight(HitRst &inter, float &pdf) const;
+        int max_depth_;
+        std::unique_ptr<BVHAccel> bvh_accel_;
+        std::vector<std::shared_ptr<Object>> objects_;
         bool default_light;
         float RussianRoulette;
+        int mode;
     };
 
 } // namespace platinum

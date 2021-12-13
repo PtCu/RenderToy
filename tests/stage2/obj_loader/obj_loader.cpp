@@ -8,7 +8,7 @@
 #include "../src/Core/renderer.h"
 #include "../src/Material/light.h"
 #include "../src/Core/vertex.h"
-#include "../src/Geometry/triMesh.h"
+#include "../src/Geometry/triangle_mesh.h"
 
 using namespace platinum;
 using namespace glm;
@@ -48,9 +48,9 @@ void createWorld(Scene &world)
 
 int main()
 {
-    int nx = 1280;
-    int ny = 960;
-    int ns = 16;
+    int nx = 800;
+    int ny = 800;
+    int ns = 50;
     Scene world(false);
     createWorld(world);
     vec3 lookfrom(278, 273, -800);

@@ -1,6 +1,6 @@
 #include "../src/Core/image.h"
 #include "../src/Core/ray.h"
-#include "../src/Core/tCamera.h"
+#include "../src/Core/t_camera.h"
 #include "../src/Core/object.h"
 #include "../src/Material/lambertian.h"
 #include "../src/Math/rand.h"
@@ -9,8 +9,8 @@
 #include "../src/Core/renderer.h"
 #include "../src/Material/light.h"
 #include "../src/Core/vertex.h"
-#include "../src/Texture/noiseTexture.h"
-#include "../src/Geometry/triMesh.h"
+#include "../src/Texture/noise_texture.h"
+#include "../src/Geometry/triangle_mesh.h"
 
 using namespace platinum;
 using namespace glm;
@@ -42,9 +42,9 @@ void some_spheres(Scene &world)
 
 int main()
 {
-    int nx = 1200;
-    int ny = 600;
-    int ns = 30;
+    int nx = 500;
+    int ny = 400;
+    int ns = 10;
     Scene world(false);
     some_spheres(world);
     vec3 lookfrom(13, 2, 3);
