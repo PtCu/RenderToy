@@ -179,21 +179,21 @@ namespace platinum
         hit_color += Lo_indir;
         return hit_color;
     }
-    bool Scene::IntersectAll(std::shared_ptr<Ray> &r, HitRst &rst) const
-    {
-        HitRst temp_rec;
-        bool hit_anything = false;
-        float closest_so_far = std::numeric_limits<float>::max();
-        for (int i = 0; i < objects.size(); i++)
-        {
-            temp_rec = objects[i]->Intersect(r);
-            if (temp_rec.isHit && temp_rec.record.ray->GetMaxTime() < closest_so_far)
-            {
-                hit_anything = true;
-                closest_so_far = temp_rec.record.ray->GetMaxTime();
-                rst = temp_rec;
-            }
-        }
-        return hit_anything;
-    }
+    // bool Scene::IntersectAll(std::shared_ptr<Ray> &r, HitRst &rst) const
+    // {
+    //     HitRst temp_rec;
+    //     bool hit_anything = false;
+    //     float closest_so_far = std::numeric_limits<float>::max();
+    //     for (int i = 0; i < objects.size(); i++)
+    //     {
+    //         temp_rec = objects[i]->Intersect(r);
+    //         if (temp_rec.isHit && temp_rec.record.ray->GetMaxTime() < closest_so_far)
+    //         {
+    //             hit_anything = true;
+    //             closest_so_far = temp_rec.record.ray->GetMaxTime();
+    //             rst = temp_rec;
+    //         }
+    //     }
+    //     return hit_anything;
+    // }
 } // namespace platinum

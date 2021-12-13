@@ -8,7 +8,7 @@
 #include "../src/Core/renderer.h"
 #include "../src/Material/light.h"
 #include "../src/Core/vertex.h"
-#include "../src/Geometry/triMesh.h"
+#include "../src/Geometry/triangle_mesh.h"
 
 using namespace platinum;
 using namespace glm;

@@ -8,7 +8,7 @@
 #include "../src/Core/renderer.h"
 #include "../src/Material/light.h"
 #include "../src/Core/vertex.h"
-#include "../src/Geometry/triMesh.h"
+#include "../src/Geometry/triangle_mesh.h"
 
 using namespace platinum;
 using namespace glm;
@@ -44,7 +44,7 @@ int main()
     int nx = 784;
     int ny = 784;
     int ns = 16;
-    Scene world(false,1);
+    Scene world(false, 1);
     createWorld(world);
     vec3 lookfrom(278, 273, -800);
     vec3 lookat(278, 273, 0);

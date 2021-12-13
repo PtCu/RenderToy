@@ -20,23 +20,36 @@
 //  FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 //  DEALINGS IN THE SOFTWARE.
 
-#include "imgTexture.h"
+#ifndef GEOMETRY_MOVESPHERE_H_
+#define GEOMETRY_MOVESPHERE_H_
+
+#include "../Core/object.h"
+#include "../Core/t_ray.h"
+#include "../Core/intersection.h"
+#include "../Core/aabb.h"
+#include "../Math/rand.h"
+#include "sphere.h"
 
 namespace platinum
 {
-    ImgTexture::ImgTexture(const std::string &fileName, bool flip)
-        : img(new Image(fileName.c_str(), flip)) {}
-
-    glm::vec3 ImgTexture::GetValue(float u, float v, const glm::vec3 &p) const
+    class MovingSphere : public Sphere
     {
-        if (!img->IsValid())
-            return glm::vec3(0);
+    public:
+        MovingSphere() = default;
+        ~MovingSphere() = default;
+        MovingSphere(glm::vec3 cen0, glm::vec3 cen1, float t0, float t1, float r, const std::shared_ptr<Material> &m = nullptr);
+        virtual AABB GetBoundingBox() const { return bounding_box; }
 
-        size_t i = glm::clamp<float>(u * img->GetWidth(), 0, img->GetWidth() - 1);
-        size_t j = glm::clamp<float>(v * img->GetHeight(), 0, img->GetHeight() - 1);
+    protected:
+        virtual glm::vec3 getCenter(const std::shared_ptr<Ray> &r) const;
 
-        auto pixel = img->GetPixel_F(i, j);
-        return glm::vec3(pixel.r, pixel.g, pixel.b);
-    }
+    private:
+        glm::vec3 center0, center1;
+        float time0, time1;
+        float radius;
+        AABB bounding_box;
+    };
 
-}
+} // namespace platinum
+
+#endif

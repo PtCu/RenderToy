@@ -11,6 +11,7 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
+
 #ifndef CORE_INTEGREATOR_H_
 #define CORE_INTEGREATOR_H_
 
@@ -102,7 +103,7 @@ namespace platinum
     protected:
         const TaskSynchronizer &m_task;
         const uint32_t &m_spp;
-    }
+    };
 }
 
 #endif

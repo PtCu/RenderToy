@@ -1,6 +1,6 @@
 // The MIT License (MIT)
 
-// Copyright (c) 2021 PtCU
+// Copyright (c) 2021 PtCu
 
 //  Permission is hereby granted, free of charge, to any person obtaining a
 //  copy of this software and associated documentation files (the "Software"),
@@ -20,24 +20,27 @@
 //  FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 //  DEALINGS IN THE SOFTWARE.
 
-#include "movingSphere.h"
+#ifndef CORE_T_CAMERA_H_
+#define CORE_T_CAMERA_H_
+
+#include "camera.h"
+#include "t_ray.h"
 
 namespace platinum
 {
-
-    MovingSphere::MovingSphere(glm::vec3 cen0, glm::vec3 cen1, float t0, float t1, float r, const std::shared_ptr<Material> &m)
-        : center0(cen0), center1(cen1), time0(t0), time1(t1), Sphere(glm::vec3(0), r, m)
+    class TCamera : public Camera
     {
-        glm::vec3 minP = glm::min(center0 - glm::vec3(radius), center1 - glm::vec3(radius));
-        glm::vec3 maxP = glm::max(center0 + glm::vec3(radius), center1 + glm::vec3(radius));
-        bounding_box = AABB(minP, maxP);
-    }
+    public:
+        TCamera(glm::vec3 lookfrom, glm::vec3 lookat, glm::vec3 vup, float vfov, float aspect, float aperture, float focusDist, float t0, float t1)
+            : Camera(lookfrom, lookat, vup, vfov, aspect, aperture, focusDist), time0(t0), time1(t1) {}
+        virtual ~TCamera() = default;
+        float GetT0() const { return time0; }
+        float GetT1() const { return time1; }
+        virtual std::shared_ptr<Ray> GetRay(float s, float t) const;
 
-    glm::vec3 MovingSphere::getCenter(const std::shared_ptr<Ray> &r) const
-    {
-        std::shared_ptr<TRay> tRay = std::dynamic_pointer_cast<TRay>(r);
-        float t = tRay->GetTime();
-        return center0 + ((t - time0) / (time1 - time0)) * (center1 - center0);
-    }
+    private:
+        float time0, time1; // new variables for shutter open/close times
+    };
+}
 
-} // namespace platinum
+#endif

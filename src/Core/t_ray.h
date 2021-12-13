@@ -20,20 +20,27 @@
 //  FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 //  DEALINGS IN THE SOFTWARE.
 
-#include "tCamera.h"
+#ifndef CORE_T_RAY_H_
+#define CORE_T_RAY_H_
+
+#include "ray.h"
 
 namespace platinum
 {
-    std::shared_ptr<Ray> TCamera::GetRay(float s, float t) const
+    class TRay : public Ray
     {
-        auto tray = std::make_shared<TRay>();
-        float time = time0 + Random::RandomInUnitFloat() * (time1 - time0);
-        Camera::GetRay(s, t, tray);
-        // glm::vec3 rd = lens_radius * Random::RandomInUnitDisk();
-        // glm::vec3 offset = u * rd.x + v * rd.y;
-        // float time = time0 + Random::RandomInUnitFloat() * (time1 - time0);
-        // auto ray = std::make_shared<TRay>(origin + offset, lower_left_corner + s * horizontal + t * vertical - origin - offset, time);
-        tray->SetTime(time);
-        return tray;
-    }
+    public:
+        TRay() {}
+        TRay(const glm::vec3 &o, const glm::vec3 &d, float ti = 0.0) : Ray(o, d), _time(ti) {}
+        virtual ~TRay() = default;
+        void SetTime(float t) { _time = t; }
+        float GetTime() const { return _time; }
+    protected:
+        virtual void DoNothing() {}
+
+    private:
+        float _time;
+    };
 }
+
+#endif

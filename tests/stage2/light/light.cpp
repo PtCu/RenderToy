@@ -1,6 +1,6 @@
 #include "../src/Core/image.h"
 #include "../src/Core/ray.h"
-#include "../src/Core/tCamera.h"
+#include "../src/Core/t_camera.h"
 #include "../src/Core/object.h"
 #include "../src/Material/lambertian.h"
 #include "../src/Math/rand.h"
@@ -9,8 +9,8 @@
 #include "../src/Core/renderer.h"
 #include "../src/Material/light.h"
 #include "../src/Core/vertex.h"
-#include "../src/Texture/noiseTexture.h"
-#include "../src/Geometry/triMesh.h"
+#include "../src/Texture/noise_texture.h"
+#include "../src/Geometry/triangle_mesh.h"
 
 using namespace platinum;
 using namespace glm;

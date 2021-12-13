@@ -11,3 +11,18 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
+
+#ifndef INTEGRATOR_WHITTED_INTEGRATOR_H_
+#define INTEGRATOR_WHITTED_INTEGRATOR_H_
+
+#include "../Core/integrator.h"
+
+namespace platinum
+{
+
+    class WhittedIntegrator : public Integrator
+    {
+    };
+}
+
+#endif

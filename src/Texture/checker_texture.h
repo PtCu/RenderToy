@@ -20,24 +20,25 @@
 //  FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 //  DEALINGS IN THE SOFTWARE.
 
-#ifndef TEXTURE_CONSTTEXTURE_H_
-#define TEXTURE_CONSTTEXTURE_H_
+#ifndef TEXTURE_CHECKER_TEXTURE_H_
+#define TEXTURE_CHECKER_TEXTURE_H_
 
 #include "../Core/texture.h"
 #include <glm/glm.hpp>
 namespace platinum
 {
-    class ConstTexture : public Texture
+    class CheckerTexture : public Texture
     {
     public:
-        ConstTexture() = default;
-        ~ConstTexture() = default;
-        ConstTexture(float r, float g, float b) { color = glm::vec3(r, g, b); }
-        ConstTexture(const glm::vec3 &c) : color(c) {}
-        virtual glm::vec3 GetValue(float u, float v, const glm::vec3 &p)const;
+        CheckerTexture() = default;
+        ~CheckerTexture() = default;
+        CheckerTexture(const std::shared_ptr<Texture> &o, const std::shared_ptr<Texture> &e)
+            : odd(o), even(e) {}
+        virtual glm::vec3 GetValue(float u, float v, const glm::vec3 &p) const;
 
     private:
-        glm::vec3 color;
+        std::shared_ptr<Texture> odd;
+        std::shared_ptr<Texture> even;
     };
 }
 

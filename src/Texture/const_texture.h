@@ -20,17 +20,25 @@
 //  FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 //  DEALINGS IN THE SOFTWARE.
 
-#include "checkerTexture.h"
+#ifndef TEXTURE_CONST_TEXTURE_H_
+#define TEXTURE_CONST_TEXTURE_H_
 
+#include "../Core/texture.h"
+#include <glm/glm.hpp>
 namespace platinum
 {
-    glm::vec3 CheckerTexture::GetValue(float u, float v, const glm::vec3 &p) const
+    class ConstTexture : public Texture
     {
-        float sines = std::sinf(10 * p.x) * sinf(10 * p.y) * sinf(10 * p.z);
-        if (sines < 0)
-            return odd->GetValue(u, v, p);
-        else
-            return even->GetValue(u, v, p);
-    }
+    public:
+        ConstTexture() = default;
+        ~ConstTexture() = default;
+        ConstTexture(float r, float g, float b) { color = glm::vec3(r, g, b); }
+        ConstTexture(const glm::vec3 &c) : color(c) {}
+        virtual glm::vec3 GetValue(float u, float v, const glm::vec3 &p)const;
 
+    private:
+        glm::vec3 color;
+    };
 }
+
+#endif

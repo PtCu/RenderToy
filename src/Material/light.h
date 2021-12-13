@@ -26,7 +26,7 @@
 #include "../Core/material.h"
 #include "../Math/rand.h"
 #include "../Core/texture.h"
-#include "../Texture/constTexture.h"
+#include "../Texture/const_texture.h"
 
 namespace platinum
 {

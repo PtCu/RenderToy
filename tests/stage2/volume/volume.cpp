@@ -8,7 +8,7 @@
 #include "../src/Core/renderer.h"
 #include "../src/Material/light.h"
 #include "../src/Core/vertex.h"
-#include "../src/Geometry/triMesh.h"
+#include "../src/Geometry/triangle_mesh.h"
 #include "../src/Material/isotropic.h"
 #include "../src/Geometry/volume.h"
 
@@ -23,7 +23,7 @@ void createWorld(Scene &world)
     auto greenMat = make_shared<Lambertian>(make_shared<ConstTexture>(vec3(0.12f, 0.45f, 0.15f)));
     auto grayMat = make_shared<Lambertian>(make_shared<ConstTexture>(vec3(0.73f, 0.73f, 0.73f)));
     auto blueMat = make_shared<Lambertian>(make_shared<ConstTexture>(vec3(0.1f, 0.1f, 0.73f)));
-    auto lightMat = make_shared<Light>(8.0f * vec3(0.747f+0.058f, 0.747f+0.258f, 0.747f) + 15.6f * vec3(0.740f+0.287f,0.740f+0.160f,0.740f) + 18.4f *vec3(0.737f+0.642f,0.737f+0.159f,0.737f));
+    auto lightMat = make_shared<Light>(8.0f * vec3(0.747f + 0.058f, 0.747f + 0.258f, 0.747f) + 15.6f * vec3(0.740f + 0.287f, 0.740f + 0.160f, 0.740f) + 18.4f * vec3(0.737f + 0.642f, 0.737f + 0.159f, 0.737f));
     auto cubeMat = make_shared<Lambertian>(make_shared<ConstTexture>(vec3(1.0f, 1.0f, 1.0f)));
 
     auto volMat = make_shared<Isotropic>(make_shared<ConstTexture>(vec3(1.0f, 1.0f, 1.0f)));

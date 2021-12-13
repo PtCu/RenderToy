@@ -1,14 +1,14 @@
 
 #include "../src/Core/image.h"
 #include "../src/Core/ray.h"
-#include "../src/Core/tCamera.h"
+#include "../src/Core/t_camera.h"
 #include "../src/Core/object.h"
 #include "../src/Material/dielectric.h"
 #include "../src/Material/lambertian.h"
 #include "../src/Material/metal.h"
 #include "../src/Math/rand.h"
 #include "../src/Geometry/sphere.h"
-#include "../src/Geometry/movingSphere.h"
+#include "../src/Geometry/moving_sphere.h"
 #include "../src/Core/scene.h"
 #include "../src/Core/renderer.h"
 

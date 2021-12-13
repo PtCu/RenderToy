@@ -20,26 +20,17 @@
 //  FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 //  DEALINGS IN THE SOFTWARE.
 
-#ifndef TEXTURE_CHECKERTEXTURE_H_
-#define TEXTURE_CHECKERTEXTURE_H_
+#include "checker_texture.h"
 
-#include "../Core/texture.h"
-#include <glm/glm.hpp>
 namespace platinum
 {
-    class CheckerTexture : public Texture
+    glm::vec3 CheckerTexture::GetValue(float u, float v, const glm::vec3 &p) const
     {
-    public:
-        CheckerTexture() = default;
-        ~CheckerTexture() = default;
-        CheckerTexture(const std::shared_ptr<Texture> &o, const std::shared_ptr<Texture> &e)
-            : odd(o), even(e) {}
-        virtual glm::vec3 GetValue(float u, float v, const glm::vec3 &p) const;
+        float sines = std::sinf(10 * p.x) * sinf(10 * p.y) * sinf(10 * p.z);
+        if (sines < 0)
+            return odd->GetValue(u, v, p);
+        else
+            return even->GetValue(u, v, p);
+    }
 
-    private:
-        std::shared_ptr<Texture> odd;
-        std::shared_ptr<Texture> even;
-    };
 }
-
-#endif

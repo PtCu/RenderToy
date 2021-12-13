@@ -8,11 +8,11 @@
 #include "../src/Material/metal.h"
 #include "../src/Math/rand.h"
 #include "../src/Geometry/sphere.h"
-#include "../src/Geometry/movingSphere.h"
+#include "../src/Geometry/moving_sphere.h"
 #include "../src/Core/scene.h"
 #include "../src/Core/renderer.h"
-#include "../src/Texture/checkerTexture.h"
-#include "../src/Texture/constTexture.h"
+#include "../src/Texture/checker_texture.h"
+#include "../src/Texture/const_texture.h"
 
 using namespace platinum;
 using namespace glm;

@@ -20,7 +20,7 @@
 //  FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 //  DEALINGS IN THE SOFTWARE.
 
-#include "noiseTexture.h"
+#include "noise_texture.h"
 namespace platinum
 {
     glm::vec3 NoiseTexture::GetValue(float u, float v, const glm::vec3 &p) const
@@ -29,13 +29,13 @@ namespace platinum
         switch (mode)
         {
         case 0:
-            c = color * 0.5f * (1.0f + sin(scale * p.x + 10 *Perlin::Turb(scale * p)));
+            c = color * 0.5f * (1.0f + sin(scale * p.x + 10 * Perlin::Turb(scale * p)));
             break;
         case 1:
             c = color * 0.5f * (1.0f + sin(10 * Perlin::Turb(scale * p)));
             break;
         case 2:
-           c = color * 0.5f * (1.0f + Perlin::Turb(scale * p));
+            c = color * 0.5f * (1.0f + Perlin::Turb(scale * p));
             break;
         case 3:
             c = color * Perlin::Turb(scale * p);
