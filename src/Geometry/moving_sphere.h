@@ -23,11 +23,11 @@
 #ifndef GEOMETRY_MOVESPHERE_H_
 #define GEOMETRY_MOVESPHERE_H_
 
-#include "../Core/object.h"
-#include "../Core/t_ray.h"
-#include "../Core/intersection.h"
-#include "../Core/aabb.h"
-#include "../Math/rand.h"
+#include "../core/object.h"
+#include "../core/t_ray.h"
+#include "../core/intersection.h"
+#include "../core/aabb.h"
+#include "../math/rand.h"
 #include "sphere.h"
 
 namespace platinum

@@ -15,7 +15,7 @@
 #ifndef INTEGRATOR_WHITTED_INTEGRATOR_H_
 #define INTEGRATOR_WHITTED_INTEGRATOR_H_
 
-#include "../Core/integrator.h"
+#include "../core/integrator.h"
 
 namespace platinum
 {

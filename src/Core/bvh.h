@@ -27,7 +27,7 @@
 #include "object.h"
 #include "intersection.h"
 #include "aabb.h"
-#include "../Math/rand.h"
+#include "../math/rand.h"
 
 namespace platinum
 {

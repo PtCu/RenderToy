@@ -22,10 +22,10 @@
 
 #ifndef METAL_H
 #define METAL_H
-#include "../Math/rand.h"
-#include "../Core/material.h"
-#include "../Core/texture.h"
-#include "../Texture/const_texture.h"
+#include "../math/rand.h"
+#include "../core/material.h"
+#include "../core/texture.h"
+#include "../texture/const_texture.h"
 
 namespace platinum
 {

@@ -23,9 +23,9 @@
 #ifndef TEXTURE_NOISE_TEXTURE_H_
 #define TEXTURE_NOISE_TEXTURE_H_
 
-#include "../Core/texture.h"
+#include "../core/texture.h"
 #include <glm/glm.hpp>
-#include "../Math/perlin.h"
+#include "../math/perlin.h"
 namespace platinum
 {
     class NoiseTexture : public Texture
@@ -33,7 +33,7 @@ namespace platinum
     public:
         NoiseTexture() = default;
         ~NoiseTexture() = default;
-        NoiseTexture(float sc, int m= 0, const glm::vec3 &c = {1, 1, 1}) : scale_(sc),mode_(m),color_(c) {}
+        NoiseTexture(float sc, int m = 0, const glm::vec3 &c = {1, 1, 1}) : scale_(sc), mode_(m), color_(c) {}
         virtual glm::vec3 GetValue(float u, float v, const glm::vec3 &p) const;
 
     private:

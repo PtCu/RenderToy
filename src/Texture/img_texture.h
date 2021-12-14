@@ -23,9 +23,9 @@
 #ifndef TEXTURE_IMG_TEXTURE_H_
 #define TEXTURE_IMG_TEXTURE_H_
 
-#include "../Core/texture.h"
+#include "../core/texture.h"
 #include <glm/glm.hpp>
-#include "../Core/image.h"
+#include "../core/image.h"
 
 namespace platinum
 {
@@ -35,7 +35,6 @@ namespace platinum
     ImgTexture(const std::string &fileName, bool flip = false);
 
     virtual glm::vec3 GetValue(float u = 0, float v = 0, const glm::vec3 &p = glm::vec3(0)) const;
-    
 
   private:
     std::shared_ptr<const Image> img_;

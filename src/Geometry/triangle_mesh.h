@@ -23,8 +23,8 @@
 #ifndef GEOMETRY_TRIMESH_H_
 #define GEOMETRY_TRIMESH_H_
 
-#include "../Core/bvh.h"
-#include "../Core/vertex.h"
+#include "../core/bvh.h"
+#include "../core/vertex.h"
 // #include <OBJ_Loader.hpp>
 #include "triangle.h"
 

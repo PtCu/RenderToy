@@ -15,17 +15,13 @@
 #ifndef INTEGRATOR_PATH_INTEGRATOR_H_
 #define INTEGRATOR_PATH_INTEGRATOR_H_
 
-
-
-
-#include "../Core/integrator.h"
+#include "../core/integrator.h"
 
 namespace platinum
 {
 
-    class PathIntegrator: public Integrator
+    class PathIntegrator : public Integrator
     {
-        
     };
 }
 #endif

@@ -23,10 +23,10 @@
 #ifndef MATERIAL_ISOTROPIC_H_
 #define MATERIAL_ISOTROPIC_H_
 
-#include "../Core/material.h"
-#include "../Math/rand.h"
-#include "../Core/texture.h"
-#include "../Texture/const_texture.h"
+#include "../core/material.h"
+#include "../math/rand.h"
+#include "../core/texture.h"
+#include "../texture/const_texture.h"
 
 namespace platinum
 {

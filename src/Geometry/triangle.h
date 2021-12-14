@@ -23,12 +23,12 @@
 #ifndef GEOMETRY_TRIANGLE_H_
 #define GEOMETRY_TRIANGLE_H_
 
-#include "../Core/object.h"
-#include "../Core/ray.h"
-#include "../Core/intersection.h"
-#include "../Core/aabb.h"
-#include "../Core/vertex.h"
-#include "../Math/rand.h"
+#include "../core/object.h"
+#include "../core/ray.h"
+#include "../core/intersection.h"
+#include "../core/aabb.h"
+#include "../core/vertex.h"
+#include "../math/rand.h"
 
 namespace platinum
 {
