@@ -23,9 +23,9 @@
 #ifndef TEXTURE_NOISE_TEXTURE_H_
 #define TEXTURE_NOISE_TEXTURE_H_
 
-#include "../core/texture.h"
+#include "core/texture.h"
 #include <glm/glm.hpp>
-#include "../math/perlin.h"
+#include "math/perlin.h"
 namespace platinum
 {
     class NoiseTexture : public Texture

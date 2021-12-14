@@ -23,7 +23,7 @@
 #ifndef TEXTURE_CHECKER_TEXTURE_H_
 #define TEXTURE_CHECKER_TEXTURE_H_
 
-#include "../core/texture.h"
+#include "core/texture.h"
 #include <glm/glm.hpp>
 namespace platinum
 {

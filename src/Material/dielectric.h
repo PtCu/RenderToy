@@ -23,9 +23,9 @@
 #ifndef DIELECTRIC_H
 #define DIELECTRIC_H
 
-#include "../core/material.h"
-#include "../math/rand.h"
-#include "../core/texture.h"
+#include "core/material.h"
+#include "math/rand.h"
+#include "core/texture.h"
 namespace platinum
 {
    class Dielectric : public Material

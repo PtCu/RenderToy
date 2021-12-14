@@ -23,9 +23,9 @@
 #ifndef TEXTURE_IMG_TEXTURE_H_
 #define TEXTURE_IMG_TEXTURE_H_
 
-#include "../core/texture.h"
+#include "core/texture.h"
 #include <glm/glm.hpp>
-#include "../core/image.h"
+#include "core/image.h"
 
 namespace platinum
 {

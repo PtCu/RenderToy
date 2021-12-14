@@ -24,7 +24,7 @@
 #define MATH_PERLIN_H_
 
 #include <glm/glm.hpp>
-#include "../core/defines.h"
+#include "core/defines.h"
 #include "rand.h"
 #include <chrono> // std::chrono::system_clock
 

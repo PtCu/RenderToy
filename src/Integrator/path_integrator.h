@@ -15,7 +15,7 @@
 #ifndef INTEGRATOR_PATH_INTEGRATOR_H_
 #define INTEGRATOR_PATH_INTEGRATOR_H_
 
-#include "../core/integrator.h"
+#include "core/integrator.h"
 
 namespace platinum
 {

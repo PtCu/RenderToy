@@ -23,10 +23,10 @@
 #ifndef MATERIAL_LIGHT_H_
 #define MATERIAL_LIGHT_H_
 
-#include "../core/material.h"
-#include "../math/rand.h"
-#include "../core/texture.h"
-#include "../texture/const_texture.h"
+#include "core/material.h"
+#include "math/rand.h"
+#include "core/texture.h"
+#include "texture/const_texture.h"
 
 namespace platinum
 {

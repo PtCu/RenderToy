@@ -2,6 +2,8 @@
 
 set(PROJECT_NAME "RenderToy")
 
+set(CMAKE_EXPORT_COMPILE_COMMANDS ON CACHE INTERNAL "")
+
 set(CMAKE_CXX_STANDARD 17)
 #---------------------------------------
 macro(SETUP_PROJECT MODE TARGET_NAME STR_TARGET_SOURCES STR_TARGET_LIBS)
@@ -62,13 +64,23 @@ project (${PROJECT_NAME})
 # 往工程中添加spdlog库，这个库是一个interface类型的库
 add_library(spdlog INTERFACE)
 
-include_directories (
-	${PROJECT_SOURCE_DIR}/include
-	# $ENV{XXX_INCLUDE_PATH}
-	# ...
-)
+#设置头文件目录
+include_directories(${PROJECT_SOURCE_DIR}/src/)
+include_directories(${PROJECT_SOURCE_DIR}/src/accelerators/)
+include_directories(${PROJECT_SOURCE_DIR}/src/cameras/)
+include_directories(${PROJECT_SOURCE_DIR}/src/core/)
+include_directories(${PROJECT_SOURCE_DIR}/src/integrators/)
+include_directories(${PROJECT_SOURCE_DIR}/src/materials/)
+include_directories(${PROJECT_SOURCE_DIR}/src/samplers/)
+include_directories(${PROJECT_SOURCE_DIR}/src/geometry/)
+include_directories(${PROJECT_SOURCE_DIR}/src/textures/)
+include_directories(${PROJECT_SOURCE_DIR}/src/math/)
+
+include_directories (${PROJECT_SOURCE_DIR}/include)
+
 # spdlog会用到pthread库
 find_package(Threads)
+
 # The version number.
 set (${PROJECT_NAME}_VERSION_MAJOR 1)
 set (${PROJECT_NAME}_VERSION_MINOR 0)

@@ -23,10 +23,10 @@
 #ifndef LAMBERTIAN_H
 #define LAMBERTIAN_H
 
-#include "../core/material.h"
-#include "../math/rand.h"
-#include "../core/texture.h"
-#include "../texture/const_texture.h"
+#include "core/material.h"
+#include "math/rand.h"
+#include "core/texture.h"
+#include "texture/const_texture.h"
 
 namespace platinum
 {

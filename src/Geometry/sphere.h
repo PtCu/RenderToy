@@ -23,11 +23,11 @@
 #ifndef GEOMETRY_SPHERE_H_
 #define GEOMETRY_SPHERE_H_
 
-#include "../core/object.h"
-#include "../core/ray.h"
-#include "../core/intersection.h"
-#include "../core/aabb.h"
-#include "../math/rand.h"
+#include "core/object.h"
+#include "core/ray.h"
+#include "core/intersection.h"
+#include "core/aabb.h"
+#include "math/rand.h"
 
 namespace platinum
 {
