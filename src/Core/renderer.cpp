@@ -30,7 +30,7 @@ inline float clamp(const float &lo, const float &hi, const float &v)
 namespace platinum
 {
     Renderer::Renderer(int img_w, int img_h, int channel, const std::string &fname, int iters)
-        : filename_(fname), spp_(iters)
+        : filename_(fname), _spp(iters)
     {
         img_.GenBuffer(img_w, img_h, channel);
     }
@@ -57,35 +57,71 @@ namespace platinum
         scene.BuildBVH();
         int nx = img_.GetWidth();
         int ny = img_.GetHeight();
-        float u = 0, v = 0;
+
         int img_size = ny * nx;
-
         std::vector<glm::vec3> framebuffer(img_size);
-#pragma omp parallel for schedule(dynamic, 1024)
-        for (int cnt = 1; cnt <= spp_; ++cnt)
+        int has_finished_num = 0;
+        auto calculateRstForEachTile = [&](size_t row_start, size_t row_end, size_t col_start, size_t col_end)
         {
-            for (int px_id = 0; px_id < img_size; ++px_id)
+            for (size_t i = row_start; i < row_end; ++i)
             {
-                int i = px_id % nx;
-                int j = px_id / nx;
-                u = static_cast<float>(i + Random::RandomInUnitFloat()) / static_cast<float>(nx);
-                v = static_cast<float>(j + Random::RandomInUnitFloat()) / static_cast<float>(ny);
+                int px_id = i * nx + col_start;
+                for (size_t j = col_start; j < col_end; ++j)
+                {
+                    for (int k = 0; k < _spp; k++)
+                    {
+                        float u = static_cast<float>(j + Random::RandomInUnitFloat()) / static_cast<float>(nx);
+                        float v = static_cast<float>(i + Random::RandomInUnitFloat()) / static_cast<float>(ny);
+                        auto r = cam->GetRay(u, v);
+                        auto rst = scene.CastRay(r);
+                        framebuffer[px_id] += (rst / static_cast<float>(_spp));
+                    }
 
-                auto r = cam->GetRay(u, v);
-                auto rst = scene.CastRay(r);
-                
-                framebuffer[px_id] += (rst / static_cast<float>(spp_));
-
-                //极限收敛至真实颜色
-                // auto _col = img_.GetPixel_F(i, j);
-                // glm::vec3 col(_col.r, _col.g, _col.b);
-                // glm::vec3 new_col = (col * (static_cast<float>(cnt)) + rst) / (static_cast<float>(cnt) + 1);
-                // Image::Pixel pix(new_col.r, new_col.g, new_col.b);
-
-                // img_.SetPixel(i, j, pix);
+                    ++has_finished_num;
+                    ++px_id;
+                }
+                // 互斥锁，用于打印处理进程
+                std::lock_guard<std::mutex> g1(_mutex_ins);
+                UpdateProgress(static_cast<float>(has_finished_num) / img_size);
             }
-            UpdateProgress(static_cast<float>(cnt) / spp_);
+        };
+
+        int id = 0;
+        constexpr int bx = 4;
+        constexpr int by = 4;
+        std::thread th[bx * by];
+
+        int strideX = (nx + 1) / bx;
+        int strideY = (ny + 1) / by;
+
+        // 分块计算光线追踪
+        for (int i = 0; i < nx; i += strideX)
+        {
+            for (int j = 0; j < ny; j += strideY)
+            {
+                th[id] = std::thread(calculateRstForEachTile, i, std::min(i + strideX, ny), j, std::min(j + strideY, nx));
+                id++;
+            }
         }
+        for (int i = 0; i < bx * by; i++)
+            th[i].join();
+        UpdateProgress(1.f);
+        // for (int cnt = 1; cnt <= spp_; ++cnt)
+        // {
+        //     for (int px_id = 0; px_id < img_size; ++px_id)
+        //     {
+        //         int i = px_id % nx;
+        //         int j = px_id / nx;
+        //         u = static_cast<float>(i + Random::RandomInUnitFloat()) / static_cast<float>(nx);
+        //         v = static_cast<float>(j + Random::RandomInUnitFloat()) / static_cast<float>(ny);
+
+        //         auto r = cam->GetRay(u, v);
+        //         auto rst = scene.CastRay(r);
+
+        //         framebuffer[px_id] += (rst / static_cast<float>(spp_));
+        //     }
+        //     UpdateProgress(static_cast<float>(cnt) / spp_);
+        // }
 
 #pragma omp parallel for schedule(dynamic, 1024)
         for (int px_id = 0; px_id < img_size; ++px_id)

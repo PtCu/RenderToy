@@ -66,15 +66,6 @@ add_library(spdlog INTERFACE)
 
 #设置头文件目录
 include_directories(${PROJECT_SOURCE_DIR}/src/)
-include_directories(${PROJECT_SOURCE_DIR}/src/accelerators/)
-include_directories(${PROJECT_SOURCE_DIR}/src/cameras/)
-include_directories(${PROJECT_SOURCE_DIR}/src/core/)
-include_directories(${PROJECT_SOURCE_DIR}/src/integrators/)
-include_directories(${PROJECT_SOURCE_DIR}/src/materials/)
-include_directories(${PROJECT_SOURCE_DIR}/src/samplers/)
-include_directories(${PROJECT_SOURCE_DIR}/src/geometry/)
-include_directories(${PROJECT_SOURCE_DIR}/src/textures/)
-include_directories(${PROJECT_SOURCE_DIR}/src/math/)
 
 include_directories (${PROJECT_SOURCE_DIR}/include)
 
@@ -98,6 +89,7 @@ endif()
 
 add_subdirectory (src)
 add_subdirectory (tests)
+
 
 # include (InstallRequiredSystemLibraries)
 # set (CPACK_RESOURCE_FILE_LICENSE "${CMAKE_CURRENT_SOURCE_DIR}/License")

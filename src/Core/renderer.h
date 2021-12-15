@@ -26,7 +26,8 @@
 #include "scene.h"
 #include "camera.h"
 #include "image.h"
-
+#include <thread>
+#include <mutex>
 namespace platinum
 {
     class Renderer
@@ -40,7 +41,8 @@ namespace platinum
         void UpdateProgress(float progress);
         Image img_;
         std::string filename_;
-        int spp_;
+        int _spp;
+        std::mutex _mutex_ins;
     };
 }
 
