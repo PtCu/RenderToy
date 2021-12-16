@@ -17,93 +17,100 @@
 
 #include <glm/glm.hpp>
 #include "defines.h"
-
+#include "scene.h"
+#include "camera.h"
+#include "film.h"
 namespace platinum
 {
+    class Integrator
+    {
+    public:
+        virtual ~Integrator() = default;
+        virtual void Render(const Scene &scene) = 0;
+    };
     struct RenderTile
     {
         int min_x, min_y, max_x, max_y;
-        static const int TILE_SIZE = 32;
+        static constexpr int kTILE_SIZE = 16; // width = height = kTILE_SIZE
 
         RenderTile(int minx, int miny, int maxx, int maxy)
             : min_x(minx), min_y(miny), max_x(maxx), max_y(maxy) {}
     };
-
-    class TaskSynchronizer
+    class TilesManager
     {
     private:
-        int x_, y_;
-        std::vector<RenderTile> tiles_;
-
-        bool abort_;
+        int _width;
+        int _height;
+        std::vector<RenderTile> _tiles;
+        bool _is_abort;
 
     public:
-        TaskSynchronizer(const int x, const int y)
+        TilesManager(int x, int y) { init(x, y); }
+        void init(int x, int y)
         {
-            init(x, y);
-        }
+            _width = x;
+            _height = y;
+            _tiles.clear();
+            _is_abort = false;
 
-        void init(const int x, const int y)
-        {
-            x_ = x;
-            y_ = y;
-            tiles_.clear();
-            abort_ = false;
-
-            for (int i = 0; i < y; i += RenderTile::TILE_SIZE)
+            //The size of every tile is less or equal to RenderTile::kTILE_SIZE*RenderTile::kTILE_SIZE.
+            for (int i = 0; i < x; i += RenderTile::kTILE_SIZE)
             {
-                for (int j = 0; j < x; j += RenderTile::TILE_SIZE)
+                for (int j = 0; j < y; j += RenderTile::kTILE_SIZE)
                 {
-                    int min_x = j;
-                    int min_y = i;
-                    int max_x = glm::min(min_x + RenderTile::TILE_SIZE, x);
-                    int max_y = glm::min(min_y + RenderTile::TILE_SIZE, y);
+                    int min_x = i;
+                    int min_y = j;
+                    int max_x = std::min(min_x + RenderTile::kTILE_SIZE, x);
+                    int max_y = std::min(min_y + RenderTile::kTILE_SIZE, y);
 
-                    tiles_.emplace_back(min_x, min_y, max_x, max_y);
+                    _tiles.emplace_back(min_x, min_y, max_x, max_y);
                 }
             }
         }
-
-        inline const RenderTile &getTile(const int idx) const
+        inline const RenderTile &GetTile(const int idx) const
         {
-            assert(idx < (int)tiles_.size());
-            return tiles_[idx];
+            assert(idx < (int)_tiles.size());
+            return _tiles[idx];
         }
-        inline int getTilesCount() const
+        inline int GetTilesCount() const
         {
-            return (int)tiles_.size();
+            return (int)_tiles.size();
         }
-        inline int getX() const
+        inline int GetWidth() const
         {
-            return x_;
+            return _width;
         }
-        inline int getY() const
+        inline int GetHeight() const
         {
-            return y_;
+            return _height;
         }
-        inline void setAbort(const bool ab)
+        inline void SetAbort(const bool ab)
         {
-            abort_ = ab;
+            _is_abort = ab;
         }
-        inline const bool aborted() const
+        inline const bool Aborted() const
         {
-            return abort_;
+            return _is_abort;
         }
     };
-
-    class Integrator
+    class TiledIntegrator : public Integrator
     {
     public:
-        Integrator(const TaskSynchronizer &task, const uint32_t &spp)
-            : task_(task), spp_(spp) {}
-
-        virtual void render(const Scene *scene, const Camera *camera) = 0;
-        virtual ~Integrator() {}
+        TiledIntegrator(std::shared_ptr<Camera> camera, int spp) : _camera(camera), _spp(spp)
+        {
+            _tiles_manager = std::make_unique<TilesManager>(_camera->GetFilm()->GetWidth(), _camera->GetFilm()->GetHeight());
+        }
+        virtual void Render(const Scene &scene);
+        virtual glm::vec3 Li(const Scene &scene, std::shared_ptr<Ray>) { return glm::vec3(0); }
 
     protected:
-        const TaskSynchronizer &task_;
-        const uint32_t &spp_;
+        void UpdateProgress(float progress);
+        std::shared_ptr<Camera> _camera;
+        int _spp;
+        std::mutex _mutex_ins;
+        std::unique_ptr<TilesManager> _tiles_manager;
     };
+
 }
 
 #endif

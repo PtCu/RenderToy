@@ -26,8 +26,7 @@
 #include "scene.h"
 #include "camera.h"
 #include "image.h"
-#include <thread>
-#include <mutex>
+
 namespace platinum
 {
     class Renderer

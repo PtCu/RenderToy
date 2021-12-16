@@ -9,6 +9,8 @@
 #include "../src/material/light.h"
 #include "../src/core/vertex.h"
 #include "../src/geometry/triangle_mesh.h"
+#include "../src/core/integrator.h"
+#include "../src/core/film.h"
 
 using namespace platinum;
 using namespace glm;
@@ -37,13 +39,14 @@ void createWorld(Scene &world)
     world.AddObject(left);
     world.AddObject(right);
     world.AddObject(light_);
+    world.BuildBVH();
 }
 
 int main()
 {
     int nx = 784;
     int ny = 784;
-    int ns = 16;
+    int ns = 4;
     Scene world(false, 1);
     createWorld(world);
     vec3 lookfrom(278, 273, -800);
@@ -52,8 +55,10 @@ int main()
     float aperture = 0.05f;
 
     shared_ptr<Camera> cam = make_shared<Camera>(lookfrom, lookat, vec3(0, -1, 0), 45, float(nx) / float(ny), aperture, dist_to_focus);
-    Renderer render(nx, ny, 3, "cornell.png", ns);
-    render.Render(world, cam);
+    shared_ptr<Film> film = make_shared<Film>("cornell.png", nx, ny, 3);
+    cam->SetFilm(film);
+    TiledIntegrator tiledIntegrator(cam, ns);
+    tiledIntegrator.Render(world);
 
     world.Reset();
     return 0;

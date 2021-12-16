@@ -32,8 +32,7 @@ namespace platinum
         vertical = glm::vec3(0.0, -2.0, 0.0);
         origin_ = glm::vec3(0.0, 0.0, 0.0);
     }
-    Camera::Camera(const glm::vec3 &lookfrom, const glm::vec3 &lookat, const glm::vec3 &vup, float vfov, float aspect, float aperture, float focus_dist):
-    origin_(lookfrom),lens_radius(aperture)
+    Camera::Camera(const glm::vec3 &lookfrom, const glm::vec3 &lookat, const glm::vec3 &vup, float vfov, float aspect, float aperture, float focus_dist) : origin_(lookfrom), lens_radius(aperture)
     {
         // lens_radius = aperture / 2;
         // float theta = vfov * PI / 180;

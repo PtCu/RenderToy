@@ -42,7 +42,8 @@
 #include <stdint.h>
 #include <float.h>
 #include <typeinfo>
-
+#include <thread>
+#include <mutex>
 // #include <intrin.h>
 
 namespace platinum
@@ -87,6 +88,8 @@ namespace platinum
     class BVHAccel;
     struct BVH_Node;
     class Integrator;
+    class TiledIntegrator;
+    class Film;
 
 } // namespace platinum
 #endif
