@@ -62,18 +62,18 @@ namespace platinum
                     ++has_finished_num;
                     ++px_id;
                 }
-                // 互斥锁，用于打印处理进程
-                std::lock_guard<std::mutex> g1(_mutex_ins);
-                UpdateProgress(static_cast<float>(has_finished_num) / img_size);
+                // 互斥锁，用于打印处理进程（加上之后影响速度，变为顺序执行）
+                // std::lock_guard<std::mutex> g1(_mutex_ins);
+                // UpdateProgress(static_cast<float>(has_finished_num) / img_size);
             }
         };
 
         //concurrency::parallel_for in ppl.h is windows only, so here I just choose thread function.
-        std::vector<std::thread> threads;
+        std::vector<std::thread> threads(_tiles_manager->GetTilesCount());
 
         for (int i = 0; i < _tiles_manager->GetTilesCount(); ++i)
         {
-            threads.push_back(std::thread(calculateRstForEachTile, i));
+            threads[i] = std::move(std::thread(calculateRstForEachTile, i));
         }
         for (auto &th : threads)
         {
