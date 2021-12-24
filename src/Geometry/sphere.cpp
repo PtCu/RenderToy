@@ -30,7 +30,7 @@ namespace platinum
         rst.record.vert.position_ = center_ + radius_ * dir;
         rst.record.vert.normal_ = dir;
         pdf = 1.0f / area_;
-        rst.emit = material_->Emit();
+        rst.emit = _material->Emit();
     }
     float Sphere::GetArea() const
     {

@@ -39,20 +39,21 @@ namespace platinum
         Scene() : max_depth_(10), default_light(true), RussianRoulette(0.8) {}
         Scene(bool d_l, int _mode = 0) : max_depth_(10), default_light(d_l), mode(_mode), RussianRoulette(0.8) {}
         ~Scene();
-        void AddObject(const std::shared_ptr<Object> &obj);
-        void AddObject(const std::vector<std::shared_ptr<Object>> &obj);
-        void AddObject(const std::vector<std::shared_ptr<Object>>::iterator &begin, const std::vector<std::shared_ptr<Object>>::iterator &end);
+        void AddObject(const std::shared_ptr<Object>& obj);
+        void AddObject(const std::vector<std::shared_ptr<Object>>& obj);
+        void AddObject(const std::vector<std::shared_ptr<Object>>::iterator& begin, const std::vector<std::shared_ptr<Object>>::iterator& end);
         void Reset();
         void BuildBVH();
-        glm::vec3 CastRay(std::shared_ptr<Ray> &r) const;
-        const std::vector<std::shared_ptr<Object>> &GetObjects() const { return objects_; }
+        HitRst RayIntersect(std::shared_ptr<Ray>& r) const;
+        glm::vec3 CastRay(std::shared_ptr<Ray>& r) const;
+        const std::vector<std::shared_ptr<Object>>& GetObjects() const { return objects_; }
 
     private:
         void destroyAll();
-        glm::vec3 castRayPdf(std::shared_ptr<Ray> &r) const;
-        glm::vec3 castRay(std::shared_ptr<Ray> &r, int depth) const; //Using BVH tree to accelerate.
-        HitRst intersectAll(std::shared_ptr<Ray> &r) const;
-        void sampleLight(HitRst &inter, float &pdf) const;
+        glm::vec3 castRayPdf(std::shared_ptr<Ray>& r) const;
+        glm::vec3 castRay(std::shared_ptr<Ray>& r, int depth) const; //Using BVH tree to accelerate.
+
+        void sampleLight(HitRst& inter, float& pdf) const;
         int max_depth_;
         std::unique_ptr<BVHAccel> bvh_accel_;
         std::vector<std::shared_ptr<Object>> objects_;

@@ -34,7 +34,7 @@ namespace platinum
         std::cout.flush();
     };
 
-    void TiledIntegrator::Render(const Scene &scene)
+    void TiledIntegrator::Render(const Scene& scene)
     {
         auto film = this->_camera->GetFilm();
         int width = film->GetWidth();
@@ -44,7 +44,7 @@ namespace platinum
         int has_finished_num = 0;
         auto calculateRstForEachTile = [&](int rank)
         {
-            const RenderTile &tile = _tiles_manager->GetTile(rank);
+            const RenderTile& tile = _tiles_manager->GetTile(rank);
 
             for (size_t i = tile.min_x; i < tile.max_x; ++i)
             {
@@ -56,7 +56,7 @@ namespace platinum
                         float u = static_cast<float>(i + Random::RandomInUnitFloat()) / static_cast<float>(width);
                         float v = static_cast<float>(j + Random::RandomInUnitFloat()) / static_cast<float>(height);
                         auto r = _camera->GetRay(u, v);
-                        auto rst = scene.CastRay(r);
+                        auto rst = Li(scene, r);
                         film->AddPixelValue(px_id, rst / static_cast<float>(_spp));
                     }
                     ++has_finished_num;
@@ -75,7 +75,7 @@ namespace platinum
         {
             threads[i] = std::move(std::thread(calculateRstForEachTile, i));
         }
-        for (auto &th : threads)
+        for (auto& th : threads)
         {
             th.join();
         }

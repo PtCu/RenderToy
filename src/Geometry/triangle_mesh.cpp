@@ -28,7 +28,7 @@ namespace platinum
     void TriMesh::Sample(HitRst &rst, float &pdf) const
     {
         bvh_accel_->Sample(rst, pdf);
-        rst.emit=material_->Emit();
+        rst.emit=_material->Emit();
     }
     float TriMesh::GetArea() const
     {

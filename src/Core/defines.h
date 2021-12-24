@@ -61,7 +61,7 @@ namespace platinum
     static constexpr float PiOver2 = 1.57079632679489661923f;
     static constexpr float PiOver4 = 0.78539816339744830961f;
     static constexpr float Sqrt2 = 1.41421356237309504880f;
-    static constexpr float EPSILON = 0.0005;
+    static constexpr float EPSILON = 0.0005f;
 
     template <typename T>
     class Vector2;

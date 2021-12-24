@@ -28,7 +28,7 @@ namespace platinum
     {
         albedo_ = std::make_shared<ConstTexture>(a);
     }
-    bool Lambertian::Scatter(HitRst &rst) const
+    bool Lambertian::ComputeScatteringFunctions(HitRst &rst) const
     {
         auto reflected = glm::vec3(rst.record.vert.normal_) + Random::RandomInUnitSphere();
         auto attenuation = albedo_->GetValue(rst.record.vert.u_, rst.record.vert.v_, rst.record.vert.position_);

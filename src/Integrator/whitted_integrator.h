@@ -20,8 +20,15 @@
 namespace platinum
 {
 
-    class WhittedIntegrator : public Integrator
+    class WhittedIntegrator : public TiledIntegrator
     {
+    public:
+        WhittedIntegrator(std::shared_ptr<Camera> camera, int spp, int max_depth = 10) :TiledIntegrator(camera, spp), _max_depth(_max_depth){}
+    protected:
+        virtual glm::vec3 Li(const Scene& scene, std::shared_ptr<Ray>ray);
+    private:
+        virtual glm::vec3 Li_rec(const Scene& scene, std::shared_ptr<Ray>ray,int depth);
+        int _max_depth;
     };
 }
 

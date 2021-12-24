@@ -35,7 +35,7 @@ namespace platinum
       Metal(const std::shared_ptr<Texture> &a, float f);
       Metal(const glm::vec3 &a, float f);
 
-      bool Scatter(HitRst &rst) const final;
+      bool ComputeScatteringFunctions(HitRst &rst) const final;
       // Sample a ray by Material properties
       glm::vec3 Sample(const glm::vec3 &d, HitRst &rst) const override;
       //Given a ray, calculate the PdF of this ray

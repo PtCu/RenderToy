@@ -26,7 +26,7 @@ namespace platinum
 {
     Isotropic::Isotropic(const std::shared_ptr<Texture> &a) : texure_(a) {}
 
-    bool Isotropic::Scatter(HitRst &rst) const
+    bool Isotropic::ComputeScatteringFunctions(HitRst &rst) const
     {
         auto attenuation = texure_->GetValue(rst.record.vert.u_, rst.record.vert.v_, rst.record.vert.position_);
         rst.record.ray->Update(rst.record.vert.position_, Random::RandomInUnitSphere(), attenuation);

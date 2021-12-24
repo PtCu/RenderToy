@@ -32,8 +32,8 @@ namespace platinum
 {
     struct HitRecord
     {
-        HitRecord(std::shared_ptr<Ray> _ray = NULL, const glm::vec3 &pos = glm::vec3(0),
-                  const glm::vec3 &normal = glm::vec3(0, 0, 1), float u = 0, float v = 0) : ray(_ray), vert(pos, normal, u, v) {}
+        HitRecord(std::shared_ptr<Ray> _ray = NULL, const glm::vec3& pos = glm::vec3(0),
+            const glm::vec3& normal = glm::vec3(0, 0, 1), float u = 0, float v = 0) : ray(_ray), vert(pos, normal, u, v) {}
         std::shared_ptr<Ray> ray;
         Vertex vert;
     };
@@ -48,5 +48,57 @@ namespace platinum
         static const HitRst InValid;
     };
 
+    class Interaction {
+        Interaction() = default;
+        Interaction(const glm::vec3& p) : p(p) {}
+        Interaction(const glm::vec3& p, const glm::vec3& wo) : p(p), wo(normalize(wo)) {}
+        Interaction(const glm::vec3& p, const glm::vec3& n, const glm::vec3& wo)
+            : p(p), wo(glm::normalize(wo)), n(n) {}
+
+        inline Ray spawnRay(const glm::vec3& d) const
+        {
+            glm::vec3 o = p;
+            return Ray(o, d, std::numeric_limits<float>::max());
+        }
+
+        inline Ray spawnRayTo(const glm::vec3& p2) const
+        {
+            glm::vec3 origin = p;
+            return Ray(origin, p2 - p, 1.f - ShadowEpsilon);
+        }
+
+        inline Ray spawnRayTo(const Interaction& it) const
+        {
+            glm::vec3 origin = p;
+            glm::vec3 target = it.p;
+            glm::vec3 d = target - origin;
+            return Ray(origin, d, 1.f - ShadowEpsilon);
+        }
+
+    public:
+        glm::vec3 p;			//surface point
+        glm::vec3 wo;			//outgoing direction
+        glm::vec3 n;			//normal vector
+    };
+
+    class SurfaceInteraction final : public Interaction
+    {
+    public:
+
+        SurfaceInteraction() = default;
+        SurfaceInteraction(const glm::vec3& p, const glm::vec2& uv, const glm::vec3& wo,
+            const glm::vec3& dpdu, const glm::vec3& dpdv);
+
+        glm::vec3 Le(const glm::vec3& w) const;
+
+        void computeScatteringFunctions(const Ray& ray,
+            bool allowMultipleLobes = false);
+
+    public:
+        glm::vec2 uv;
+        glm::vec3 dpdu, dpdv;
+
+
+    };
 }
 #endif

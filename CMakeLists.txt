@@ -65,7 +65,7 @@ project (${PROJECT_NAME})
 add_library(spdlog INTERFACE)
 
 #设置头文件目录
-include_directories(${PROJECT_SOURCE_DIR}/src/)
+include_directories(${PROJECT_SOURCE_DIR}/src)
 
 include_directories (${PROJECT_SOURCE_DIR}/include)
 

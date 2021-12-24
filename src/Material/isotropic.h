@@ -34,7 +34,7 @@ namespace platinum
     {
     public:
         Isotropic(const std::shared_ptr<Texture> &a);
-        virtual bool Scatter(HitRst &rst) const;
+        virtual bool ComputeScatteringFunctions(HitRst &rst) const;
         // Sample a ray by Material properties
         virtual glm::vec3 Sample(const glm::vec3 &d, HitRst &rst) const;
         //Given a ray, calculate the PdF of this ray

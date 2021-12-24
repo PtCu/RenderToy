@@ -26,30 +26,23 @@ namespace platinum
 {
     const float Ray::min_t_ = 10e-4;
 
-    Ray::Ray(const glm::vec3 &o, const glm::vec3 &d) : origin_(o), direction_(d)
-    {
-        max_t_ = std::numeric_limits<float>::max();
-        color_ = glm::vec3(1.0);
-        inv_direction_ = {1.0f / d.x, 1.0f / d.y, 1.0f / d.z};
-        is_neg_dir_ = {d.x < 0, d.y < 0, d.z < 0};
-    }
     void Ray::Init(const glm::vec3 &o, const glm::vec3 &d)
     {
-        this->origin_ = o;
-        this->direction_ = d;
+        this->_origin = o;
+        this->_dir = d;
         this->inv_direction_ = {1.0f / d.x, 1.0f / d.y, 1.0f / d.z};
         this->is_neg_dir_ = {d.x < 0, d.y < 0, d.z < 0};
         this->color_ = glm::vec3(1.0);
-        this->max_t_ = std::numeric_limits<float>::max();
+        this->_t_max = std::numeric_limits<float>::max();
     }
     void Ray::Update(const glm::vec3 &o, const glm::vec3 &d, const glm::vec3 &a)
     {
-        this->origin_ = o;
-        this->direction_ = d;
+        this->_origin = o;
+        this->_dir = d;
         this->inv_direction_ = {1.0f / d.x, 1.0f / d.y, 1.0f / d.z};
         this->is_neg_dir_ = {d.x < 0, d.y < 0, d.z < 0};
         this->color_ *= a;
-        this->max_t_ = std::numeric_limits<float>::max();
+        this->_t_max = std::numeric_limits<float>::max();
     }
     void Ray::SetColor(const glm::vec3 &c)
     {
@@ -58,8 +51,8 @@ namespace platinum
 
     void Ray::Transform(const glm::mat4 &transform)
     {
-        this->direction_ = glm::mat3(transform) * direction_;
-        auto originQ = transform * glm::vec4(origin_, 1.0f);
-        this->origin_ = glm::vec3(originQ) / originQ.w;
+        this->_dir = glm::mat3(transform) * _dir;
+        auto originQ = transform * glm::vec4(_origin, 1.0f);
+        this->_origin = glm::vec3(originQ) / originQ.w;
     }
 }

@@ -29,16 +29,16 @@ namespace platinum
         switch (mode_)
         {
         case 0:
-            c = color_ * 0.5f * (1.0f + sin(scale_ * p.x + 10 * Perlin::Turb(scale_ * p)));
+            c = color_ * 0.5f * (1.0f + sin(scale_ * p.x + 10 * Perlin::Turb(p * scale_)));
             break;
         case 1:
-            c = color_ * 0.5f * (1.0f + sin(10 * Perlin::Turb(scale_ * p)));
+            c = color_ * 0.5f * (1.0f + sin(10 * Perlin::Turb(p * scale_)));
             break;
         case 2:
-            c = color_ * 0.5f * (1.0f + Perlin::Turb(scale_ * p));
+            c = color_ * 0.5f * (1.0f + Perlin::Turb(p * scale_));
             break;
         case 3:
-            c = color_ * Perlin::Turb(scale_ * p);
+            c = color_ * Perlin::Turb(p * scale_);
             break;
         default:
             break;

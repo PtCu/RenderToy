@@ -38,7 +38,7 @@ namespace platinum
         Sphere(glm::vec3 cen, float r, const std::shared_ptr<Material> &m = nullptr);
         ~Sphere() = default;
         virtual HitRst Intersect(std::shared_ptr<Ray> &r);
-        virtual float Sphere::GetArea() const;
+        virtual float GetArea() const;
         virtual AABB GetBoundingBox() const;
         virtual void Sample(HitRst &inter, float &pdf) const;
 

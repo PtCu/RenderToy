@@ -30,7 +30,7 @@ namespace platinum
     Light::Light(std::shared_ptr<Texture> lightTex, float linear, float quadratic)
         : texure_(lightTex), linear_(linear), quadratic_(quadratic) {}
 
-    bool Light::Scatter(HitRst &rst) const
+    bool Light::ComputeScatteringFunctions(HitRst &rst) const
     {
         float d = rst.record.ray->GetMaxTime() * glm::length(rst.record.ray->GetDirection());
         float attDis;
@@ -38,7 +38,7 @@ namespace platinum
             attDis = 1;
         else
         {
-            if (isnan(d))
+            if (std::isnan(d))
                 attDis = 0;
             else
                 attDis = 1.0f / (1.0f + d * (linear_ + quadratic_ * d));

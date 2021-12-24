@@ -232,17 +232,17 @@ void BVHAccel::getSample(std::shared_ptr<BVH_Node> node, float p, HitRst &pos, f
     else
         getSample(node->right, p - node->left->area, pos, pdf);
 }
-// BVH_Node::BVH_Node(vector<shared_ptr<Object>> &objects_)
+// BVH_Node::BVH_Node(vector<shared_ptr<Hitable>> &objects_)
 // {
 //     if (objects_.size() == 0)
 //         return;
 //     Build(objects_.begin(), objects_.end());
 // }
-// BVH_Node::BVH_Node(std::vector<std::shared_ptr<Object>>::iterator begin, std::vector<std::shared_ptr<Object>>::iterator end)
+// BVH_Node::BVH_Node(std::vector<std::shared_ptr<Hitable>>::iterator begin, std::vector<std::shared_ptr<Hitable>>::iterator end)
 // {
 //     Build(begin, end);
 // }
-// void BVH_Node::Build(std::vector<std::shared_ptr<Object>>::iterator begin,std::vector<std::shared_ptr<Object>>::iterator end)
+// void BVH_Node::Build(std::vector<std::shared_ptr<Hitable>>::iterator begin,std::vector<std::shared_ptr<Hitable>>::iterator end)
 // {
 //     size_t num = end - begin;
 

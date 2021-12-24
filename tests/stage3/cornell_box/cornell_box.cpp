@@ -57,8 +57,8 @@ int main()
     shared_ptr<Camera> cam = make_shared<Camera>(lookfrom, lookat, vec3(0, -1, 0), 45, float(nx) / float(ny), aperture, dist_to_focus);
     shared_ptr<Film> film = make_shared<Film>("cornell.png", nx, ny, 3);
     cam->SetFilm(film);
-    TiledIntegrator tiledIntegrator(cam, ns);
-    tiledIntegrator.Render(world);
+    // TiledIntegrator tiledIntegrator(cam, ns);
+    // tiledIntegrator.Render(world);
 
     world.Reset();
     return 0;

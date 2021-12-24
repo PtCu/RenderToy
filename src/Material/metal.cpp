@@ -34,7 +34,7 @@ namespace platinum
         f < 1 ? fuzz_ = f : fuzz_ = 1;
     }
 
-    bool Metal::Scatter(HitRst &rst) const
+    bool Metal::ComputeScatteringFunctions(HitRst &rst) const
     {
         glm::vec3 reflected = Reflect(rst.record.ray->GetDirection(), rst.record.vert.normal_) + fuzz_ * Random::RandomInUnitSphere();
         if (glm::dot(reflected, rst.record.vert.normal_) < 0)

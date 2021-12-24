@@ -25,7 +25,7 @@
 namespace platinum
 {
    Dielectric::Dielectric(float ri) : ref_idx_(ri) {}
-   bool Dielectric::Scatter(HitRst &rst) const
+   bool Dielectric::ComputeScatteringFunctions(HitRst &rst) const
    {
       glm::vec3 outward_normal;
       auto r_in = rst.record.ray;

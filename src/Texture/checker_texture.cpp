@@ -26,7 +26,7 @@ namespace platinum
 {
     glm::vec3 CheckerTexture::GetValue(float u, float v, const glm::vec3 &p) const
     {
-        float sines = std::sinf(10 * p.x) * sinf(10 * p.y) * sinf(10 * p.z);
+        float sines = glm::sin(10 * p.x) * glm::sin(10 * p.y) * glm::sin(10 * p.z);
         if (sines < 0)
             return odd_texure_->GetValue(u, v, p);
         else

@@ -53,7 +53,7 @@ namespace platinum
         this->bvh_accel_.reset();
         this->destroyAll();
     }
-    HitRst Scene::intersectAll(std::shared_ptr<Ray> &r) const
+    HitRst Scene::RayIntersect(std::shared_ptr<Ray> &r) const
     {
         return this->bvh_accel_->RayCast(r);
     }
@@ -97,14 +97,14 @@ namespace platinum
         if (dep == 0)
             return glm::vec3(1.0001f / 255.0f);
 
-        auto rst = intersectAll(ray);
+        auto rst = RayIntersect(ray);
 
         if (rst.is_hit)
         {
             if (rst.material_ == NULL)
                 return glm::vec3(0, 1, 0);
             //正常情况下，对于漫反射物质继续反射追踪，直到遇到光源则更新颜色并返回
-            if (rst.material_->Scatter(rst))
+            if (rst.material_->ComputeScatteringFunctions(rst))
                 return castRay(ray, dep - 1);
             else
                 return ray->GetColor();
@@ -114,16 +114,17 @@ namespace platinum
             if (!default_light)
                 return glm::vec3(1.0001f / 255.0f);
 
-            //TODO: Make it configurable
-            glm::vec3 unit_direction = glm::normalize(ray->GetDirection());
-            float t = 0.5f * (unit_direction.y + 1.0f);
-            return ray->GetColor() * ((1.0f - t) * glm::vec3(1.0, 1.0, 1.0) + t * glm::vec3(0.75, 0.85, 1.0));
+            // //TODO: Make it configurable
+            // environmental light
+            // glm::vec3 unit_direction = glm::normalize(ray->GetDirection());
+            // float t = 0.5f * (unit_direction.y + 1.0f);
+            // return ray->GetColor() * ((1.0f - t) * glm::vec3(1.0, 1.0, 1.0) + t * glm::vec3(0.75, 0.85, 1.0));
         }
     }
     glm::vec3 Scene::castRayPdf(std::shared_ptr<Ray> &ray) const
     {
         //求一条光线与场景的交点
-        HitRst obj_rst = intersectAll(ray);
+        HitRst obj_rst = RayIntersect(ray);
         if (!obj_rst.is_hit)
             return glm::vec3(0.f);
 
@@ -145,7 +146,7 @@ namespace platinum
         glm::vec3 light_n = normalize(light_rst.record.vert.normal_);
 
         //测试是否有遮挡.向光源打出一条射线
-        auto bounce_back = intersectAll(to_light_ray);
+        auto bounce_back = RayIntersect(to_light_ray);
         if (bounce_back.is_hit && glm::length(bounce_back.record.vert.position_ - light_rst.record.vert.position_) < EPSILON)
         {
             //直接光照
@@ -166,7 +167,7 @@ namespace platinum
         //按材质采样一条射线
         glm::vec3 w_i = glm::normalize(obj_rst.material_->Sample(w_o, obj_rst));
         auto next_ray = std::make_shared<Ray>(obj_rst.record.vert.position_, w_i);
-        auto next_inter = intersectAll(next_ray);
+        auto next_inter = RayIntersect(next_ray);
         //下一个物体不发光
         if (next_inter.is_hit && !next_inter.material_->IsEmit())
         {

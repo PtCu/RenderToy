@@ -35,7 +35,7 @@ namespace platinum
         //ordinary scatter
         virtual ~Material() = default;
         // Sample a ray by Material properties
-        virtual bool Scatter(HitRst &rst) const = 0;
+        virtual bool ComputeScatteringFunctions(HitRst &rst) const = 0;
         virtual glm::vec3 Sample(const glm::vec3 &d, HitRst &rst) const = 0;
         //Given a ray, calculate the PdF of this ray
         virtual float Pdf(const glm::vec3 &wi, const glm::vec3 &wo, HitRst &rst) const = 0;

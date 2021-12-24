@@ -26,7 +26,7 @@ namespace platinum
     {
     public:
         virtual ~Integrator() = default;
-        virtual void Render(const Scene &scene) = 0;
+        virtual void Render(const Scene& scene) = 0;
     };
     struct RenderTile
     {
@@ -67,7 +67,7 @@ namespace platinum
                 }
             }
         }
-        inline const RenderTile &GetTile(const int idx) const
+        inline const RenderTile& GetTile(const int idx) const
         {
             assert(idx < (int)_tiles.size());
             return _tiles[idx];
@@ -100,10 +100,13 @@ namespace platinum
         {
             _tiles_manager = std::make_unique<TilesManager>(_camera->GetFilm()->GetWidth(), _camera->GetFilm()->GetHeight());
         }
-        virtual void Render(const Scene &scene);
-        virtual glm::vec3 Li(const Scene &scene, std::shared_ptr<Ray>) { return glm::vec3(0); }
+        virtual void Render(const Scene& scene);
+
 
     protected:
+        // Li() 方法计算有多少光照量沿着
+        // 该 Ray 到达成像平面，并把光照量（radiance）保存在 Film 内
+        virtual glm::vec3 Li(const Scene& scene, std::shared_ptr<Ray>) = 0;
         void UpdateProgress(float progress);
         std::shared_ptr<Camera> _camera;
         int _spp;

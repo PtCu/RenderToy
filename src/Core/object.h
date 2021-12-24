@@ -26,27 +26,29 @@
 #include <glm/glm.hpp>
 #include "defines.h"
 #include "material.h"
-
+#include "shape.h"
+#include "intersection.h"
 namespace platinum
 {
     class Object
     {
     public:
         Object() {}
-        Object(std::shared_ptr<const Material> mat = NULL) : material_(mat) {}
-        const std::shared_ptr<const Material> GetMaterial() const { return material_; }
+        Object(std::shared_ptr<Material> mat = NULL) : _material(mat) {}
+        virtual std::shared_ptr<Material> GetMaterial() const { return _material; }
         virtual ~Object() {}
         //TODO: 考虑将虚拟函数声明为非公用的，将公用函数声明为非虚拟的
-        virtual HitRst Intersect(std::shared_ptr<Ray> &r) = 0;
+        virtual HitRst Intersect(std::shared_ptr<Ray>& r) = 0;
         virtual AABB GetBoundingBox() const = 0;
-        virtual void Sample(HitRst &inter, float &pdf) const = 0;
+        virtual void Sample(HitRst& inter, float& pdf) const = 0;
         virtual float GetArea() const = 0;
-
     protected:
-        std::shared_ptr<const Material> material_;
+        std::shared_ptr<Material> _material;
     };
 
- 
+    
+
+
 } // namespace platinum
 
 #endif

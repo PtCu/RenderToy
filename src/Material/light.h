@@ -36,7 +36,7 @@ namespace platinum
         Light(const glm::vec3 &color_, float linear = 0.0f, float quadratic = 0.0f);
         Light(std::shared_ptr<Texture> lightTex, float linear = 0.0f, float quadratic = 0.0f);
 
-        bool Scatter(HitRst &rst) const final;
+        bool ComputeScatteringFunctions(HitRst &rst) const final;
         // Sample a ray by Material properties
         glm::vec3 Sample(const glm::vec3 &d, HitRst &rst) const override;
         //Given a ray, calculate the PdF of this ray
