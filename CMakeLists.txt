@@ -1,13 +1,18 @@
-
+cmake_minimum_required(VERSION 3.0.0)
 
 set(PROJECT_NAME "RenderToy")
 
-set(CMAKE_EXPORT_COMPILE_COMMANDS ON CACHE INTERNAL "")
-
 set(CMAKE_CXX_STANDARD 17)
 
-set(CMAKE_TOOLCHAIN_FILE "D:/vcpkg/scripts/buildsystems/vcpkg.cmake")
+project (${PROJECT_NAME})
 
+include(CTest)
+enable_testing()
+
+find_package(glm CONFIG REQUIRED)
+#target_link_libraries(main PRIVATE glm::glm)
+find_package(spdlog CONFIG REQUIRED)
+#target_link_libraries(main PRIVATE spdlog::spdlog spdlog::spdlog_header_only)
 #---------------------------------------
 macro(SETUP_PROJECT MODE TARGET_NAME STR_TARGET_SOURCES STR_TARGET_LIBS)
 	string(REPLACE " " ";" LIST_TARGET_SOURCES ${STR_TARGET_SOURCES})
@@ -61,15 +66,11 @@ endmacro(GET_DIR_NAME DIRNAME)
 
 set_property(GLOBAL PROPERTY USE_FOLDERS ON)
 
-cmake_minimum_required (VERSION 3.2)
-cmake_policy(VERSION 3.2)
-project (${PROJECT_NAME})
 # 往工程中添加spdlog库，这个库是一个interface类型的库
 add_library(spdlog INTERFACE)
 
 #设置头文件目录
 include_directories(${PROJECT_SOURCE_DIR}/src)
-
 include_directories (${PROJECT_SOURCE_DIR}/include)
 
 # spdlog会用到pthread库
@@ -82,7 +83,7 @@ set (${PROJECT_NAME}_VERSION_MINOR 0)
 
 set(CMAKE_INSTALL_PREFIX ${PROJECT_SOURCE_DIR})
 
-FIND_PACKAGE( OpenMP REQUIRED)
+find_package(OpenMP REQUIRED)
 if(OPENMP_FOUND)
 	message("OPENMP FOUND")
 	set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} ${OpenMP_C_FLAGS}")
