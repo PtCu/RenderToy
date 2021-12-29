@@ -23,18 +23,18 @@
 #ifndef CORE_RENDER_H_
 #define CORE_RENDER_H_
 
-#include "scene.h"
-#include "camera.h"
-#include "image.h"
+#include <core/scene.h>
+#include <core/camera.h>
+#include <core/image.h>
 
 namespace platinum
 {
     class Renderer
     {
     public:
-        Renderer(int img_w, int img_h, int channel, const std::string &fname, int spp);
+        Renderer(int img_w, int img_h, int channel, const std::string& fname, int spp);
         ~Renderer() = default;
-        void Render(Scene &scene, const std::shared_ptr<Camera> &cam);
+        void Render(Scene& scene, const std::shared_ptr<Camera>& cam);
 
     private:
         void UpdateProgress(float progress);

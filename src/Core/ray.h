@@ -23,7 +23,7 @@
 #ifndef CORE_RAY_H_
 #define CORE_RAY_H_
 #include <glm/glm.hpp>
-#include "defines.h"
+#include <core/defines.h>
 
 namespace platinum
 {

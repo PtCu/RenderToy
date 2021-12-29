@@ -23,11 +23,11 @@
 #ifndef CORE_BVH_H_
 #define CORE_BVH_H_
 
-#include "defines.h"
-#include "object.h"
-#include "intersection.h"
-#include "aabb.h"
-#include "../math/rand.h"
+#include <core/defines.h>
+#include <core/object.h>
+#include <core/intersection.h>
+#include <core/aabb.h>
+#include <math/rand.h>
 
 namespace platinum
 {

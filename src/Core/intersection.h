@@ -23,10 +23,10 @@
 #ifndef CORE_INTERSECTION_H_
 #define CORE_INTERSECTION_H_
 #include <glm/glm.hpp>
-#include "defines.h"
-#include "material.h"
-#include "ray.h"
-#include "vertex.h"
+#include <core/defines.h>
+#include <core/material.h>
+#include <core/ray.h>
+#include <geometry/vertex.h>
 
 namespace platinum
 {

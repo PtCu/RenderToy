@@ -23,8 +23,8 @@
 #ifndef CORE_AABB_H_
 #define CORE_AABB_H_
 
-#include "defines.h"
-#include "ray.h"
+#include <core/defines.h>
+#include <core/ray.h>
 
 namespace platinum
 {

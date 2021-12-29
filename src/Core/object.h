@@ -24,10 +24,10 @@
 #define CORE_OBJECT_H_
 
 #include <glm/glm.hpp>
-#include "defines.h"
-#include "material.h"
-#include "shape.h"
-#include "intersection.h"
+#include <core/defines.h>
+#include <core/material.h>
+#include <core/shape.h>
+#include <core/integrator.h>
 namespace platinum
 {
     class Object

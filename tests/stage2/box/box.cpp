@@ -8,7 +8,7 @@
 #include "../src/core/scene.h"
 #include "../src/core/renderer.h"
 #include "../src/material/light.h"
-#include "../src/core/vertex.h"
+#include "../src/geometry/vertex.h"
 #include "../src/texture/noise_texture.h"
 #include "../src/geometry/triangle_mesh.h"
 #include "../src/material/isotropic.h"
@@ -20,7 +20,7 @@ using namespace platinum;
 using namespace glm;
 using namespace std;
 
-void createWorld(Scene &world)
+void createWorld(Scene& world)
 {
 
     vector<Vertex> cubeVerts;

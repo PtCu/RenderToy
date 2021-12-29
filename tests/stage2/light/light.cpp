@@ -8,7 +8,7 @@
 #include "../src/core/scene.h"
 #include "../src/core/renderer.h"
 #include "../src/material/light.h"
-#include "../src/core/vertex.h"
+#include "../src/geometry/vertex.h"
 #include "../src/texture/noise_texture.h"
 #include "../src/geometry/triangle_mesh.h"
 
@@ -21,8 +21,8 @@ const float pos[] = {
     1, 0.1, 0.5,
     1, 0.1, 0.5,
     1, 0.7, 0.5,
-    0.9, 0.7, -0.5};
-void some_spheres(Scene &world)
+    0.9, 0.7, -0.5 };
+void some_spheres(Scene& world)
 {
     float scale = 5;
     auto light_tex = make_shared<ConstTexture>(vec3(1.5, 1, 1));

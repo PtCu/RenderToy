@@ -20,10 +20,10 @@
 //  FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 //  DEALINGS IN THE SOFTWARE.
 
-#include "sphere.h"
+#include <geometry/sphere.h>
 namespace platinum
 {
-    void Sphere::Sample(HitRst &rst, float &pdf) const
+    void Sphere::Sample(HitRst& rst, float& pdf) const
     {
         float theta = 2.0f * PI * Random::RandomInUnitFloat(), phi = PI * Random::RandomInUnitFloat();
         glm::vec3 dir(std::cos(phi), std::sin(phi) * std::cos(theta), std::sin(phi) * std::sin(theta));
@@ -40,11 +40,11 @@ namespace platinum
     {
         return bounding_box_;
     }
-    glm::vec3 Sphere::getCenter(const std::shared_ptr<Ray> &r) const
+    glm::vec3 Sphere::getCenter(const std::shared_ptr<Ray>& r) const
     {
         return center_;
     }
-    Sphere::Sphere(glm::vec3 cen, float r, const std::shared_ptr<Material> &m)
+    Sphere::Sphere(glm::vec3 cen, float r, const std::shared_ptr<Material>& m)
         : center_(cen), radius_(r), Object(m)
     {
         glm::vec3 minP = center_ - glm::vec3(radius_);
@@ -52,7 +52,7 @@ namespace platinum
         bounding_box_ = AABB(minP, maxP);
         area_ = PI * 4.0f * r * r;
     };
-    void Sphere::setIntersection(float t, HitRst &rst, const std::shared_ptr<Ray> &r) const
+    void Sphere::setIntersection(float t, HitRst& rst, const std::shared_ptr<Ray>& r) const
     {
         rst.record.ray = r;
         rst.record.ray->SetTMax(t);
@@ -63,7 +63,7 @@ namespace platinum
         rst.is_hit = true;
     }
 
-    HitRst Sphere::Intersect(std::shared_ptr<Ray> &r)
+    HitRst Sphere::Intersect(std::shared_ptr<Ray>& r)
     {
         HitRst rst;
         glm::vec3 oc = r->GetOrigin() - getCenter(r);
@@ -87,7 +87,7 @@ namespace platinum
         return rst;
     }
     //Using the polar coordinates of sphere (phi, theta) to get fractions as u, v.
-    void Sphere::getSphereUV(const glm::vec3 &p, float &u, float &v) const
+    void Sphere::getSphereUV(const glm::vec3& p, float& u, float& v) const
     {
         float phi = atan2(p.z, p.x);
         float theta = asin(p.y);

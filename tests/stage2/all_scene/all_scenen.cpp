@@ -8,7 +8,7 @@
 #include "../src/core/scene.h"
 #include "../src/core/renderer.h"
 #include "../src/material/light.h"
-#include "../src/core/vertex.h"
+#include "../src/geometry/vertex.h"
 #include "../src/texture/noise_texture.h"
 #include "../src/geometry/triangle_mesh.h"
 #include "../src/geometry/instance.h"
@@ -281,7 +281,7 @@ const float data_CubeVertexPos[216] = {
     0,
     -1,
 };
-void createWorld(Scene &world)
+void createWorld(Scene& world)
 {
     // Mesh
     vector<Vertex> squareVerts;

@@ -23,7 +23,7 @@
 #ifndef TEXTURE_CHECKER_TEXTURE_H_
 #define TEXTURE_CHECKER_TEXTURE_H_
 
-#include "core/texture.h"
+#include <core/texture.h>
 #include <glm/glm.hpp>
 namespace platinum
 {
@@ -32,9 +32,9 @@ namespace platinum
     public:
         CheckerTexture() = default;
         ~CheckerTexture() = default;
-        CheckerTexture(const std::shared_ptr<Texture> &o, const std::shared_ptr<Texture> &e)
+        CheckerTexture(const std::shared_ptr<Texture>& o, const std::shared_ptr<Texture>& e)
             : odd_texure_(o), even_texure_(e) {}
-        virtual glm::vec3 GetValue(float u, float v, const glm::vec3 &p) const;
+        virtual glm::vec3 GetValue(float u, float v, const glm::vec3& p) const;
 
     private:
         std::shared_ptr<Texture> odd_texure_;

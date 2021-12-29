@@ -15,7 +15,7 @@
 #ifndef INTEGRATOR_PATH_INTEGRATOR_H_
 #define INTEGRATOR_PATH_INTEGRATOR_H_
 
-#include "core/integrator.h"
+#include <core/integrator.h>
 
 namespace platinum
 {
@@ -23,7 +23,7 @@ namespace platinum
     class PathIntegrator : public TiledIntegrator
     {
     public:
-        PathIntegrator(std::shared_ptr<Camera> camera, int spp, float rr_threshold = 0.8) :TiledIntegrator(camera, spp), _rr_threshold(rr_threshold){}
+        PathIntegrator(std::shared_ptr<Camera> camera, int spp, float rr_threshold = 0.8) :TiledIntegrator(camera, spp), _rr_threshold(rr_threshold) {}
     protected:
         virtual glm::vec3 Li(const Scene& scene, std::shared_ptr<Ray>);
         float _rr_threshold;

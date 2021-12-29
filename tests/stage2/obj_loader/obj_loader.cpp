@@ -7,14 +7,14 @@
 #include "../src/core/scene.h"
 #include "../src/core/renderer.h"
 #include "../src/material/light.h"
-#include "../src/core/vertex.h"
+#include "../src/geometry/vertex.h"
 #include "../src/geometry/triangle_mesh.h"
 
 using namespace platinum;
 using namespace glm;
 using namespace std;
 
-void createWorld(Scene &world)
+void createWorld(Scene& world)
 {
     // Mat
     auto redMat = make_shared<Lambertian>(make_shared<ConstTexture>(vec3(0.63f, 0.065f, 0.05f)));

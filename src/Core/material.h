@@ -23,9 +23,9 @@
 #ifndef CORE_MATERIAL_H_
 #define CORE_MATERIAL_H_
 #include <glm/glm.hpp>
-#include "ray.h"
-#include "intersection.h"
-#include "defines.h"
+#include <core/ray.h>
+#include <core/intersection.h>
+#include <core/defines.h>
 
 namespace platinum
 {
@@ -35,18 +35,18 @@ namespace platinum
         //ordinary scatter
         virtual ~Material() = default;
         // Sample a ray by Material properties
-        virtual bool ComputeScatteringFunctions(HitRst &rst) const = 0;
-        virtual glm::vec3 Sample(const glm::vec3 &d, HitRst &rst) const = 0;
+        virtual bool ComputeScatteringFunctions(HitRst& rst) const = 0;
+        virtual glm::vec3 Sample(const glm::vec3& d, HitRst& rst) const = 0;
         //Given a ray, calculate the PdF of this ray
-        virtual float Pdf(const glm::vec3 &wi, const glm::vec3 &wo, HitRst &rst) const = 0;
+        virtual float Pdf(const glm::vec3& wi, const glm::vec3& wo, HitRst& rst) const = 0;
         // brdf. Given a ray, calculate the contribution of this ray
-        virtual glm::vec3 ScatterPdf(const glm::vec3 &wi, const glm::vec3 &wo, HitRst &rst) const = 0;
+        virtual glm::vec3 ScatterPdf(const glm::vec3& wi, const glm::vec3& wo, HitRst& rst) const = 0;
         //The material_ itself emits light.
         virtual glm::vec3 Emit() const = 0;
         virtual bool IsEmit() const = 0;
 
     protected:
-        bool Refract(const glm::vec3 &v, const glm::vec3 &n, float ni_over_nt, glm::vec3 &refracted) const
+        bool Refract(const glm::vec3& v, const glm::vec3& n, float ni_over_nt, glm::vec3& refracted) const
         {
             glm::vec3 uv = glm::normalize(v);
             float dt = glm::dot(uv, n);
@@ -60,7 +60,7 @@ namespace platinum
                 return false;
         }
 
-        glm::vec3 Reflect(const glm::vec3 &v, const glm::vec3 &n) const
+        glm::vec3 Reflect(const glm::vec3& v, const glm::vec3& n) const
         {
             return glm::vec3(v - 2.0f * glm::dot(v, n) * n);
         }
@@ -72,7 +72,7 @@ namespace platinum
             return r0 + (1.0f - r0) * pow((1.0f - cosine), 5.0f);
         }
         //Convert local vector a to world vector according to provided normal n.
-        glm::vec3 toWorld(const glm::vec3 &a, const glm::vec3 &n) const
+        glm::vec3 toWorld(const glm::vec3& a, const glm::vec3& n) const
         {
             glm::vec3 b, c;
             if (std::fabs(n.x) > std::fabs(n.y))

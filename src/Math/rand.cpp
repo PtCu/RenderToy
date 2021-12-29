@@ -1,1 +1,1 @@
-#include "rand.h"
+#include <math/rand.h>

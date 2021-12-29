@@ -24,7 +24,7 @@
 #define CORE_RAND_H_
 
 #include <random>
-#include "core/defines.h"
+#include <core/defines.h>
 #include <glm/glm.hpp>
 
 namespace platinum

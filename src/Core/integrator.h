@@ -16,10 +16,10 @@
 #define CORE_INTEGREATOR_H_
 
 #include <glm/glm.hpp>
-#include "defines.h"
-#include "scene.h"
-#include "camera.h"
-#include "film.h"
+#include <core/defines.h>
+#include <core/scene.h>
+#include <core/camera.h>
+#include <core/film.h>
 namespace platinum
 {
     class Integrator

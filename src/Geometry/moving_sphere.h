@@ -23,12 +23,12 @@
 #ifndef GEOMETRY_MOVESPHERE_H_
 #define GEOMETRY_MOVESPHERE_H_
 
-#include "core/object.h"
-#include "core/t_ray.h"
-#include "core/intersection.h"
-#include "core/aabb.h"
-#include "math/rand.h"
-#include "sphere.h"
+#include <core/object.h>
+#include <core/t_ray.h>
+#include <core/intersection.h>
+#include <core/aabb.h>
+#include <math/rand.h>
+#include <geometry/sphere.h>
 
 namespace platinum
 {
@@ -37,11 +37,11 @@ namespace platinum
     public:
         MovingSphere() = default;
         ~MovingSphere() = default;
-        MovingSphere(glm::vec3 cen0, glm::vec3 cen1, float t0, float t1, float r, const std::shared_ptr<Material> &m = nullptr);
+        MovingSphere(glm::vec3 cen0, glm::vec3 cen1, float t0, float t1, float r, const std::shared_ptr<Material>& m = nullptr);
         virtual AABB GetBoundingBox() const { return bounding_box_; }
 
     protected:
-        virtual glm::vec3 getCenter(const std::shared_ptr<Ray> &r) const;
+        virtual glm::vec3 getCenter(const std::shared_ptr<Ray>& r) const;
 
     private:
         glm::vec3 center0, center1;

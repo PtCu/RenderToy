@@ -15,13 +15,13 @@
 #ifndef CORE_BSDF_CPP_
 #define CORE_BSDF_CPP_
 
-#include "defines.h"
-#include "intersection.h"
+#include <core/defines.h>
+#include <core/intersection.h>
 
 namespace platinum {
     class BSDF {
-        
-    }
+
+    };
 }
 
 

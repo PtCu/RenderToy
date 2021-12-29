@@ -23,8 +23,8 @@
 #ifndef CORE_T_CAMERA_H_
 #define CORE_T_CAMERA_H_
 
-#include "camera.h"
-#include "t_ray.h"
+#include <core/camera.h>
+#include <core/t_ray.h>
 
 namespace platinum
 {

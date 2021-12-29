@@ -23,11 +23,11 @@
 #ifndef GEOMETRY_SPHERE_H_
 #define GEOMETRY_SPHERE_H_
 
-#include "core/object.h"
-#include "core/ray.h"
-#include "core/intersection.h"
-#include "core/aabb.h"
-#include "math/rand.h"
+#include <core/object.h>
+#include <core/ray.h>
+#include <core/intersection.h>
+#include <core/aabb.h>
+#include <math/rand.h>
 
 namespace platinum
 {
@@ -35,17 +35,17 @@ namespace platinum
     {
     public:
         Sphere() = default;
-        Sphere(glm::vec3 cen, float r, const std::shared_ptr<Material> &m = nullptr);
+        Sphere(glm::vec3 cen, float r, const std::shared_ptr<Material>& m = nullptr);
         ~Sphere() = default;
-        virtual HitRst Intersect(std::shared_ptr<Ray> &r);
+        virtual HitRst Intersect(std::shared_ptr<Ray>& r);
         virtual float GetArea() const;
         virtual AABB GetBoundingBox() const;
-        virtual void Sample(HitRst &inter, float &pdf) const;
+        virtual void Sample(HitRst& inter, float& pdf) const;
 
     protected:
-        virtual glm::vec3 getCenter(const std::shared_ptr<Ray> &r) const;
-        virtual void setIntersection(float t, HitRst &rec, const std::shared_ptr<Ray> &r) const;
-        void getSphereUV(const glm::vec3 &p, float &u, float &v) const;
+        virtual glm::vec3 getCenter(const std::shared_ptr<Ray>& r) const;
+        virtual void setIntersection(float t, HitRst& rec, const std::shared_ptr<Ray>& r) const;
+        void getSphereUV(const glm::vec3& p, float& u, float& v) const;
 
     private:
         float area_;

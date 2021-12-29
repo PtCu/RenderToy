@@ -16,8 +16,8 @@
 #define CORE_FILM_H_
 
 #include <glm/glm.hpp>
-#include "defines.h"
-#include "image.h"
+#include <core/defines.h>
+#include <core/image.h>
 
 namespace platinum
 {

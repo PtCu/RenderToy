@@ -24,16 +24,16 @@
 #define CORE_VERTEX_H_
 
 #include <glm/glm.hpp>
-#include "defines.h"
+#include <core/defines.h>
 
 namespace platinum
 {
     struct Vertex
     {
         Vertex(glm::vec3 pos = glm::vec3(0), glm::vec3 normal = glm::vec3(0, 0, 1), float u = 0, float v = 0);
-        void Transform(const glm::mat4 &transform);
-        void Transform(const glm::mat4 &transform, const glm::mat3 &normalTransform);
-        static const Vertex GenVert(const glm::vec3 &abg, const Vertex &A, const Vertex &B, const Vertex &C);
+        void Transform(const glm::mat4& transform);
+        void Transform(const glm::mat4& transform, const glm::mat3& normalTransform);
+        static const Vertex GenVert(const glm::vec3& abg, const Vertex& A, const Vertex& B, const Vertex& C);
         glm::vec3 position_;
         glm::vec3 normal_;
         float u_;

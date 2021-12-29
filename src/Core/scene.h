@@ -23,14 +23,14 @@
 #ifndef CORE_WORLD_H_
 #define CORE_WORLD_H_
 
-#include "object.h"
+#include <core/object.h>
 #include <glm/glm.hpp>
-#include "defines.h"
-#include "ray.h"
-#include "intersection.h"
-#include "bvh.h"
+#include <core/defines.h>
+#include <core/ray.h>
+#include <core/intersection.h>
+#include <core/bvh.h>
 #include <functional>
-#include "../math/rand.h"
+#include <math/rand.h>
 namespace platinum
 {
     class Scene

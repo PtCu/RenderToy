@@ -23,11 +23,11 @@
 #ifndef CORE_TRANSFORM_H_
 #define CORE_TRANSFORM_H_
 
-#include "core/object.h"
-#include "core/ray.h"
-#include "core/intersection.h"
-#include "core/aabb.h"
-#include "math/rand.h"
+#include <core/object.h>
+#include <core/ray.h>
+#include <core/intersection.h>
+#include <core/aabb.h>
+#include <math/rand.h>
 #include <bitset>
 
 namespace platinum
@@ -36,11 +36,11 @@ namespace platinum
     class Instance : public Object
     {
     public:
-        Instance(const glm::mat4 &transform, std::shared_ptr<Object> former, const std::shared_ptr<Material> &m = NULL);
-        virtual HitRst Intersect(std::shared_ptr<Ray> &r);
+        Instance(const glm::mat4& transform, std::shared_ptr<Object> former, const std::shared_ptr<Material>& m = NULL);
+        virtual HitRst Intersect(std::shared_ptr<Ray>& r);
         virtual AABB GetBoundingBox() const { return bounding_box_; }
         virtual float GetArea() const;
-        virtual void Sample(HitRst &inter, float &pdf) const;
+        virtual void Sample(HitRst& inter, float& pdf) const;
 
     private:
         AABB bounding_box_;

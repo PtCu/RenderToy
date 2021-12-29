@@ -16,7 +16,7 @@
 #define CORE_SHAPE_H_
 
 
-#include "defines.h"
+#include <core/defines.h>
 
 namespace platinum {
     class Shape {

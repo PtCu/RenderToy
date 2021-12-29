@@ -23,9 +23,9 @@
 #ifndef CORE_CAMERA_H_
 #define CORE_CAMERA_H_
 
-#include "defines.h"
-#include "../math/rand.h"
-#include "material.h"
+#include <core/defines.h>
+#include <math/rand.h>
+#include <core/material.h>
 
 namespace platinum
 {

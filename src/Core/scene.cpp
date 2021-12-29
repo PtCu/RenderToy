@@ -20,7 +20,7 @@
 //  FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 //  DEALINGS IN THE SOFTWARE.
 
-#include "scene.h"
+#include <core/scene.h>
 
 namespace platinum
 {
@@ -36,15 +36,15 @@ namespace platinum
     {
         this->bvh_accel_ = std::unique_ptr<BVHAccel>(new BVHAccel(objects_));
     }
-    void Scene::AddObject(const std::shared_ptr<Object> &obj)
+    void Scene::AddObject(const std::shared_ptr<Object>& obj)
     {
         this->objects_.push_back(obj);
     }
-    void Scene::AddObject(const std::vector<std::shared_ptr<Object>> &obj)
+    void Scene::AddObject(const std::vector<std::shared_ptr<Object>>& obj)
     {
         this->objects_.insert(objects_.end(), obj.begin(), obj.end());
     }
-    void Scene::AddObject(const std::vector<std::shared_ptr<Object>>::iterator &begin, const std::vector<std::shared_ptr<Object>>::iterator &end)
+    void Scene::AddObject(const std::vector<std::shared_ptr<Object>>::iterator& begin, const std::vector<std::shared_ptr<Object>>::iterator& end)
     {
         this->objects_.insert(objects_.end(), begin, end);
     }
@@ -53,11 +53,11 @@ namespace platinum
         this->bvh_accel_.reset();
         this->destroyAll();
     }
-    HitRst Scene::RayIntersect(std::shared_ptr<Ray> &r) const
+    HitRst Scene::RayIntersect(std::shared_ptr<Ray>& r) const
     {
         return this->bvh_accel_->RayCast(r);
     }
-    void Scene::sampleLight(HitRst &inter, float &pdf) const
+    void Scene::sampleLight(HitRst& inter, float& pdf) const
     {
         float emit_area_sum = 0;
         for (uint32_t k = 0; k < objects_.size(); ++k)
@@ -85,14 +85,14 @@ namespace platinum
             }
         }
     }
-    glm::vec3 Scene::CastRay(std::shared_ptr<Ray> &r) const
+    glm::vec3 Scene::CastRay(std::shared_ptr<Ray>& r) const
     {
         if (mode == 0)
             return castRay(r, max_depth_);
         else if (mode == 1)
             return castRayPdf(r);
     }
-    glm::vec3 Scene::castRay(std::shared_ptr<Ray> &ray, int dep) const
+    glm::vec3 Scene::castRay(std::shared_ptr<Ray>& ray, int dep) const
     {
         if (dep == 0)
             return glm::vec3(1.0001f / 255.0f);
@@ -121,7 +121,7 @@ namespace platinum
             // return ray->GetColor() * ((1.0f - t) * glm::vec3(1.0, 1.0, 1.0) + t * glm::vec3(0.75, 0.85, 1.0));
         }
     }
-    glm::vec3 Scene::castRayPdf(std::shared_ptr<Ray> &ray) const
+    glm::vec3 Scene::castRayPdf(std::shared_ptr<Ray>& ray) const
     {
         //求一条光线与场景的交点
         HitRst obj_rst = RayIntersect(ray);

@@ -20,7 +20,7 @@
 //  FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 //  DEALINGS IN THE SOFTWARE.
 
-#include "bvh.h"
+#include <core/bvh.h>
 #include "spdlog/spdlog.h"
 #include <fstream>
 
@@ -28,8 +28,8 @@ using namespace std;
 using namespace glm;
 using namespace platinum;
 
-BVHAccel::BVHAccel(vector<shared_ptr<Object>> &p,
-                   SplitMethod split_method_)
+BVHAccel::BVHAccel(vector<shared_ptr<Object>>& p,
+    SplitMethod split_method_)
     : split_method_(split_method_)
 {
     // time_t start, stop;
@@ -44,8 +44,8 @@ BVHAccel::BVHAccel(vector<shared_ptr<Object>> &p,
     //TODO:
     //Other building method
 }
-BVHAccel::BVHAccel(vector<shared_ptr<Object>>::iterator &begin, vector<shared_ptr<Object>>::iterator &end,
-                   SplitMethod split_method_)
+BVHAccel::BVHAccel(vector<shared_ptr<Object>>::iterator& begin, vector<shared_ptr<Object>>::iterator& end,
+    SplitMethod split_method_)
     : split_method_(split_method_)
 {
 
@@ -103,8 +103,8 @@ shared_ptr<BVH_Node> BVHAccel::recursiveBuild(vector<shared_ptr<Object>>::iterat
     case SplitMethod::MIDDLE:
         p_mid = centroidBounds.Centroid()[dim];
         middle = std::partition(begin, end,
-                                [dim, p_mid](auto p)
-                                { return p->GetBoundingBox().Centroid()[dim] < p_mid; });
+            [dim, p_mid](auto p)
+            { return p->GetBoundingBox().Centroid()[dim] < p_mid; });
 
         // //Edge case: if identical bounding boxes exist
         // if (middle - begin == 0)
@@ -132,13 +132,13 @@ shared_ptr<BVH_Node> BVHAccel::recursiveBuild(vector<shared_ptr<Object>>::iterat
     return node;
 }
 
-HitRst BVHAccel::RayCast(std::shared_ptr<Ray> &r) const
+HitRst BVHAccel::RayCast(std::shared_ptr<Ray>& r) const
 {
     HitRst isect;
     isect = BVHAccel::getIntersection_rec(root_, r);
     return isect;
 }
-HitRst BVHAccel::getIntersection_rec(std::shared_ptr<BVH_Node> node, std::shared_ptr<Ray> &r) const
+HitRst BVHAccel::getIntersection_rec(std::shared_ptr<BVH_Node> node, std::shared_ptr<Ray>& r) const
 {
     // TODO Traverse the BVH to find intersection
     //如果和盒子没相交，就必不可能和盒子内的物体相交
@@ -178,7 +178,7 @@ HitRst BVHAccel::getIntersection_rec(std::shared_ptr<BVH_Node> node, std::shared
         return hit1.record.ray->GetMaxTime() < hit2.record.ray->GetMaxTime() ? hit1 : hit2;
     }
 }
-HitRst BVHAccel::getIntersection(std::shared_ptr<Ray> &r) const
+HitRst BVHAccel::getIntersection(std::shared_ptr<Ray>& r) const
 {
     // TODO Traverse the BVH to find intersection
     if (!root_->bounding_box.IsHit(r))
@@ -213,13 +213,13 @@ HitRst BVHAccel::getIntersection(std::shared_ptr<Ray> &r) const
     return inter;
 }
 
-void BVHAccel::Sample(HitRst &inter, float &pdf) const
+void BVHAccel::Sample(HitRst& inter, float& pdf) const
 {
     float p = std::sqrt(Random::RandomInUnitFloat()) * root_->area;
     getSample(root_, p, inter, pdf);
     pdf /= root_->area;
 }
-void BVHAccel::getSample(std::shared_ptr<BVH_Node> node, float p, HitRst &pos, float &pdf) const
+void BVHAccel::getSample(std::shared_ptr<BVH_Node> node, float p, HitRst& pos, float& pdf) const
 {
     if (node->left == nullptr || node->right == nullptr)
     {

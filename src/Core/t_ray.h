@@ -23,7 +23,7 @@
 #ifndef CORE_T_RAY_H_
 #define CORE_T_RAY_H_
 
-#include "ray.h"
+#include <core/ray.h>
 
 namespace platinum
 {
@@ -31,7 +31,7 @@ namespace platinum
     {
     public:
         TRay() {}
-        TRay(const glm::vec3 &o, const glm::vec3 &d, float ti = 0.0) : Ray(o, d), time_(ti) {}
+        TRay(const glm::vec3& o, const glm::vec3& d, float ti = 0.0) : Ray(o, d), time_(ti) {}
         virtual ~TRay() = default;
         void SetTime(float t) { time_ = t; }
         float GetTime() const { return time_; }

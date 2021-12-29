@@ -1,4 +1,4 @@
-#include "image.h"
+#include <core/image.h>
 
 #define STB_IMAGE_IMPLEMENTATION
 #include <stb/stb_image.h>
@@ -9,7 +9,7 @@
 using namespace platinum;
 using namespace std;
 
-Image::Pixel<unsigned char> Image::Pixel_F2UB(const Pixel<float> &pixel)
+Image::Pixel<unsigned char> Image::Pixel_F2UB(const Pixel<float>& pixel)
 {
     Image::Pixel<unsigned char> rst(pixel.channel);
     for (size_t i = 0; i < pixel.channel; i++)
@@ -21,7 +21,7 @@ Image::Pixel<unsigned char> Image::Pixel_F2UB(const Pixel<float> &pixel)
     return rst;
 }
 
-Image::Pixel<unsigned char> Image::Pixel_D2UB(const Pixel<double> &pixel)
+Image::Pixel<unsigned char> Image::Pixel_D2UB(const Pixel<double>& pixel)
 {
     Image::Pixel<unsigned char> rst(pixel.channel);
     for (size_t i = 0; i < pixel.channel; i++)
@@ -33,7 +33,7 @@ Image::Pixel<unsigned char> Image::Pixel_D2UB(const Pixel<double> &pixel)
     return rst;
 }
 
-Image::Pixel<float> Image::Pixel_UB2F(const Pixel<unsigned char> &pixel)
+Image::Pixel<float> Image::Pixel_UB2F(const Pixel<unsigned char>& pixel)
 {
     Image::Pixel<float> rst(pixel.channel);
     for (size_t i = 0; i < pixel.channel; i++)
@@ -42,7 +42,7 @@ Image::Pixel<float> Image::Pixel_UB2F(const Pixel<unsigned char> &pixel)
     return rst;
 }
 
-Image::Pixel<double> Image::Pixel_UB2D(const Pixel<unsigned char> &pixel)
+Image::Pixel<double> Image::Pixel_UB2D(const Pixel<unsigned char>& pixel)
 {
     Image::Pixel<double> rst(pixel.channel);
     for (size_t i = 0; i < pixel.channel; i++)
@@ -61,7 +61,7 @@ Image::Image(size_t width, size_t height, size_t channel)
     GenBuffer(width, height, channel);
 }
 
-Image::Image(const char *fileName, bool flip)
+Image::Image(const char* fileName, bool flip)
 {
     data = NULL;
     type = ENUM_SRC_TYPE_INVALID;
@@ -80,7 +80,7 @@ bool Image::IsValid() const
     return data != NULL && type != ENUM_SRC_TYPE_INVALID;
 }
 
-unsigned char *Image::GetData()
+unsigned char* Image::GetData()
 {
     if (!IsValid())
         return NULL;
@@ -88,7 +88,7 @@ unsigned char *Image::GetData()
     return data;
 }
 
-const unsigned char *Image::GetConstData() const
+const unsigned char* Image::GetConstData() const
 {
     if (!IsValid())
         return NULL;
@@ -113,17 +113,17 @@ size_t Image::GetChannel() const
 
 //------------
 
-unsigned char &Image::At(size_t x, size_t y, size_t channel)
+unsigned char& Image::At(size_t x, size_t y, size_t channel)
 {
     return data[(y * width_ + x) * this->channel + channel];
 }
 
-const unsigned char &Image::At(size_t x, size_t y, size_t channel) const
+const unsigned char& Image::At(size_t x, size_t y, size_t channel) const
 {
     return data[(y * width_ + x) * this->channel + channel];
 }
 
-bool Image::SetPixel(size_t x, size_t y, const Pixel<unsigned char> &pixel)
+bool Image::SetPixel(size_t x, size_t y, const Pixel<unsigned char>& pixel)
 {
     if (pixel.channel != this->channel)
         return false;
@@ -134,17 +134,17 @@ bool Image::SetPixel(size_t x, size_t y, const Pixel<unsigned char> &pixel)
     return true;
 }
 
-bool Image::SetPixel(size_t x, size_t y, const Image::Pixel<float> &pixel)
+bool Image::SetPixel(size_t x, size_t y, const Image::Pixel<float>& pixel)
 {
     return SetPixel(x, y, Pixel_F2UB(pixel));
 }
 
-bool Image::SetPixel(size_t x, size_t y, const glm::vec3 &pixel)
+bool Image::SetPixel(size_t x, size_t y, const glm::vec3& pixel)
 {
     return SetPixel(x, y, Pixel_F2UB(Image::Pixel<float>(pixel.r, pixel.g, pixel.b)));
 }
 
-bool Image::SetPixel(size_t x, size_t y, const Image::Pixel<double> &pixel)
+bool Image::SetPixel(size_t x, size_t y, const Image::Pixel<double>& pixel)
 {
     return SetPixel(x, y, Pixel_D2UB(pixel));
 }
@@ -170,7 +170,7 @@ Image::Pixel<double> Image::GetPixel_D(size_t x, size_t y) const
 
 //------------
 
-bool Image::Load(const std::string &fileName, bool flip)
+bool Image::Load(const std::string& fileName, bool flip)
 {
     Free();
 
@@ -227,7 +227,7 @@ void Image::Free()
     type = ENUM_SRC_TYPE_INVALID;
 }
 
-bool Image::SaveAsPNG(const string &fileName, bool flip) const
+bool Image::SaveAsPNG(const string& fileName, bool flip) const
 {
     stbi_flip_vertically_on_write(flip);
     return stbi_write_png(fileName.c_str(), width_, height_, channel, data, width_ * 3);

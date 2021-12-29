@@ -23,30 +23,30 @@
 #ifndef GEOMETRY_TRIANGLE_H_
 #define GEOMETRY_TRIANGLE_H_
 
-#include "core/object.h"
-#include "core/ray.h"
-#include "core/intersection.h"
-#include "core/aabb.h"
-#include "core/vertex.h"
-#include "math/rand.h"
+#include <core/object.h>
+#include <core/ray.h>
+#include <core/intersection.h>
+#include <core/aabb.h>
+#include <geometry/vertex.h>
+#include <math/rand.h>
 
 namespace platinum
 {
     class Triangle : public Object
     {
     public:
-        Triangle(const glm::vec3 &a, const glm::vec3 &b, const glm::vec3 &c, const std::shared_ptr<Material> &material_ = NULL);
-        Triangle(const Vertex &a, const Vertex &b, const Vertex &c, const std::shared_ptr<Material> &material_ = NULL);
-        virtual HitRst Intersect(std::shared_ptr<Ray> &r);
+        Triangle(const glm::vec3& a, const glm::vec3& b, const glm::vec3& c, const std::shared_ptr<Material>& material_ = NULL);
+        Triangle(const Vertex& a, const Vertex& b, const Vertex& c, const std::shared_ptr<Material>& material_ = NULL);
+        virtual HitRst Intersect(std::shared_ptr<Ray>& r);
         virtual AABB GetBoundingBox() const;
         virtual float GetArea() const;
-        virtual void Sample(HitRst &inter, float &pdf) const;
-        const Vertex &GetA() const { return A; }
-        const Vertex &GetB() const { return B; }
-        const Vertex &GetC() const { return C; }
+        virtual void Sample(HitRst& inter, float& pdf) const;
+        const Vertex& GetA() const { return A; }
+        const Vertex& GetB() const { return B; }
+        const Vertex& GetC() const { return C; }
 
     protected:
-        glm::vec4 intersectRay(const glm::vec3 &o, const glm::vec3 &d);
+        glm::vec4 intersectRay(const glm::vec3& o, const glm::vec3& d);
 
     private:
         Vertex A, B, C;

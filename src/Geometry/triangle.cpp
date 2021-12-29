@@ -20,12 +20,12 @@
 //  FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 //  DEALINGS IN THE SOFTWARE.
 
-#include "triangle.h"
+#include <geometry/triangle.h>
 
 namespace platinum
 {
 
-    void Triangle::Sample(HitRst &rst, float &pdf) const
+    void Triangle::Sample(HitRst& rst, float& pdf) const
     {
         float x = std::sqrt(Random::RandomInUnitFloat()), y = Random::RandomInUnitFloat();
         rst.record.vert.position_ = A.position_ * (1.0f - x) + B.position_ * (x * (1.0f - y)) + C.position_ * (x * y);
@@ -40,7 +40,7 @@ namespace platinum
     {
         return area_;
     }
-    Triangle::Triangle(const glm::vec3 &a, const glm::vec3 &b, const glm::vec3 &c, const std::shared_ptr<Material> &material_)
+    Triangle::Triangle(const glm::vec3& a, const glm::vec3& b, const glm::vec3& c, const std::shared_ptr<Material>& material_)
         : A(a), B(b), C(c), Object(material_)
     {
         e1 = B.position_ - A.position_;
@@ -50,7 +50,7 @@ namespace platinum
         bounding_box_ = AABB(A.position_, B.position_);
         bounding_box_.Expand(C.position_);
     }
-    Triangle::Triangle(const Vertex &a, const Vertex &b, const Vertex &c, const std::shared_ptr<Material> &material_)
+    Triangle::Triangle(const Vertex& a, const Vertex& b, const Vertex& c, const std::shared_ptr<Material>& material_)
         : A(a), B(b), C(c), Object(material_)
     {
         e1 = B.position_ - A.position_;
@@ -60,7 +60,7 @@ namespace platinum
         bounding_box_ = AABB(A.position_, B.position_);
         bounding_box_.Expand(C.position_);
     }
-    glm::vec4 Triangle::intersectRay(const glm::vec3 &o, const glm::vec3 &d)
+    glm::vec4 Triangle::intersectRay(const glm::vec3& o, const glm::vec3& d)
     {
         glm::mat3 equation_A(glm::vec3(A.position_ - B.position_), glm::vec3(A.position_ - C.position_), d);
 
@@ -73,7 +73,7 @@ namespace platinum
         return glm::vec4(alpha, equation_X);
     }
 
-    HitRst Triangle::Intersect(std::shared_ptr<Ray> &r)
+    HitRst Triangle::Intersect(std::shared_ptr<Ray>& r)
     {
         // //moller trumbore algorithm
         // Intersection rst;

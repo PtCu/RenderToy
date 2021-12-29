@@ -20,7 +20,7 @@
 //  FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 //  DEALINGS IN THE SOFTWARE.
 
-#include "camera.h"
+#include <core/camera.h>
 
 namespace platinum
 {
@@ -32,7 +32,7 @@ namespace platinum
         vertical = glm::vec3(0.0, -2.0, 0.0);
         origin_ = glm::vec3(0.0, 0.0, 0.0);
     }
-    Camera::Camera(const glm::vec3 &lookfrom, const glm::vec3 &lookat, const glm::vec3 &vup, float vfov, float aspect, float aperture, float focus_dist) : origin_(lookfrom), lens_radius(aperture)
+    Camera::Camera(const glm::vec3& lookfrom, const glm::vec3& lookat, const glm::vec3& vup, float vfov, float aspect, float aperture, float focus_dist) : origin_(lookfrom), lens_radius(aperture)
     {
         // lens_radius = aperture / 2;
         // float theta = vfov * PI / 180;
@@ -64,7 +64,7 @@ namespace platinum
     std::shared_ptr<Ray> Camera::GetRay(float s, float t) const
     {
         auto ray = std::make_shared<Ray>(origin_,
-                                         lower_left_corner + s * horizontal + t * vertical - origin_);
+            lower_left_corner + s * horizontal + t * vertical - origin_);
         return ray;
     }
     void Camera::GetRay(float s, float t, std::shared_ptr<Ray> ray) const

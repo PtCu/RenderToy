@@ -23,18 +23,18 @@
 #ifndef TEXTURE_IMG_TEXTURE_H_
 #define TEXTURE_IMG_TEXTURE_H_
 
-#include "core/texture.h"
+#include <core/texture.h>
 #include <glm/glm.hpp>
-#include "core/image.h"
+#include <core/image.h>
 
 namespace platinum
 {
   class ImgTexture : public Texture
   {
   public:
-    ImgTexture(const std::string &fileName, bool flip = false);
+    ImgTexture(const std::string& fileName, bool flip = false);
 
-    virtual glm::vec3 GetValue(float u = 0, float v = 0, const glm::vec3 &p = glm::vec3(0)) const;
+    virtual glm::vec3 GetValue(float u = 0, float v = 0, const glm::vec3& p = glm::vec3(0)) const;
 
   private:
     std::shared_ptr<const Image> img_;
