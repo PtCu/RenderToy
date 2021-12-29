@@ -49,7 +49,7 @@ namespace platinum
             SAH,
             HLBVH
         };
-        BVHAccel(SplitMethod sm = SplitMethod::MIDDLE) : split_method_(sm) {}
+        explicit BVHAccel(SplitMethod sm = SplitMethod::MIDDLE) : split_method_(sm) {}
         // BVHAccel Public Methods
         BVHAccel(std::vector<std::shared_ptr<Object>> &p, SplitMethod split_method_ = SplitMethod::MIDDLE);
         BVHAccel(std::vector<std::shared_ptr<Object>>::iterator &begin, std::vector<std::shared_ptr<Object>>::iterator &end, SplitMethod split_method_ = SplitMethod::MIDDLE);

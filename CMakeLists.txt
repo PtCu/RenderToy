@@ -1,18 +1,14 @@
 cmake_minimum_required(VERSION 3.0.0)
-
 set(PROJECT_NAME "RenderToy")
+project (${PROJECT_NAME} VERSION 0.1.0)
 
 set(CMAKE_CXX_STANDARD 17)
-
-project (${PROJECT_NAME})
-
-include(CTest)
-enable_testing()
 
 find_package(glm CONFIG REQUIRED)
 #target_link_libraries(main PRIVATE glm::glm)
 find_package(spdlog CONFIG REQUIRED)
 #target_link_libraries(main PRIVATE spdlog::spdlog spdlog::spdlog_header_only)
+
 #---------------------------------------
 macro(SETUP_PROJECT MODE TARGET_NAME STR_TARGET_SOURCES STR_TARGET_LIBS)
 	string(REPLACE " " ";" LIST_TARGET_SOURCES ${STR_TARGET_SOURCES})
@@ -64,40 +60,19 @@ macro(GET_DIR_NAME DIRNAME)
 endmacro(GET_DIR_NAME DIRNAME)
 #---------------------------------------
 
-set_property(GLOBAL PROPERTY USE_FOLDERS ON)
-
-# 往工程中添加spdlog库，这个库是一个interface类型的库
-add_library(spdlog INTERFACE)
-
 #设置头文件目录
-include_directories(${PROJECT_SOURCE_DIR}/src)
-include_directories (${PROJECT_SOURCE_DIR}/include)
-
-# spdlog会用到pthread库
-find_package(Threads)
-
-# The version number.
-set (${PROJECT_NAME}_VERSION_MAJOR 1)
-set (${PROJECT_NAME}_VERSION_MINOR 0)
+include_directories(
+	${PROJECT_SOURCE_DIR}/src
+	${PROJECT_SOURCE_DIR}/include
+	${CMAKE_BINARY_DIR}/config
+)
 
 
-set(CMAKE_INSTALL_PREFIX ${PROJECT_SOURCE_DIR})
-
-find_package(OpenMP REQUIRED)
-if(OPENMP_FOUND)
-	message("OPENMP FOUND")
-	set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} ${OpenMP_C_FLAGS}")
-	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${OpenMP_CXX_FLAGS}")
-	set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} ${OpenMP_EXE_LINKER_FLAGS}")
-endif()
+configure_file(config/ROOT_PATH.h.in config/ROOT_PATH.h)
 
 add_subdirectory (src)
 add_subdirectory (tests)
 
-
-# include (InstallRequiredSystemLibraries)
-# set (CPACK_RESOURCE_FILE_LICENSE "${CMAKE_CURRENT_SOURCE_DIR}/License")
-# set (CPACK_PACKAGE_VERSION_MAJOR "${${PROJECT_NAME}_VERSION_MAJOR}")
-# set (CPACK_PACKAGE_VERSION_MINOR "${${PROJECT_NAME}_VERSION_MINOR}")
-# set (CPACK_PACKAGE_CONTACT       "1365699009@qq.com")
-# include (CPack)
+set(CPACK_PROJECT_NAME ${PROJECT_NAME})
+set(CPACK_PROJECT_VERSION ${PROJECT_VERSION})
+include(CPack)

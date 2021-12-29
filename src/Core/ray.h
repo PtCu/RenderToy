@@ -22,6 +22,7 @@
 
 #ifndef CORE_RAY_H_
 #define CORE_RAY_H_
+
 #include <glm/glm.hpp>
 #include <core/defines.h>
 
