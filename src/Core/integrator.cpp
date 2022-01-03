@@ -65,7 +65,7 @@ namespace platinum
                         float u = static_cast<float>(i + Random::RandomInUnitFloat()) / static_cast<float>(width);
                         float v = static_cast<float>(j + Random::RandomInUnitFloat()) / static_cast<float>(height);
                         auto r = _camera->GetRay(u, v);
-                        auto rst = Li(scene, r);
+                        auto rst = Li(scene, r, 0);
                         film->AddPixelValue(px_id, rst / static_cast<float>(_spp));
                     }
                     ++has_finished_num;

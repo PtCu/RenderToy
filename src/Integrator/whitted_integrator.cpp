@@ -15,41 +15,54 @@
 #include "whitted_integrator.h"
 
 namespace platinum {
-    glm::vec3 WhittedIntegrator::LiRecur(const Scene& scene, const Ray& ray, int depth) {
-        if (depth == 0) return glm::vec3(0);
-        auto hit_rst = scene.RayIntersect(ray);
+
+    glm::vec3 WhittedIntegrator::Li(const Scene& scene, const Ray& ray, int depth) {
+
+        auto hit_rst = scene.Hit(ray);
         glm::vec3 L;
         SurfaceInteraction inter;
         if (!hit_rst.is_hit) {
-
             //返回lights emission
             for (const auto& light : scene._lights)
                 L += light->Le(ray);
             return L;
         }
-        const glm::vec3& n(inter.n);
-        glm::vec3 wo(inter.wo);
+
 
         inter.computeScatteringFunctions(ray);
-        // There is no bsdf funcion
+        // 没有bsdf
         if (!inter.bsdf)
         {
-            // return LiRecur(scene, inter.spawnRay());
+            return Li(scene, inter.spawnRay(ray.GetDirection()), depth);
         }
+
+        const glm::vec3& n(inter.n);
+        glm::vec3 wo(inter.wo);
+        // 如果光线打到光源，计算其发光值 -> Le (emission term)
         L += inter.Le(wo);
 
         //对每个光源，计算其贡献
         for (const auto& light : scene._lights) {
             float pdf;
             glm::vec3 wi;
-            glm::vec3 Li = light->SampleLi(inter, pdf, wi);
-            if (pdf == 0) continue;
+            VisibilityTester visibility_tester;
+            glm::vec3 sampled_li = light->SampleLi(inter, pdf, wi, visibility_tester);
+            if (sampled_li == glm::vec3(0) || pdf == 0)
+                continue;
+            glm::vec3 f = inter.bsdf->F(wo, wi);
+            
+            //如果所采样的光源上的光线没被遮挡
+            if (visibility_tester.Unoccluded(scene)) {
+                L += f * sampled_li * glm::dot(wi, n) / pdf;
+            }
+
 
 
         }
-        return glm::vec3(0);
-    }
-    glm::vec3 WhittedIntegrator::Li(const Scene& scene, const Ray& ray) {
-        return LiRecur(scene, ray, _max_depth);
+        if (depth + 1 < _max_depth) {
+            L += SpecularReflect(ray, inter, scene, depth);
+            L += SpecularTransmit(ray, inter, scene, depth);
+        }
+        return L;
     }
 }

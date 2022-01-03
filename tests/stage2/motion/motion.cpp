@@ -77,7 +77,7 @@ int main()
     float dist_to_focus = 10.0f;
     float aperture = 0.1f;
 
-    shared_ptr<Camera> cam = make_shared<TCamera>(lookfrom, lookat, vec3(0, -1, 0), 20, float(nx) / float(ny), aperture, dist_to_focus, 0.f, 1.f);
+    shared_ptr<Camera> cam = make_shared<Camera>(lookfrom, lookat, vec3(0, -1, 0), 20, float(nx) / float(ny), aperture, dist_to_focus, 0.f, 1.f);
     Renderer render(nx, ny, 3, "motion.png", ns);
     render.Render(world, cam);
 

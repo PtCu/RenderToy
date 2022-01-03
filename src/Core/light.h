@@ -17,13 +17,29 @@
 #include <glm/glm.hpp>
 #include <core/ray.h>
 #include <core/intersection.h>
+#include <core/scene.h>
+
 namespace platinum {
     class Light {
     public:
         Light() = default;
-        virtual ~Light();
-        virtual glm::vec3 Le(const Ray& r)const;
-        virtual glm::vec3 SampleLi(const Interaction& inter, float& pdf, glm::vec3& wi);
+        virtual ~Light() = default;;
+        virtual glm::vec3 Le(const Ray& r)const { return glm::vec3(0); };
+        virtual glm::vec3 SampleLi(const Interaction& inter, float& pdf, glm::vec3& wi, VisibilityTester& vis)const;
+        virtual float PdfLi(const Interaction&, const glm::vec3)const;
+    };
+
+    class VisibilityTester final {
+    public:
+        VisibilityTester() = default;
+        VisibilityTester(const Interaction& p0, const Interaction& p1) :_p0(p0), _p1(p1) {
+
+        }
+        const Interaction& P0()const { return _p0; }
+        const Interaction& P1()const { return _p1; }
+        bool Unoccluded(const Scene& scene)const;
+    private:
+        Interaction _p0, _p1;
     };
 }
 

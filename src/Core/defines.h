@@ -91,6 +91,10 @@ namespace platinum
     class TiledIntegrator;
     class Film;
     class BSDF;
+    class Interaction;
+    class VisibilityTester;
+    class Light;
+    class Sampler;
 
 } // namespace platinum
 #endif

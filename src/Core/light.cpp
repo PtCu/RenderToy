@@ -13,3 +13,8 @@
 // limitations under the License.
 
 #include "light.h"
+namespace platinum {
+    bool VisibilityTester::Unoccluded(const Scene& scene)const {
+        return scene.Hit(_p0.spawnRayTo(_p1)).is_hit;
+    }
+}

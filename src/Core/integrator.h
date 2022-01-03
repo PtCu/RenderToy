@@ -98,7 +98,7 @@ namespace platinum
     class TiledIntegrator : public Integrator
     {
     public:
-        TiledIntegrator(std::shared_ptr<Camera> camera, int spp) : _camera(camera), _spp(spp)
+        TiledIntegrator(std::shared_ptr<Camera> camera, int spp, int max_depth = 10) : _camera(camera), _spp(spp), _max_depth(max_depth)
         {
             _tiles_manager = std::make_unique<TilesManager>(_camera->GetFilm()->GetWidth(), _camera->GetFilm()->GetHeight());
         }
@@ -108,12 +108,13 @@ namespace platinum
     protected:
         // Li() 方法计算有多少光照量沿着
         // 该 Ray 到达成像平面，并把光照量（radiance）保存在 Film 内
-        virtual glm::vec3 Li(const Scene& scene, const Ray&) = 0;
+        virtual glm::vec3 Li(const Scene& scene, const Ray& ray, int depth) = 0;
         void UpdateProgress(float progress);
         std::shared_ptr<Camera> _camera;
         int _spp;
         std::mutex _mutex_ins;
         std::unique_ptr<TilesManager> _tiles_manager;
+        int _max_depth;
     };
 
 }

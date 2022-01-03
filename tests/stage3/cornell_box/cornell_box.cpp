@@ -10,6 +10,7 @@
 #include "../src/geometry/vertex.h"
 #include "../src/geometry/triangle_mesh.h"
 #include "../src/core/integrator.h"
+#include "../src/integrator/whitted_integrator.h"
 #include "../src/core/film.h"
 
 using namespace platinum;
@@ -57,8 +58,8 @@ int main()
     shared_ptr<Camera> cam = make_shared<Camera>(lookfrom, lookat, vec3(0, -1, 0), 45, float(nx) / float(ny), aperture, dist_to_focus);
     shared_ptr<Film> film = make_shared<Film>("cornell.png", nx, ny, 3);
     cam->SetFilm(film);
-    // TiledIntegrator tiledIntegrator(cam, ns);
-    // tiledIntegrator.Render(world);
+    // WhittedIntegrator whittedIntegrator(cam,ns);
+    // whittedIntegrator.Render(world);
 
     world.Reset();
     return 0;

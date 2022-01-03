@@ -32,20 +32,8 @@ namespace platinum
         vertical = glm::vec3(0.0, -2.0, 0.0);
         origin_ = glm::vec3(0.0, 0.0, 0.0);
     }
-    Camera::Camera(const glm::vec3& lookfrom, const glm::vec3& lookat, const glm::vec3& vup, float vfov, float aspect, float aperture, float focus_dist) : origin_(lookfrom), lens_radius(aperture)
+    Camera::Camera(const glm::vec3& lookfrom, const glm::vec3& lookat, const glm::vec3& vup, float vfov, float aspect, float aperture, float focus_dist,float t0,float t1) : origin_(lookfrom), lens_radius(aperture/2),_t0(t0),_t1(t1)
     {
-        // lens_radius = aperture / 2;
-        // float theta = vfov * PI / 180;
-        // float half_height = tan(theta / 2);
-        // float half_width = aspect * half_height;
-        // origin_ = lookfrom;
-        // w = glm::normalize(glm::vec3(lookfrom - lookat));
-        // u = glm::normalize(glm::cross(vup, w));
-        // v = glm::cross(w, u);
-        // lower_left_corner = origin_ - half_width * focusDist * u - half_height * focusDist * v - focusDist * w;
-        // horizontal = 2 * half_width * focusDist * u;
-        // vertical = 2 * half_height * focusDist * v;
-
         if (focus_dist == -1.0f)
             focus_dist = glm::distance(lookfrom, lookat);
 
@@ -68,11 +56,5 @@ namespace platinum
         ray.SetTime(time);
         return ray;
     }
-    void Camera::GetRay(float s, float t, std::shared_ptr<Ray>ray) const
-    {
-        glm::vec2 rd = lens_radius * Random::RandomInUnitDisk();
-        glm::vec3 _origin = origin_ + rd.x * right + rd.y * up;
-        glm::vec3 dir = lower_left_corner + s * horizontal + t * vertical - origin_;
-        ray->Init(origin_, dir);
-    }
+
 }

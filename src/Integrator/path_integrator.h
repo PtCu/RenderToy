@@ -23,9 +23,9 @@ namespace platinum
     class PathIntegrator : public TiledIntegrator
     {
     public:
-        PathIntegrator(std::shared_ptr<Camera> camera, int spp, float rr_threshold = 0.8) :TiledIntegrator(camera, spp), _rr_threshold(rr_threshold) {}
+        PathIntegrator(std::shared_ptr<Camera> camera, int spp, int max_depth,float rr_threshold = 0.8) :TiledIntegrator(camera, spp,max_depth), _rr_threshold(rr_threshold) {}
     protected:
-        virtual glm::vec3 Li(const Scene& scene, const Ray&);
+        virtual glm::vec3 Li(const Scene& scene, const Ray& ray,int depth);
         float _rr_threshold;
     };
 }
