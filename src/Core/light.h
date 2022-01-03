@@ -16,6 +16,7 @@
 #define CORE_LIGHT_CPP_
 #include <glm/glm.hpp>
 #include <core/ray.h>
+#include <core/intersection.h>
 namespace platinum {
     class Light {
     public:

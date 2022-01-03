@@ -1,6 +1,6 @@
 #include "../src/core/image.h"
 #include "../src/core/ray.h"
-#include "../src/core/t_camera.h"
+
 #include "../src/core/object.h"
 #include "../src/material/lambertian.h"
 #include "../src/math/rand.h"

@@ -1,6 +1,6 @@
 #include "../src/core/image.h"
 #include "../src/core/ray.h"
-#include "../src/core/t_camera.h"
+
 #include "../src/core/object.h"
 #include "../src/material/lambertian.h"
 #include "../src/math/rand.h"
@@ -12,7 +12,7 @@
 #include "../src/texture/noise_texture.h"
 #include "../src/geometry/triangle_mesh.h"
 #include "../src/material/isotropic.h"
-#include "../src/geometry/instance.h"
+
 #include "../src/geometry/volume.h"
 #include <glm/gtc/matrix_transform.hpp>
 #include "box.h"
