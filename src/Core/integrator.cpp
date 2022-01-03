@@ -15,6 +15,15 @@
 
 namespace platinum
 {
+    glm::vec3 Integrator::SpecularReflect(const Ray& ray, const Interaction& inter, const Scene& scene, int depth)const {
+        return glm::vec3(0);
+
+    }
+    glm::vec3 Integrator::SpecularTransmit(const Ray& ray, const Interaction& inter, const Scene& scene, int depth)const {
+        return glm::vec3(0);
+
+    }
+
     void TiledIntegrator::UpdateProgress(float progress)
     {
         int barWidth = 70;

@@ -90,6 +90,7 @@ namespace platinum
     class Integrator;
     class TiledIntegrator;
     class Film;
+    class BSDF;
 
 } // namespace platinum
 #endif

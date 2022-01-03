@@ -32,7 +32,7 @@ namespace platinum
     {
         auto reflected = glm::vec3(rst.record.vert.normal_) + Random::RandomInUnitSphere();
         auto attenuation = albedo_->GetValue(rst.record.vert.u_, rst.record.vert.v_, rst.record.vert.position_);
-        rst.record.ray->Update(rst.record.vert.position_, reflected, attenuation);
+        rst.record.ray.Update(rst.record.vert.position_, reflected, attenuation);
         return true;
     }
 

@@ -61,13 +61,14 @@ namespace platinum
         vertical = height * up;
     }
 
-    std::shared_ptr<Ray> Camera::GetRay(float s, float t) const
+    Ray Camera::GetRay(float s, float t) const
     {
-        auto ray = std::make_shared<Ray>(origin_,
-            lower_left_corner + s * horizontal + t * vertical - origin_);
+        Ray ray(origin_, lower_left_corner + s * horizontal + t * vertical - origin_);
+        float time = _t0 + Random::RandomInUnitFloat() * (_t1 - _t0);
+        ray.SetTime(time);
         return ray;
     }
-    void Camera::GetRay(float s, float t, std::shared_ptr<Ray> ray) const
+    void Camera::GetRay(float s, float t, std::shared_ptr<Ray>ray) const
     {
         glm::vec2 rd = lens_radius * Random::RandomInUnitDisk();
         glm::vec3 _origin = origin_ + rd.x * right + rd.y * up;

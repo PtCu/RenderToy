@@ -31,12 +31,12 @@ void some_spheres(Scene& world)
     world.AddObject(sph1);
     auto sph2 = make_shared<Sphere>(vec3(0, 0, -1), 0.5, make_shared<Lambertian>(noi_tex));
     world.AddObject(sph2);
-    auto sph3 = make_shared<Sphere>(vec3(0, 1, -2), 0.4, make_shared<Light>(light_tex));
+    auto sph3 = make_shared<Sphere>(vec3(0, 1, -2), 0.4, make_shared<MaterailLight>(light_tex));
     world.AddObject(sph3);
     vector<Vertex> vertexs;
     for (size_t i = 0; i < sizeof(pos) / sizeof(float); i += 3)
         vertexs.push_back(Vertex(vec3(pos[i], pos[i + 1], pos[i + 2])));
-    auto triMesh = make_shared<TriMesh>(vertexs, make_shared<Light>(light_tex));
+    auto triMesh = make_shared<TriMesh>(vertexs, make_shared<MaterailLight>(light_tex));
     world.AddObject(triMesh);
 }
 

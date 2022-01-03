@@ -36,14 +36,14 @@ namespace platinum
 
     bool Metal::ComputeScatteringFunctions(HitRst &rst) const
     {
-        glm::vec3 reflected = Reflect(rst.record.ray->GetDirection(), rst.record.vert.normal_) + fuzz_ * Random::RandomInUnitSphere();
+        glm::vec3 reflected = Reflect(rst.record.ray.GetDirection(), rst.record.vert.normal_) + fuzz_ * Random::RandomInUnitSphere();
         if (glm::dot(reflected, rst.record.vert.normal_) < 0)
         {
-            rst.record.ray->SetColor(glm::vec3(0, 0, 0));
+            rst.record.ray.SetColor(glm::vec3(0, 0, 0));
             return false;
         }
         auto attenuation = albedo_->GetValue(rst.record.vert.u_, rst.record.vert.v_, rst.record.vert.position_);
-        rst.record.ray->Update(rst.record.vert.position_, reflected, attenuation);
+        rst.record.ray.Update(rst.record.vert.position_, reflected, attenuation);
         return true;
     }
     // Sample a ray by Material properties

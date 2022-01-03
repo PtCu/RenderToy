@@ -31,6 +31,7 @@
 #include <core/bvh.h>
 #include <functional>
 #include <math/rand.h>
+#include <core/light.h>
 namespace platinum
 {
     class Scene
@@ -44,14 +45,16 @@ namespace platinum
         void AddObject(const std::vector<std::shared_ptr<Object>>::iterator& begin, const std::vector<std::shared_ptr<Object>>::iterator& end);
         void Reset();
         void BuildBVH();
-        HitRst RayIntersect(std::shared_ptr<Ray>& r) const;
-        glm::vec3 CastRay(std::shared_ptr<Ray>& r) const;
+        HitRst RayIntersect(const Ray& r) const;
+        glm::vec3 CastRay(const Ray& r) const;
         const std::vector<std::shared_ptr<Object>>& GetObjects() const { return objects_; }
+
+        std::vector<std::shared_ptr<Light>>_lights;
 
     private:
         void destroyAll();
-        glm::vec3 castRayPdf(std::shared_ptr<Ray>& r) const;
-        glm::vec3 castRay(std::shared_ptr<Ray>& r, int depth) const; //Using BVH tree to accelerate.
+        glm::vec3 castRayPdf(const Ray& r) const;
+        glm::vec3 castRay(const Ray& r, int depth) const; //Using BVH tree to accelerate.
 
         void sampleLight(HitRst& inter, float& pdf) const;
         int max_depth_;

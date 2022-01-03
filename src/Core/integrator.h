@@ -27,6 +27,8 @@ namespace platinum
     public:
         virtual ~Integrator() = default;
         virtual void Render(const Scene& scene) = 0;
+        glm::vec3 SpecularReflect(const Ray& ray, const Interaction& inter, const Scene& scene, int depth)const;
+        glm::vec3 SpecularTransmit(const Ray& ray, const Interaction& inter, const Scene& scene, int depth)const;
     };
     struct RenderTile
     {
@@ -106,7 +108,7 @@ namespace platinum
     protected:
         // Li() 方法计算有多少光照量沿着
         // 该 Ray 到达成像平面，并把光照量（radiance）保存在 Film 内
-        virtual glm::vec3 Li(const Scene& scene, std::shared_ptr<Ray>) = 0;
+        virtual glm::vec3 Li(const Scene& scene, const Ray&) = 0;
         void UpdateProgress(float progress);
         std::shared_ptr<Camera> _camera;
         int _spp;

@@ -40,11 +40,11 @@ namespace platinum
     {
         return bounding_box_;
     }
-    glm::vec3 Sphere::getCenter(const std::shared_ptr<Ray>& r) const
+    glm::vec3 Sphere::getCenter(const Ray& r) const
     {
         return center_;
     }
-    Sphere::Sphere(glm::vec3 cen, float r, const std::shared_ptr<Material>& m)
+    Sphere::Sphere(glm::vec3 cen, float r, std::shared_ptr<Material> m)
         : center_(cen), radius_(r), Object(m)
     {
         glm::vec3 minP = center_ - glm::vec3(radius_);
@@ -52,34 +52,34 @@ namespace platinum
         bounding_box_ = AABB(minP, maxP);
         area_ = PI * 4.0f * r * r;
     };
-    void Sphere::setIntersection(float t, HitRst& rst, const std::shared_ptr<Ray>& r) const
+    void Sphere::setIntersection(float t, HitRst& rst, const Ray& r) const
     {
         rst.record.ray = r;
-        rst.record.ray->SetTMax(t);
-        rst.record.vert.position_ = r->PointAt(rst.record.ray->GetMaxTime());
+        rst.record.ray.SetTMax(t);
+        rst.record.vert.position_ = r.PointAt(rst.record.ray.GetMaxTime());
         rst.record.vert.normal_ = glm::vec3((rst.record.vert.position_ - getCenter(r)) / radius_);
         getSphereUV(rst.record.vert.normal_, rst.record.vert.u_, rst.record.vert.v_);
-        rst.material_ = GetMaterial();
+        rst.material = GetMaterial();
         rst.is_hit = true;
     }
 
-    HitRst Sphere::Intersect(std::shared_ptr<Ray>& r)
+    HitRst Sphere::Intersect(const Ray& r)
     {
         HitRst rst;
-        glm::vec3 oc = r->GetOrigin() - getCenter(r);
-        float a = glm::dot(r->GetDirection(), r->GetDirection());
-        float b = glm::dot(oc, r->GetDirection());
+        glm::vec3 oc = r.GetOrigin() - getCenter(r);
+        float a = glm::dot(r.GetDirection(), r.GetDirection());
+        float b = glm::dot(oc, r.GetDirection());
         float c = glm::dot(oc, oc) - radius_ * radius_;
         float discriminant = b * b - a * c;
         if (discriminant > 0)
         {
             float temp = (-b - sqrt(discriminant)) / a;
-            if (temp < r->GetMaxTime() && temp > r->GetMinTime())
+            if (temp < r.GetMaxTime() && temp > r.GetMinTime())
             {
                 setIntersection(temp, rst, r);
             }
             temp = (-b + sqrt(discriminant)) / a;
-            if (temp < r->GetMaxTime() && temp > r->GetMinTime())
+            if (temp < r.GetMaxTime() && temp > r.GetMinTime())
             {
                 setIntersection(temp, rst, r);
             }

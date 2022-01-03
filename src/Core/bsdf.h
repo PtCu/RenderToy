@@ -12,3 +12,21 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+#ifndef CORE_BSDF_CPP_
+#define CORE_BSDF_CPP_
+
+#include <core/defines.h>
+#include <core/intersection.h>
+
+namespace platinum {
+    class BSDF {
+    public:
+        BSDF() = default;
+        float Pdf(const glm::vec3& wo, const glm::vec3& wi) const;
+        glm::vec3 F(const glm::vec3& woW, const glm::vec3& wiW)const;
+        glm::vec3 SampleF(const glm::vec3& wo, const glm::vec3& wi, float& pdf)const;
+    };
+}
+
+
+#endif

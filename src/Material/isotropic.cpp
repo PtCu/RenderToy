@@ -29,7 +29,7 @@ namespace platinum
     bool Isotropic::ComputeScatteringFunctions(HitRst &rst) const
     {
         auto attenuation = texure_->GetValue(rst.record.vert.u_, rst.record.vert.v_, rst.record.vert.position_);
-        rst.record.ray->Update(rst.record.vert.position_, Random::RandomInUnitSphere(), attenuation);
+        rst.record.ray.Update(rst.record.vert.position_, Random::RandomInUnitSphere(), attenuation);
         return true;
     }
     // Sample a ray by Material properties

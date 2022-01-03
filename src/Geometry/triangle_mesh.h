@@ -40,7 +40,7 @@ namespace platinum
     public:
         TriMesh(const std::string& filename_, std::shared_ptr<Material> m = NULL);
         TriMesh(const std::vector<Vertex>& vertexs, std::shared_ptr<Material> m = NULL);
-        virtual HitRst Intersect(std::shared_ptr<Ray>& r);
+        virtual HitRst Intersect(const Ray& r);
         virtual AABB GetBoundingBox() const { return bounding_box_; }
         virtual float GetArea() const;
         virtual void Sample(HitRst& inter, float& pdf) const;

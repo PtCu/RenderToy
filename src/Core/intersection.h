@@ -27,30 +27,39 @@
 #include <core/material.h>
 #include <core/ray.h>
 #include <geometry/vertex.h>
-
+#include <core/bsdf.h>
 namespace platinum
 {
     struct HitRecord
     {
-        HitRecord(std::shared_ptr<Ray> _ray = NULL, const glm::vec3& pos = glm::vec3(0),
+    public:
+
+        HitRecord() = default;
+       
+        HitRecord(const Ray& _ray, const glm::vec3& pos = glm::vec3(0),
             const glm::vec3& normal = glm::vec3(0, 0, 1), float u = 0, float v = 0) : ray(_ray), vert(pos, normal, u, v) {}
-        std::shared_ptr<Ray> ray;
+        Ray ray;
         Vertex vert;
     };
 
     struct HitRst
     {
-        HitRst(bool hit = false) : is_hit(hit), material_(NULL) {}
+    public:
+        explicit HitRst(bool hit = false) : is_hit(hit), material(NULL) {}
         bool is_hit;
         glm::vec3 emit;
         HitRecord record;
-        std::shared_ptr<const Material> material_;
+        std::shared_ptr<const Material> material;
+        HitRst& operator=(const HitRst& e) {
+            return *this;
+        }
         static const HitRst InValid;
     };
 
     class Interaction {
+    public:
         Interaction() = default;
-        Interaction(const glm::vec3& p) : p(p) {}
+        explicit Interaction(const glm::vec3& p) : p(p) {}
         Interaction(const glm::vec3& p, const glm::vec3& wo) : p(p), wo(normalize(wo)) {}
         Interaction(const glm::vec3& p, const glm::vec3& n, const glm::vec3& wo)
             : p(p), wo(glm::normalize(wo)), n(n) {}
@@ -75,7 +84,7 @@ namespace platinum
             return Ray(origin, d, 1.f - ShadowEpsilon);
         }
 
-    public:
+
         glm::vec3 p;			//surface point
         glm::vec3 wo;			//outgoing direction
         glm::vec3 n;			//normal vector
@@ -84,7 +93,6 @@ namespace platinum
     class SurfaceInteraction final : public Interaction
     {
     public:
-
         SurfaceInteraction() = default;
         SurfaceInteraction(const glm::vec3& p, const glm::vec2& uv, const glm::vec3& wo,
             const glm::vec3& dpdu, const glm::vec3& dpdv);
@@ -94,7 +102,8 @@ namespace platinum
         void computeScatteringFunctions(const Ray& ray,
             bool allowMultipleLobes = false);
 
-    public:
+
+        BSDF* bsdf{ nullptr };
         glm::vec2 uv;
         glm::vec3 dpdu, dpdv;
 

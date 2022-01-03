@@ -40,7 +40,7 @@ namespace platinum
     {
         return area_;
     }
-    Triangle::Triangle(const glm::vec3& a, const glm::vec3& b, const glm::vec3& c, const std::shared_ptr<Material>& material_)
+    Triangle::Triangle(const glm::vec3& a, const glm::vec3& b, const glm::vec3& c, std::shared_ptr<Material> material_)
         : A(a), B(b), C(c), Object(material_)
     {
         e1 = B.position_ - A.position_;
@@ -50,7 +50,7 @@ namespace platinum
         bounding_box_ = AABB(A.position_, B.position_);
         bounding_box_.Expand(C.position_);
     }
-    Triangle::Triangle(const Vertex& a, const Vertex& b, const Vertex& c, const std::shared_ptr<Material>& material_)
+    Triangle::Triangle(const Vertex& a, const Vertex& b, const Vertex& c, std::shared_ptr<Material> material_)
         : A(a), B(b), C(c), Object(material_)
     {
         e1 = B.position_ - A.position_;
@@ -73,19 +73,19 @@ namespace platinum
         return glm::vec4(alpha, equation_X);
     }
 
-    HitRst Triangle::Intersect(std::shared_ptr<Ray>& r)
+    HitRst Triangle::Intersect(const Ray& r)
     {
         HitRst rst;
-        glm::vec4 abgt = this->intersectRay(r->GetOrigin(), r->GetDirection());
-        if (abgt == glm::vec4(0) || abgt[0] < 0 || abgt[0] > 1 || abgt[1] < 0 || abgt[1] > 1 || abgt[2] < 0 || abgt[2] > 1 || abgt[3] < r->GetMinTime() || abgt[3] > r->GetMaxTime())
+        glm::vec4 abgt = this->intersectRay(r.GetOrigin(), r.GetDirection());
+        if (abgt == glm::vec4(0) || abgt[0] < 0 || abgt[0] > 1 || abgt[1] < 0 || abgt[1] > 1 || abgt[2] < 0 || abgt[2] > 1 || abgt[3] < r.GetMinTime() || abgt[3] > r.GetMaxTime())
             return HitRst::InValid;
 
         rst.record.vert = Vertex::GenVert(glm::vec3(abgt[0], abgt[1], abgt[2]), A, B, C);
         rst.record.vert.normal_ = this->normal_;
         rst.record.ray = r;
-        rst.material_ = GetMaterial();
+        rst.material = GetMaterial();
         rst.is_hit = true;
-        r->SetTMax(abgt[3]);
+        rst.record.ray.SetTMax(abgt[3]);
         return rst;
     }
 }

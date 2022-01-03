@@ -36,7 +36,7 @@ void createWorld(Scene& world)
     auto greenMat = make_shared<Lambertian>(make_shared<ConstTexture>(vec3(0.12f, 0.45f, 0.15f)));
     auto grayMat = make_shared<Lambertian>(make_shared<ConstTexture>(vec3(0.73f, 0.73f, 0.73f)));
     auto blueMat = make_shared<Lambertian>(make_shared<ConstTexture>(vec3(0.1f, 0.1f, 0.73f)));
-    auto lightMat = make_shared<Light>(vec3(10.f));
+    auto lightMat = make_shared<MaterailLight>(vec3(10.f));
     auto cubeMat = make_shared<Lambertian>(make_shared<ConstTexture>(vec3(1.0f, 1.0f, 1.0f)));
     auto volMat = make_shared<Isotropic>(make_shared<ConstTexture>(vec3(0.65f, 0.05f, 0.05f)));
     auto cube = make_shared<TriMesh>(cubeVerts);

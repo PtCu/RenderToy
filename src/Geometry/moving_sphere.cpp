@@ -25,7 +25,7 @@
 namespace platinum
 {
 
-    MovingSphere::MovingSphere(glm::vec3 cen0, glm::vec3 cen1, float t0, float t1, float r, const std::shared_ptr<Material> &m)
+    MovingSphere::MovingSphere(glm::vec3 cen0, glm::vec3 cen1, float t0, float t1, float r, std::shared_ptr<Material> m)
         : center0(cen0), center1(cen1), time0_(t0), time1_(t1), Sphere(glm::vec3(0), r, m)
     {
         glm::vec3 minP = glm::min(center0 - glm::vec3(radius_), center1 - glm::vec3(radius_));
@@ -33,10 +33,9 @@ namespace platinum
         bounding_box_ = AABB(minP, maxP);
     }
 
-    glm::vec3 MovingSphere::getCenter(const std::shared_ptr<Ray> &r) const
+    glm::vec3 MovingSphere::getCenter(const Ray& r) const
     {
-        std::shared_ptr<TRay> tRay = std::dynamic_pointer_cast<TRay>(r);
-        float t = tRay->GetTime();
+        float t = r.GetTime();
         return center0 + ((t - time0_) / (time1_ - time0_)) * (center1 - center0);
     }
 

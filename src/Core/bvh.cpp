@@ -132,13 +132,13 @@ shared_ptr<BVH_Node> BVHAccel::recursiveBuild(vector<shared_ptr<Object>>::iterat
     return node;
 }
 
-HitRst BVHAccel::RayCast(std::shared_ptr<Ray>& r) const
+HitRst BVHAccel::RayCast(const Ray& r) const
 {
     HitRst isect;
     isect = BVHAccel::getIntersection_rec(root_, r);
     return isect;
 }
-HitRst BVHAccel::getIntersection_rec(std::shared_ptr<BVH_Node> node, std::shared_ptr<Ray>& r) const
+HitRst BVHAccel::getIntersection_rec(std::shared_ptr<BVH_Node> node, const Ray& r) const
 {
     // TODO Traverse the BVH to find intersection
     //如果和盒子没相交，就必不可能和盒子内的物体相交
@@ -153,7 +153,7 @@ HitRst BVHAccel::getIntersection_rec(std::shared_ptr<BVH_Node> node, std::shared
         // {
         //     tmp_inter = obj->Intersect(r);
 
-        //     if (tmp_inter.happened && (inter.happened == false || tmp_inter.ray->GetMaxTime() < inter.ray->GetMaxTime()))
+        //     if (tmp_inter.happened && (inter.happened == false || tmp_inter.ray.GetMaxTime() < inter.ray.GetMaxTime()))
         //     {
         //         // inter = std::move(tmp_inter);
         //         inter = tmp_inter;
@@ -175,10 +175,10 @@ HitRst BVHAccel::getIntersection_rec(std::shared_ptr<BVH_Node> node, std::shared
     }
     else
     {
-        return hit1.record.ray->GetMaxTime() < hit2.record.ray->GetMaxTime() ? hit1 : hit2;
+        return hit1.record.ray.GetMaxTime() < hit2.record.ray.GetMaxTime() ? hit1 : hit2;
     }
 }
-HitRst BVHAccel::getIntersection(std::shared_ptr<Ray>& r) const
+HitRst BVHAccel::getIntersection(const Ray& r) const
 {
     // TODO Traverse the BVH to find intersection
     if (!root_->bounding_box.IsHit(r))
@@ -198,7 +198,7 @@ HitRst BVHAccel::getIntersection(std::shared_ptr<Ray>& r) const
         if (p->left == NULL && p->right == NULL)
         {
             tmp_inter = p->objects->Intersect(r);
-            if (tmp_inter.is_hit && (inter.is_hit == false || tmp_inter.record.ray->GetMaxTime() < inter.record.ray->GetMaxTime()))
+            if (tmp_inter.is_hit && (inter.is_hit == false || tmp_inter.record.ray.GetMaxTime() < inter.record.ray.GetMaxTime()))
             {
                 // inter = std::move(tmp_inter);
                 inter = tmp_inter;

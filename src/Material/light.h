@@ -30,11 +30,11 @@
 
 namespace platinum
 {
-    class Light : public Material
+    class MaterailLight : public Material
     {
     public:
-        Light(const glm::vec3& color_, float linear = 0.0f, float quadratic = 0.0f);
-        Light(std::shared_ptr<Texture> lightTex, float linear = 0.0f, float quadratic = 0.0f);
+        MaterailLight(const glm::vec3& color_, float linear = 0.0f, float quadratic = 0.0f);
+        MaterailLight(std::shared_ptr<Texture> lightTex, float linear = 0.0f, float quadratic = 0.0f);
 
         bool ComputeScatteringFunctions(HitRst& rst) const final;
         // Sample a ray by Material properties

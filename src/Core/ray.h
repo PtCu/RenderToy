@@ -54,7 +54,8 @@ namespace platinum
         void SetTMax(float t) { _t_max = t; }
         void Transform(const glm::mat4& transform);
         static const float min_t_;
-
+        float GetTime() const { return _time; }
+        void SetTime(float t) { _time = t; }
     protected:
         virtual void DoNothing() {}
 
@@ -64,6 +65,7 @@ namespace platinum
         glm::vec3 color_;
         float _t_max;
         std::array<int, 3> is_neg_dir_;
+        float _time;
 
     };
 } // namespace platinum

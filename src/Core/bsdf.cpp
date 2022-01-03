@@ -12,19 +12,4 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#ifndef CORE_BSDF_CPP_
-#define CORE_BSDF_CPP_
-
-#include <core/defines.h>
-#include <core/intersection.h>
-
-namespace platinum {
-    class BSDF {
-
-    };
-}
-
-
-
-
-#endif
+#include "bsdf.h"

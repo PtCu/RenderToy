@@ -41,7 +41,7 @@ namespace platinum
         ~Volume() = default;
         virtual float GetArea() const;
         virtual void Sample(HitRst& inter, float& pdf) const;
-        virtual HitRst Intersect(std::shared_ptr<Ray>& r);
+        virtual HitRst Intersect(const Ray& r);
         virtual AABB GetBoundingBox() const { return boundary_->GetBoundingBox(); }
 
     private:

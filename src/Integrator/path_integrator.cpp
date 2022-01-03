@@ -16,7 +16,7 @@
 
 namespace platinum {
 
-    glm::vec3 PathIntegrator::Li(const Scene& scene, std::shared_ptr<Ray> ray) {
+    glm::vec3 PathIntegrator::Li(const Scene& scene, const Ray& ray) {
         return glm::vec3(0);
     }
 }

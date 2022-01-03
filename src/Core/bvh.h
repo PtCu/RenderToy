@@ -51,19 +51,19 @@ namespace platinum
         };
         explicit BVHAccel(SplitMethod sm = SplitMethod::MIDDLE) : split_method_(sm) {}
         // BVHAccel Public Methods
-        BVHAccel(std::vector<std::shared_ptr<Object>> &p, SplitMethod split_method_ = SplitMethod::MIDDLE);
-        BVHAccel(std::vector<std::shared_ptr<Object>>::iterator &begin, std::vector<std::shared_ptr<Object>>::iterator &end, SplitMethod split_method_ = SplitMethod::MIDDLE);
+        BVHAccel(std::vector<std::shared_ptr<Object>>& p, SplitMethod split_method_ = SplitMethod::MIDDLE);
+        BVHAccel(std::vector<std::shared_ptr<Object>>::iterator& begin, std::vector<std::shared_ptr<Object>>::iterator& end, SplitMethod split_method_ = SplitMethod::MIDDLE);
         ~BVHAccel() = default;
-        HitRst RayCast(std::shared_ptr<Ray> &r) const;
+        HitRst RayCast(const Ray& r) const;
         std::shared_ptr<BVH_Node> GetRoot() { return root_; }
-        void Sample(HitRst &inter, float &pdf) const;
+        void Sample(HitRst& inter, float& pdf) const;
 
     protected:
         // BVHAccel Private Methods
         std::shared_ptr<BVH_Node> recursiveBuild(std::vector<std::shared_ptr<Object>>::iterator begin, std::vector<std::shared_ptr<Object>>::iterator end);
-        HitRst getIntersection_rec(std::shared_ptr<BVH_Node> node, std::shared_ptr<Ray> &r) const;
-        HitRst getIntersection(std::shared_ptr<Ray> &r) const;
-        void getSample(std::shared_ptr<BVH_Node> node, float p, HitRst &pos, float &pdf) const;
+        HitRst getIntersection_rec(std::shared_ptr<BVH_Node> node, const Ray& r) const;
+        HitRst getIntersection(const Ray& r) const;
+        void getSample(std::shared_ptr<BVH_Node> node, float p, HitRst& pos, float& pdf) const;
         // BVHAccel Private Data
         const SplitMethod split_method_;
         std::shared_ptr<BVH_Node> root_;

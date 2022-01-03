@@ -42,7 +42,7 @@ namespace platinum
         bool Inside(const glm::vec3& p) const;
         //For best partition when building BVH tree.
         int MaxExtent() const;
-        bool IsHit(const std::shared_ptr<Ray>& r) const;
+        bool IsHit(const Ray& r) const;
         const glm::vec3 operator[](int i) const
         {
             return i == 0 ? p_min_ : p_max_;

@@ -38,17 +38,17 @@ namespace platinum
         p_max_ = glm::max(a, b);
         is_valid_ = true;
     }
-    bool AABB::IsHit(const std::shared_ptr<Ray>& r) const
+    bool AABB::IsHit(const Ray& r) const
     {
         if (is_valid_ == false)
             return false;
-        const glm::vec3 invDir = r->GetInvDirection();
+        const glm::vec3 invDir = r.GetInvDirection();
         const AABB& bounds = *this;
         // Check for ray intersection against $x$ and $y$ slabs
-        auto tMin = (bounds[r->IsDirNeg(0)].x - r->GetOrigin().x) * invDir.x;
-        auto tMax = (bounds[1 - r->IsDirNeg(0)].x - r->GetOrigin().x) * invDir.x;
-        auto tyMin = (bounds[r->IsDirNeg(1)].y - r->GetOrigin().y) * invDir.y;
-        auto tyMax = (bounds[1 - r->IsDirNeg(1)].y - r->GetOrigin().y) * invDir.y;
+        auto tMin = (bounds[r.IsDirNeg(0)].x - r.GetOrigin().x) * invDir.x;
+        auto tMax = (bounds[1 - r.IsDirNeg(0)].x - r.GetOrigin().x) * invDir.x;
+        auto tyMin = (bounds[r.IsDirNeg(1)].y - r.GetOrigin().y) * invDir.y;
+        auto tyMax = (bounds[1 - r.IsDirNeg(1)].y - r.GetOrigin().y) * invDir.y;
 
         if (tMin > tyMax || tyMin > tMax)
             return false;
@@ -58,8 +58,8 @@ namespace platinum
             tMax = tyMax;
 
         // Check for ray intersection against $z$ slab
-        auto tzMin = (bounds[r->IsDirNeg(2)].z - r->GetOrigin().z) * invDir.z;
-        auto tzMax = (bounds[1 - r->IsDirNeg(2)].z - r->GetOrigin().z) * invDir.z;
+        auto tzMin = (bounds[r.IsDirNeg(2)].z - r.GetOrigin().z) * invDir.z;
+        auto tzMax = (bounds[1 - r.IsDirNeg(2)].z - r.GetOrigin().z) * invDir.z;
 
         if (tMin > tzMax || tzMin > tMax)
             return false;
@@ -68,7 +68,7 @@ namespace platinum
         if (tzMax < tMax)
             tMax = tzMax;
 
-        return (tMin < r->GetMaxTime()) && (tMax > 0);
+        return (tMin < r.GetMaxTime()) && (tMax > 0);
     }
     AABB AABB::Intersect(const AABB& b) const
     {

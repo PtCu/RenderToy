@@ -25,16 +25,16 @@
 
 namespace platinum
 {
-    void TriMesh::Sample(HitRst &rst, float &pdf) const
+    void TriMesh::Sample(HitRst& rst, float& pdf) const
     {
         bvh_accel_->Sample(rst, pdf);
-        rst.emit=_material->Emit();
+        rst.emit = _material->Emit();
     }
     float TriMesh::GetArea() const
     {
         return area_;
     }
-    TriMesh::TriMesh(const std::string &filename_, std::shared_ptr<Material> m) : Object(m)
+    TriMesh::TriMesh(const std::string& filename_, std::shared_ptr<Material> m) : Object(m)
     {
         loader_ = new objl::Loader();
         loader_->LoadFile(filename_);
@@ -42,12 +42,12 @@ namespace platinum
         assert(loader_->LoadedMeshes.size() == 1);
         auto mesh = loader_->LoadedMeshes[0];
 
-        glm::vec3 min_vert = glm::vec3{std::numeric_limits<float>::infinity(),
+        glm::vec3 min_vert = glm::vec3{ std::numeric_limits<float>::infinity(),
                                        std::numeric_limits<float>::infinity(),
-                                       std::numeric_limits<float>::infinity()};
-        glm::vec3 max_vert = glm::vec3{-std::numeric_limits<float>::infinity(),
+                                       std::numeric_limits<float>::infinity() };
+        glm::vec3 max_vert = glm::vec3{ -std::numeric_limits<float>::infinity(),
                                        -std::numeric_limits<float>::infinity(),
-                                       -std::numeric_limits<float>::infinity()};
+                                       -std::numeric_limits<float>::infinity() };
         for (int i = 0; i < mesh.Vertices.size(); i += 3)
         {
             std::array<glm::vec3, 3> face_vertices;
@@ -55,14 +55,14 @@ namespace platinum
             for (int j = 0; j < 3; j++)
             {
                 auto vert = glm::vec3(mesh.Vertices[i + j].Position.X,
-                                      mesh.Vertices[i + j].Position.Y,
-                                      mesh.Vertices[i + j].Position.Z);
+                    mesh.Vertices[i + j].Position.Y,
+                    mesh.Vertices[i + j].Position.Z);
                 face_vertices[j] = vert;
                 min_vert = glm::min(min_vert, vert);
                 max_vert = glm::max(max_vert, vert);
             }
             auto tri = std::make_shared<Triangle>(face_vertices[0], face_vertices[1],
-                                                  face_vertices[2], m);
+                face_vertices[2], m);
             area_ += tri->GetArea();
             triangles_.emplace_back(tri);
         }
@@ -70,7 +70,7 @@ namespace platinum
         bounding_box_ = AABB(min_vert, max_vert);
         bvh_accel_ = std::make_unique<BVHAccel>(triangles_);
     }
-    TriMesh::TriMesh(const std::vector<Vertex> &vertexs, std::shared_ptr<Material> material) : Object(material)
+    TriMesh::TriMesh(const std::vector<Vertex>& vertexs, std::shared_ptr<Material> material) : Object(material)
     {
         area_ = 0;
         if (vertexs.size() % 3 != 0)
@@ -90,7 +90,7 @@ namespace platinum
         bvh_accel_ = std::make_unique<BVHAccel>(triangles_);
     }
 
-    HitRst TriMesh::Intersect(std::shared_ptr<Ray> &r)
+    HitRst TriMesh::Intersect(const Ray& r)
     {
         HitRst rst;
 
