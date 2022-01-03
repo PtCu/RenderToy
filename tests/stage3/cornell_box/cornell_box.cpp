@@ -53,7 +53,7 @@ int main()
     vec3 lookat(278, 273, 0);
     float dist_to_focus = 10.0f;
     float aperture = 0.05f;
-
+    Camera cam1{};
     shared_ptr<Camera> cam = make_shared<Camera>(lookfrom, lookat, vec3(0, -1, 0), 45, float(nx) / float(ny), aperture, dist_to_focus);
     shared_ptr<Film> film = make_shared<Film>("cornell.png", nx, ny, 3);
     cam->SetFilm(film);

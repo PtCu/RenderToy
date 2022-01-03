@@ -51,7 +51,7 @@ namespace platinum
     private:
         Vertex A, B, C;
         glm::vec3 normal_, e1, e2;
-        float area_;
+        float area_{0.f};
         AABB bounding_box_;
     };
 }

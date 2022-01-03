@@ -32,17 +32,17 @@ namespace platinum
     {
     public:
         AABB();
-        AABB(const glm::vec3 &a, const glm::vec3 &b);
+        AABB(const glm::vec3& a, const glm::vec3& b);
         ~AABB() = default;
-        AABB Intersect(const AABB &b) const;
-        void Expand(const glm::vec3 &p);
-        void Expand(const AABB &aabb);
-        glm::vec3 Offset(const glm::vec3 &p) const;
-        bool Overlaps(const AABB &p) const;
-        bool Inside(const glm::vec3 &p) const;
+        AABB Intersect(const AABB& b) const;
+        void Expand(const glm::vec3& p);
+        void Expand(const AABB& aabb);
+        glm::vec3 Offset(const glm::vec3& p) const;
+        bool Overlaps(const AABB& p) const;
+        bool Inside(const glm::vec3& p) const;
         //For best partition when building BVH tree.
         int MaxExtent() const;
-        bool IsHit(const std::shared_ptr<Ray> &r) const;
+        bool IsHit(const std::shared_ptr<Ray>& r) const;
         const glm::vec3 operator[](int i) const
         {
             return i == 0 ? p_min_ : p_max_;
@@ -61,16 +61,16 @@ namespace platinum
     protected:
         glm::vec3 p_min_;
         glm::vec3 p_max_;
-        bool is_valid_;
+        bool is_valid_{ false };
     };
 
-    inline AABB Union(const AABB &b1, const AABB &b2)
+    inline AABB Union(const AABB& b1, const AABB& b2)
     {
         glm::vec3 min_p = glm::min(b1.GetMin(), b2.GetMin());
         glm::vec3 max_p = glm::max(b1.GetMax(), b2.GetMax());
         return AABB(min_p, max_p);
     }
-    inline AABB Union(const AABB &b1, const glm::vec3 &b2)
+    inline AABB Union(const AABB& b1, const glm::vec3& b2)
     {
         glm::vec3 min_p = glm::min(b1.GetMin(), b2);
         glm::vec3 max_p = glm::max(b1.GetMax(), b2);

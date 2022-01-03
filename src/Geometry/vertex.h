@@ -36,8 +36,8 @@ namespace platinum
         static const Vertex GenVert(const glm::vec3& abg, const Vertex& A, const Vertex& B, const Vertex& C);
         glm::vec3 position_;
         glm::vec3 normal_;
-        float u_;
-        float v_;
+        float u_{0.f};
+        float v_{0.f};
     };
 }
 

@@ -28,22 +28,22 @@ namespace platinum
     {
         float _min = std::numeric_limits<float>::lowest();
         float _max = std::numeric_limits<float>::max();
-        p_min_ = glm::vec3(_max, _max, _max);
-        p_max_ = glm::vec3(_min, _min, _min);
+        p_min_ = glm::vec3{ _max, _max, _max };
+        p_max_ = glm::vec3{ _min, _min, _min };
         is_valid_ = false;
     }
-    AABB::AABB(const glm::vec3 &a, const glm::vec3 &b)
+    AABB::AABB(const glm::vec3& a, const glm::vec3& b)
     {
         p_min_ = glm::min(a, b);
         p_max_ = glm::max(a, b);
         is_valid_ = true;
     }
-    bool AABB::IsHit(const std::shared_ptr<Ray> &r) const
+    bool AABB::IsHit(const std::shared_ptr<Ray>& r) const
     {
         if (is_valid_ == false)
             return false;
         const glm::vec3 invDir = r->GetInvDirection();
-        const AABB &bounds = *this;
+        const AABB& bounds = *this;
         // Check for ray intersection against $x$ and $y$ slabs
         auto tMin = (bounds[r->IsDirNeg(0)].x - r->GetOrigin().x) * invDir.x;
         auto tMax = (bounds[1 - r->IsDirNeg(0)].x - r->GetOrigin().x) * invDir.x;
@@ -70,11 +70,11 @@ namespace platinum
 
         return (tMin < r->GetMaxTime()) && (tMax > 0);
     }
-    AABB AABB::Intersect(const AABB &b) const
+    AABB AABB::Intersect(const AABB& b) const
     {
         return AABB(glm::max(p_min_, b.p_min_), glm::min(p_max_, b.p_max_));
     }
-    void AABB::Expand(const AABB &aabb)
+    void AABB::Expand(const AABB& aabb)
     {
         if (aabb.is_valid_)
         {
@@ -91,13 +91,13 @@ namespace platinum
             }
         }
     }
-    void AABB::Expand(const glm::vec3 &p)
+    void AABB::Expand(const glm::vec3& p)
     {
         p_min_ = glm::min(p_min_, p);
         p_max_ = glm::max(p_max_, p);
         is_valid_ = true;
     }
-    glm::vec3 AABB::Offset(const glm::vec3 &p) const
+    glm::vec3 AABB::Offset(const glm::vec3& p) const
     {
         assert(p_max_.x > p_min_.x && p_max_.y > p_min_.y && p_max_.z > p_min_.z);
         glm::vec3 o = p - p_min_;
@@ -106,18 +106,18 @@ namespace platinum
         o.z /= p_max_.z - p_min_.z;
         return o;
     }
-    bool AABB::Overlaps(const AABB &p) const
+    bool AABB::Overlaps(const AABB& p) const
     {
         bool x = (p_max_.x >= p.p_min_.x) && (p_min_.x <= p.p_max_.x);
         bool y = (p_max_.y >= p.p_min_.y) && (p_min_.y <= p.p_max_.y);
         bool z = (p_max_.z >= p.p_min_.z) && (p_min_.z <= p.p_max_.z);
         return (x && y && z);
     }
-    bool AABB::Inside(const glm::vec3 &p) const
+    bool AABB::Inside(const glm::vec3& p) const
     {
         return p.x >= p_min_.x && p.x <= p_max_.x &&
-               p.y >= p_min_.y && p.y <= p_max_.y &&
-               p.z >= p_min_.z && p.z <= p_max_.z;
+            p.y >= p_min_.y && p.y <= p_max_.y &&
+            p.z >= p_min_.z && p.z <= p_max_.z;
     }
 
     int AABB::MaxExtent() const
