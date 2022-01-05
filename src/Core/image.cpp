@@ -54,7 +54,7 @@ Image::Pixel<double> Image::Pixel_UB2D(const Pixel<unsigned char> &pixel)
 //------------
 
 Image::Image()
-    : data(NULL), width_(0), height_(0), channel(0), type(ENUM_SRC_TYPE_INVALID) {}
+    : data(NULL), _width(0), _height(0), _channel(0), type(ENUM_SRC_TYPE_INVALID) {}
 
 Image::Image(size_t width, size_t height, size_t channel)
 {
@@ -98,37 +98,37 @@ const unsigned char *Image::GetConstData() const
 
 size_t Image::GetWidth() const
 {
-    return width_;
+    return _width;
 }
 
 size_t Image::GetHeight() const
 {
-    return height_;
+    return _height;
 }
 
 size_t Image::GetChannel() const
 {
-    return channel;
+    return _channel;
 }
 
 //------------
 
 unsigned char &Image::At(size_t x, size_t y, size_t channel)
 {
-    return data[(y * width_ + x) * this->channel + channel];
+    return data[(y * _width + x) * this->_channel + channel];
 }
 
 const unsigned char &Image::At(size_t x, size_t y, size_t channel) const
 {
-    return data[(y * width_ + x) * this->channel + channel];
+    return data[(y * _width + x) * this->_channel + channel];
 }
 
 bool Image::SetPixel(size_t x, size_t y, const Pixel<unsigned char> &pixel)
 {
-    if (pixel.channel != this->channel)
+    if (pixel.channel != this->_channel)
         return false;
 
-    for (size_t i = 0; i < channel; i++)
+    for (size_t i = 0; i < _channel; i++)
         At(x, y, i) = pixel[i];
 
     return true;
@@ -151,8 +151,8 @@ bool Image::SetPixel(size_t x, size_t y, const Image::Pixel<double> &pixel)
 
 Image::Pixel<unsigned char> Image::GetPixel_UB(size_t x, size_t y) const
 {
-    Pixel<unsigned char> rst(channel);
-    for (size_t i = 0; i < channel; i++)
+    Pixel<unsigned char> rst(_channel);
+    for (size_t i = 0; i < _channel; i++)
         rst[i] = At(x, y, i);
 
     return rst;
@@ -178,9 +178,9 @@ bool Image::Load(const std::string &fileName, bool flip)
 
     int tmpW, tmpH, tmpC;
     data = stbi_load(fileName.c_str(), &tmpW, &tmpH, &tmpC, 0);
-    width_ = tmpW;
-    height_ = tmpH;
-    channel = tmpC;
+    _width = tmpW;
+    _height = tmpH;
+    _channel = tmpC;
 
     if (data == NULL)
     {
@@ -194,9 +194,9 @@ bool Image::Load(const std::string &fileName, bool flip)
 void Image::GenBuffer(size_t width, size_t height, size_t channel)
 {
     Free();
-    this->width_ = width;
-    this->height_ = height;
-    this->channel = channel;
+    this->_width = width;
+    this->_height = height;
+    this->_channel = channel;
 
     data = new unsigned char[width * height * channel]();
     type = ENUM_SRC_TYPE_NEW;
@@ -220,9 +220,9 @@ void Image::Free()
         }
     }
 
-    width_ = 0;
-    height_ = 0;
-    channel = 0;
+    _width = 0;
+    _height = 0;
+    _channel = 0;
     data = NULL;
     type = ENUM_SRC_TYPE_INVALID;
 }
@@ -230,5 +230,5 @@ void Image::Free()
 bool Image::SaveAsPNG(const string &fileName, bool flip) const
 {
     stbi_flip_vertically_on_write(flip);
-    return stbi_write_png(fileName.c_str(), width_, height_, channel, data, width_ * 3);
+    return stbi_write_png(fileName.c_str(), _width, _height, _channel, data, _width * 3);
 }

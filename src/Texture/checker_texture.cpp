@@ -28,9 +28,9 @@ namespace platinum
     {
         float sines = std::sinf(10 * p.x) * sinf(10 * p.y) * sinf(10 * p.z);
         if (sines < 0)
-            return odd_texure_->GetValue(u, v, p);
+            return _odd_texure->GetValue(u, v, p);
         else
-            return even_texure_->GetValue(u, v, p);
+            return _even_texure->GetValue(u, v, p);
     }
 
 }

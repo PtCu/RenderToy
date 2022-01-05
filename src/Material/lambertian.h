@@ -47,7 +47,7 @@ namespace platinum
         virtual bool IsEmit() const;
 
     private:
-        std::shared_ptr<Texture> albedo_;
+        std::shared_ptr<Texture> _albedo;
     };
 } // namespace platinum
 

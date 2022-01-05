@@ -37,7 +37,7 @@ namespace platinum
     virtual glm::vec3 GetValue(float u = 0, float v = 0, const glm::vec3 &p = glm::vec3(0)) const;
 
   private:
-    std::shared_ptr<const Image> img_;
+    std::shared_ptr<const Image> _img;
   };
 }
 

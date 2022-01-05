@@ -50,9 +50,9 @@ namespace platinum
 
     private:
         Vertex A, B, C;
-        glm::vec3 normal_, e1, e2;
-        float area_;
-        AABB bounding_box_;
+        glm::vec3 _normal, e1, e2;
+        float _area;
+        AABB _bounding_box;
     };
 }
 

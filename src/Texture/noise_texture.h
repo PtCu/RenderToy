@@ -33,13 +33,13 @@ namespace platinum
     public:
         NoiseTexture() = default;
         ~NoiseTexture() = default;
-        NoiseTexture(float sc, int m = 0, const glm::vec3 &c = {1, 1, 1}) : scale_(sc), mode_(m), color_(c) {}
+        NoiseTexture(float sc, int m = 0, const glm::vec3 &c = {1, 1, 1}) : _scale(sc), _mode(m), _color(c) {}
         virtual glm::vec3 GetValue(float u, float v, const glm::vec3 &p) const;
 
     private:
-        float scale_;
-        int mode_;
-        glm::vec3 color_;
+        float _scale;
+        int _mode;
+        glm::vec3 _color;
     };
 }
 

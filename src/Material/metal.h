@@ -47,8 +47,8 @@ namespace platinum
       bool IsEmit() const override;
 
    private:
-      std::shared_ptr<Texture> albedo_;
-      float fuzz_; //Zero is no perturbation
+      std::shared_ptr<Texture> _albedo;
+      float _fuzz; //Zero is no perturbation
    };
 } // namespace platinum
 

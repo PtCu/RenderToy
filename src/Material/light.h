@@ -48,9 +48,9 @@ namespace platinum
         bool IsEmit() const override;
 
     private:
-        std::shared_ptr<Texture> texure_;
-        float linear_;
-        float quadratic_;
+        std::shared_ptr<Texture> _texture;
+        float _linear;
+        float _quadratic;
     };
 
 } // namespace platinum

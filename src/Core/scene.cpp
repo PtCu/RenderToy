@@ -30,69 +30,69 @@ namespace platinum
     }
     void Scene::destroyAll()
     {
-        objects_.clear();
+        _objects.clear();
     }
     void Scene::BuildBVH()
     {
-        this->bvh_accel_ = std::unique_ptr<BVHAccel>(new BVHAccel(objects_));
+        this->_bvh_accel = std::unique_ptr<BVHAccel>(new BVHAccel(_objects));
     }
-    void Scene::AddObject(const std::shared_ptr<Object> &obj)
+    void Scene::AddObject(const std::shared_ptr<Object>& obj)
     {
-        this->objects_.push_back(obj);
+        this->_objects.push_back(obj);
     }
-    void Scene::AddObject(const std::vector<std::shared_ptr<Object>> &obj)
+    void Scene::AddObject(const std::vector<std::shared_ptr<Object>>& obj)
     {
-        this->objects_.insert(objects_.end(), obj.begin(), obj.end());
+        this->_objects.insert(_objects.end(), obj.begin(), obj.end());
     }
-    void Scene::AddObject(const std::vector<std::shared_ptr<Object>>::iterator &begin, const std::vector<std::shared_ptr<Object>>::iterator &end)
+    void Scene::AddObject(const std::vector<std::shared_ptr<Object>>::iterator& begin, const std::vector<std::shared_ptr<Object>>::iterator& end)
     {
-        this->objects_.insert(objects_.end(), begin, end);
+        this->_objects.insert(_objects.end(), begin, end);
     }
     void Scene::Reset()
     {
-        this->bvh_accel_.reset();
+        this->_bvh_accel.reset();
         this->destroyAll();
     }
-    HitRst Scene::intersectAll(std::shared_ptr<Ray> &r) const
+    HitRst Scene::intersectAll(std::shared_ptr<Ray>& r) const
     {
-        return this->bvh_accel_->RayCast(r);
+        return this->_bvh_accel->RayCast(r);
     }
-    void Scene::sampleLight(HitRst &inter, float &pdf) const
+    void Scene::sampleLight(HitRst& inter, float& pdf) const
     {
         float emit_area_sum = 0;
-        for (uint32_t k = 0; k < objects_.size(); ++k)
+        for (uint32_t k = 0; k < _objects.size(); ++k)
         {
             //计算发光物体的总面积
-            if (objects_[k]->GetMaterial()->IsEmit())
+            if (_objects[k]->GetMaterial()->IsEmit())
             {
-                emit_area_sum += objects_[k]->GetArea();
+                emit_area_sum += _objects[k]->GetArea();
             }
         }
         float p = Random::RandomInUnitFloat() * emit_area_sum;
         emit_area_sum = 0;
-        for (uint32_t k = 0; k < objects_.size(); ++k)
+        for (uint32_t k = 0; k < _objects.size(); ++k)
         {
             //找到光源
-            if (objects_[k]->GetMaterial()->IsEmit())
+            if (_objects[k]->GetMaterial()->IsEmit())
             {
-                emit_area_sum += objects_[k]->GetArea();
+                emit_area_sum += _objects[k]->GetArea();
                 if (p <= emit_area_sum)
                 {
                     //按概率选取一条光线
-                    objects_[k]->Sample(inter, pdf);
+                    _objects[k]->Sample(inter, pdf);
                     break;
                 }
             }
         }
     }
-    glm::vec3 Scene::CastRay(std::shared_ptr<Ray> &r) const
+    glm::vec3 Scene::CastRay(std::shared_ptr<Ray>& r) const
     {
-        if (mode == 0)
-            return castRay(r, max_depth_);
-        else if (mode == 1)
-            return castRayPdf(r);
+        if (!_use_path_tracer)
+            return castRayWhitted(r, _max_depth);
+        else
+            return castRayPath(r);
     }
-    glm::vec3 Scene::castRay(std::shared_ptr<Ray> &ray, int dep) const
+    glm::vec3 Scene::castRayWhitted(std::shared_ptr<Ray>& ray, int dep) const
     {
         if (dep == 0)
             return glm::vec3(1.0001f / 255.0f);
@@ -105,22 +105,21 @@ namespace platinum
                 return glm::vec3(0, 1, 0);
             //正常情况下，对于漫反射物质继续反射追踪，直到遇到光源则更新颜色并返回
             if (rst.material_->Scatter(rst))
-                return castRay(ray, dep - 1);
+                return castRayWhitted(ray, dep - 1);
             else
                 return ray->GetColor();
         }
         else
         {
-            if (!default_light)
+            if (!_use_default_light)
                 return glm::vec3(1.0001f / 255.0f);
 
-            //TODO: Make it configurable
             glm::vec3 unit_direction = glm::normalize(ray->GetDirection());
             float t = 0.5f * (unit_direction.y + 1.0f);
             return ray->GetColor() * ((1.0f - t) * glm::vec3(1.0, 1.0, 1.0) + t * glm::vec3(0.75, 0.85, 1.0));
         }
     }
-    glm::vec3 Scene::castRayPdf(std::shared_ptr<Ray> &ray) const
+    glm::vec3 Scene::castRayPath(std::shared_ptr<Ray>& ray) const
     {
         //求一条光线与场景的交点
         HitRst obj_rst = intersectAll(ray);
@@ -135,18 +134,18 @@ namespace platinum
         float light_pdf = 1;
         HitRst light_rst;
         sampleLight(light_rst, light_pdf);
-        glm::vec3 obj2light = light_rst.record.vert.position_ - obj_rst.record.vert.position_;
+        glm::vec3 obj2light = light_rst.record.vert._position - obj_rst.record.vert._position;
         glm::vec3 obj2light_dir = glm::normalize(obj2light);
         //确定一条从物体到光源的射线
-        auto to_light_ray = std::make_shared<Ray>(obj_rst.record.vert.position_, obj2light_dir);
+        auto to_light_ray = std::make_shared<Ray>(obj_rst.record.vert._position, obj2light_dir);
         glm::vec3 Lo_dir(0.f), Lo_indir(0.f);
         glm::vec3 w_o = -glm::normalize(ray->GetDirection());
-        glm::vec3 obj_n = glm::normalize(obj_rst.record.vert.normal_);
-        glm::vec3 light_n = normalize(light_rst.record.vert.normal_);
+        glm::vec3 obj_n = glm::normalize(obj_rst.record.vert._normal);
+        glm::vec3 light_n = normalize(light_rst.record.vert._normal);
 
         //测试是否有遮挡.向光源打出一条射线
         auto bounce_back = intersectAll(to_light_ray);
-        if (bounce_back.is_hit && glm::length(bounce_back.record.vert.position_ - light_rst.record.vert.position_) < EPSILON)
+        if (bounce_back.is_hit && glm::length(bounce_back.record.vert._position - light_rst.record.vert._position) < EPSILON)
         {
             //直接光照
             //入射方向为光源射向物体，出射方向（所求的方向)为参数ray的方向
@@ -158,14 +157,14 @@ namespace platinum
             Lo_dir = light_rst.emit * f_r * cosA * cosB / r2 / light_pdf;
         }
         hit_color += Lo_dir;
-        if (Random::RandomInUnitFloat() > RussianRoulette)
+        if (Random::RandomInUnitFloat() > _RussianRoulette)
             return hit_color;
 
         //间接光照
 
         //按材质采样一条射线
         glm::vec3 w_i = glm::normalize(obj_rst.material_->Sample(w_o, obj_rst));
-        auto next_ray = std::make_shared<Ray>(obj_rst.record.vert.position_, w_i);
+        auto next_ray = std::make_shared<Ray>(obj_rst.record.vert._position, w_i);
         auto next_inter = intersectAll(next_ray);
         //下一个物体不发光
         if (next_inter.is_hit && !next_inter.material_->IsEmit())
@@ -173,27 +172,11 @@ namespace platinum
             float cos = std::max(.0f, glm::dot(w_i, obj_n));
             glm::vec3 f_r = obj_rst.material_->ScatterPdf(w_o, w_i, obj_rst);
             float pdf = obj_rst.material_->Pdf(w_o, w_i, obj_rst);
-            Lo_indir = castRayPdf(next_ray) * f_r * cos / pdf / RussianRoulette;
+            Lo_indir = castRayPath(next_ray) * f_r * cos / pdf / _RussianRoulette;
         }
 
         hit_color += Lo_indir;
         return hit_color;
     }
-    // bool Scene::IntersectAll(std::shared_ptr<Ray> &r, HitRst &rst) const
-    // {
-    //     HitRst temp_rec;
-    //     bool hit_anything = false;
-    //     float closest_so_far = std::numeric_limits<float>::max();
-    //     for (int i = 0; i < objects.size(); i++)
-    //     {
-    //         temp_rec = objects[i]->Intersect(r);
-    //         if (temp_rec.isHit && temp_rec.record.ray->GetMaxTime() < closest_so_far)
-    //         {
-    //             hit_anything = true;
-    //             closest_so_far = temp_rec.record.ray->GetMaxTime();
-    //             rst = temp_rec;
-    //         }
-    //     }
-    //     return hit_anything;
-    // }
+
 } // namespace platinum

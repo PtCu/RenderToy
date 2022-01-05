@@ -24,26 +24,26 @@
 
 namespace platinum
 {
-    Metal::Metal(const std::shared_ptr<Texture> &a, float f) : albedo_(a)
+    Metal::Metal(const std::shared_ptr<Texture> &a, float f) : _albedo(a)
     {
-        f < 1 ? fuzz_ = f : fuzz_ = 1;
+        f < 1 ? _fuzz = f : _fuzz = 1;
     }
     Metal::Metal(const glm::vec3 &a, float f)
     {
-        albedo_ = std::make_shared<ConstTexture>(a);
-        f < 1 ? fuzz_ = f : fuzz_ = 1;
+        _albedo = std::make_shared<ConstTexture>(a);
+        f < 1 ? _fuzz = f : _fuzz = 1;
     }
 
     bool Metal::Scatter(HitRst &rst) const
     {
-        glm::vec3 reflected = Reflect(rst.record.ray->GetDirection(), rst.record.vert.normal_) + fuzz_ * Random::RandomInUnitSphere();
-        if (glm::dot(reflected, rst.record.vert.normal_) < 0)
+        glm::vec3 reflected = Reflect(rst.record.ray->GetDirection(), rst.record.vert._normal) + _fuzz * Random::RandomInUnitSphere();
+        if (glm::dot(reflected, rst.record.vert._normal) < 0)
         {
             rst.record.ray->SetColor(glm::vec3(0, 0, 0));
             return false;
         }
-        auto attenuation = albedo_->GetValue(rst.record.vert.u_, rst.record.vert.v_, rst.record.vert.position_);
-        rst.record.ray->Update(rst.record.vert.position_, reflected, attenuation);
+        auto attenuation = _albedo->GetValue(rst.record.vert._u, rst.record.vert._v, rst.record.vert._position);
+        rst.record.ray->Update(rst.record.vert._position, reflected, attenuation);
         return true;
     }
     // Sample a ray by Material properties

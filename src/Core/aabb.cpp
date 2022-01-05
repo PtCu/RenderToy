@@ -28,19 +28,19 @@ namespace platinum
     {
         float _min = std::numeric_limits<float>::lowest();
         float _max = std::numeric_limits<float>::max();
-        p_min_ = glm::vec3(_max, _max, _max);
-        p_max_ = glm::vec3(_min, _min, _min);
-        is_valid_ = false;
+        _p_min = glm::vec3(_max, _max, _max);
+        _p_max = glm::vec3(_min, _min, _min);
+        _valid = false;
     }
     AABB::AABB(const glm::vec3 &a, const glm::vec3 &b)
     {
-        p_min_ = glm::min(a, b);
-        p_max_ = glm::max(a, b);
-        is_valid_ = true;
+        _p_min = glm::min(a, b);
+        _p_max = glm::max(a, b);
+        _valid = true;
     }
     bool AABB::IsHit(const std::shared_ptr<Ray> &r) const
     {
-        if (is_valid_ == false)
+        if (_valid == false)
             return false;
         const glm::vec3 invDir = r->GetInvDirection();
         const AABB &bounds = *this;
@@ -72,52 +72,52 @@ namespace platinum
     }
     AABB AABB::Intersect(const AABB &b) const
     {
-        return AABB(glm::max(p_min_, b.p_min_), glm::min(p_max_, b.p_max_));
+        return AABB(glm::max(_p_min, b._p_min), glm::min(_p_max, b._p_max));
     }
     void AABB::Expand(const AABB &aabb)
     {
-        if (aabb.is_valid_)
+        if (aabb._valid)
         {
-            if (is_valid_)
+            if (_valid)
             {
-                p_min_ = glm::min(p_min_, aabb.p_min_);
-                p_max_ = glm::max(p_max_, aabb.p_max_);
+                _p_min = glm::min(_p_min, aabb._p_min);
+                _p_max = glm::max(_p_max, aabb._p_max);
             }
             else
             {
-                p_min_ = aabb.GetMin();
-                p_max_ = aabb.GetMax();
-                is_valid_ = true;
+                _p_min = aabb.GetMin();
+                _p_max = aabb.GetMax();
+                _valid = true;
             }
         }
     }
     void AABB::Expand(const glm::vec3 &p)
     {
-        p_min_ = glm::min(p_min_, p);
-        p_max_ = glm::max(p_max_, p);
-        is_valid_ = true;
+        _p_min = glm::min(_p_min, p);
+        _p_max = glm::max(_p_max, p);
+        _valid = true;
     }
     glm::vec3 AABB::Offset(const glm::vec3 &p) const
     {
-        assert(p_max_.x > p_min_.x && p_max_.y > p_min_.y && p_max_.z > p_min_.z);
-        glm::vec3 o = p - p_min_;
-        o.x /= p_max_.x - p_min_.x;
-        o.y /= p_max_.y - p_min_.y;
-        o.z /= p_max_.z - p_min_.z;
+        assert(_p_max.x > _p_min.x && _p_max.y > _p_min.y && _p_max.z > _p_min.z);
+        glm::vec3 o = p - _p_min;
+        o.x /= _p_max.x - _p_min.x;
+        o.y /= _p_max.y - _p_min.y;
+        o.z /= _p_max.z - _p_min.z;
         return o;
     }
     bool AABB::Overlaps(const AABB &p) const
     {
-        bool x = (p_max_.x >= p.p_min_.x) && (p_min_.x <= p.p_max_.x);
-        bool y = (p_max_.y >= p.p_min_.y) && (p_min_.y <= p.p_max_.y);
-        bool z = (p_max_.z >= p.p_min_.z) && (p_min_.z <= p.p_max_.z);
+        bool x = (_p_max.x >= p._p_min.x) && (_p_min.x <= p._p_max.x);
+        bool y = (_p_max.y >= p._p_min.y) && (_p_min.y <= p._p_max.y);
+        bool z = (_p_max.z >= p._p_min.z) && (_p_min.z <= p._p_max.z);
         return (x && y && z);
     }
     bool AABB::Inside(const glm::vec3 &p) const
     {
-        return p.x >= p_min_.x && p.x <= p_max_.x &&
-               p.y >= p_min_.y && p.y <= p_max_.y &&
-               p.z >= p_min_.z && p.z <= p_max_.z;
+        return p.x >= _p_min.x && p.x <= _p_max.x &&
+               p.y >= _p_min.y && p.y <= _p_max.y &&
+               p.z >= _p_min.z && p.z <= _p_max.z;
     }
 
     int AABB::MaxExtent() const

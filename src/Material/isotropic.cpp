@@ -24,12 +24,12 @@
 
 namespace platinum
 {
-    Isotropic::Isotropic(const std::shared_ptr<Texture> &a) : texure_(a) {}
+    Isotropic::Isotropic(const std::shared_ptr<Texture> &a) : _texture(a) {}
 
     bool Isotropic::Scatter(HitRst &rst) const
     {
-        auto attenuation = texure_->GetValue(rst.record.vert.u_, rst.record.vert.v_, rst.record.vert.position_);
-        rst.record.ray->Update(rst.record.vert.position_, Random::RandomInUnitSphere(), attenuation);
+        auto attenuation = _texture->GetValue(rst.record.vert._u, rst.record.vert._v, rst.record.vert._position);
+        rst.record.ray->Update(rst.record.vert._position, Random::RandomInUnitSphere(), attenuation);
         return true;
     }
     // Sample a ray by Material properties

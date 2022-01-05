@@ -28,46 +28,46 @@ namespace platinum
     void Triangle::Sample(HitRst &rst, float &pdf) const
     {
         float x = std::sqrt(Random::RandomInUnitFloat()), y = Random::RandomInUnitFloat();
-        rst.record.vert.position_ = A.position_ * (1.0f - x) + B.position_ * (x * (1.0f - y)) + C.position_ * (x * y);
-        rst.record.vert.normal_ = this->normal_;
-        pdf = 1.0f / area_;
+        rst.record.vert._position = A._position * (1.0f - x) + B._position * (x * (1.0f - y)) + C._position * (x * y);
+        rst.record.vert._normal = this->_normal;
+        pdf = 1.0f / _area;
     }
     AABB Triangle::GetBoundingBox() const
     {
-        return bounding_box_;
+        return _bounding_box;
     }
     float Triangle::GetArea() const
     {
-        return area_;
+        return _area;
     }
     Triangle::Triangle(const glm::vec3 &a, const glm::vec3 &b, const glm::vec3 &c, const std::shared_ptr<Material> &material_)
         : A(a), B(b), C(c), Object(material_)
     {
-        e1 = B.position_ - A.position_;
-        e2 = C.position_ - A.position_;
-        normal_ = glm::normalize(glm::cross(e1, e2));
-        area_ = 0.5f * glm::length(glm::cross(e1, e2));
-        bounding_box_ = AABB(A.position_, B.position_);
-        bounding_box_.Expand(C.position_);
+        e1 = B._position - A._position;
+        e2 = C._position - A._position;
+        _normal = glm::normalize(glm::cross(e1, e2));
+        _area = 0.5f * glm::length(glm::cross(e1, e2));
+        _bounding_box = AABB(A._position, B._position);
+        _bounding_box.Expand(C._position);
     }
     Triangle::Triangle(const Vertex &a, const Vertex &b, const Vertex &c, const std::shared_ptr<Material> &material_)
         : A(a), B(b), C(c), Object(material_)
     {
-        e1 = B.position_ - A.position_;
-        e2 = C.position_ - A.position_;
-        normal_ = glm::normalize(glm::cross(e1, e2));
-        area_ = 0.5f * glm::length(glm::cross(e1, e2));
-        bounding_box_ = AABB(A.position_, B.position_);
-        bounding_box_.Expand(C.position_);
+        e1 = B._position - A._position;
+        e2 = C._position - A._position;
+        _normal = glm::normalize(glm::cross(e1, e2));
+        _area = 0.5f * glm::length(glm::cross(e1, e2));
+        _bounding_box = AABB(A._position, B._position);
+        _bounding_box.Expand(C._position);
     }
     glm::vec4 Triangle::intersectRay(const glm::vec3 &o, const glm::vec3 &d)
     {
-        glm::mat3 equation_A(glm::vec3(A.position_ - B.position_), glm::vec3(A.position_ - C.position_), d);
+        glm::mat3 equation_A(glm::vec3(A._position - B._position), glm::vec3(A._position - C._position), d);
 
         if (glm::abs(glm::determinant(equation_A)) < EPSILON)
             return glm::vec4(0, 0, 0, 0);
 
-        glm::vec3 equation_b = A.position_ - o;
+        glm::vec3 equation_b = A._position - o;
         glm::vec3 equation_X = glm::inverse(equation_A) * equation_b;
         float alpha = 1 - equation_X[0] - equation_X[1];
         return glm::vec4(alpha, equation_X);
@@ -117,7 +117,7 @@ namespace platinum
             return HitRst::InValid;
 
         rst.record.vert = Vertex::GenVert(glm::vec3(abgt[0], abgt[1], abgt[2]), A, B, C);
-        rst.record.vert.normal_ = this->normal_;
+        rst.record.vert._normal = this->_normal;
         rst.record.ray = r;
         rst.material_ = GetMaterial();
         rst.is_hit = true;

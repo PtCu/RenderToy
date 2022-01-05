@@ -27,20 +27,20 @@ namespace platinum
 {
     void TriMesh::Sample(HitRst &rst, float &pdf) const
     {
-        bvh_accel_->Sample(rst, pdf);
-        rst.emit=material_->Emit();
+        _bvh_accel->Sample(rst, pdf);
+        rst.emit=_material->Emit();
     }
     float TriMesh::GetArea() const
     {
-        return area_;
+        return _area;
     }
     TriMesh::TriMesh(const std::string &filename_, std::shared_ptr<Material> m) : Object(m)
     {
-        loader_ = new objl::Loader();
-        loader_->LoadFile(filename_);
-        area_ = 0;
-        assert(loader_->LoadedMeshes.size() == 1);
-        auto mesh = loader_->LoadedMeshes[0];
+        _loader = new objl::Loader();
+        _loader->LoadFile(filename_);
+        _area = 0;
+        assert(_loader->LoadedMeshes.size() == 1);
+        auto mesh = _loader->LoadedMeshes[0];
 
         glm::vec3 min_vert = glm::vec3{std::numeric_limits<float>::infinity(),
                                        std::numeric_limits<float>::infinity(),
@@ -63,40 +63,40 @@ namespace platinum
             }
             auto tri = std::make_shared<Triangle>(face_vertices[0], face_vertices[1],
                                                   face_vertices[2], m);
-            area_ += tri->GetArea();
-            triangles_.emplace_back(tri);
+            _area += tri->GetArea();
+            _triangles.emplace_back(tri);
         }
 
-        bounding_box_ = AABB(min_vert, max_vert);
-        bvh_accel_ = std::make_unique<BVHAccel>(triangles_);
+        _bounding_box = AABB(min_vert, max_vert);
+        _bvh_accel = std::make_unique<BVHAccel>(_triangles);
     }
     TriMesh::TriMesh(const std::vector<Vertex> &vertexs, std::shared_ptr<Material> material) : Object(material)
     {
-        area_ = 0;
+        _area = 0;
         if (vertexs.size() % 3 != 0)
         {
-            is_valid_ = false;
+            _valid = false;
             return;
         }
 
         for (size_t i = 0; i < vertexs.size(); i += 3)
         {
             auto triangle = std::make_shared<Triangle>(vertexs[i], vertexs[i + 1], vertexs[i + 2], material);
-            area_ += triangle->GetArea();
-            triangles_.emplace_back(triangle);
-            bounding_box_.Expand(triangle->GetBoundingBox());
+            _area += triangle->GetArea();
+            _triangles.emplace_back(triangle);
+            _bounding_box.Expand(triangle->GetBoundingBox());
         }
-        is_valid_ = true;
-        bvh_accel_ = std::make_unique<BVHAccel>(triangles_);
+        _valid = true;
+        _bvh_accel = std::make_unique<BVHAccel>(_triangles);
     }
 
     HitRst TriMesh::Intersect(std::shared_ptr<Ray> &r)
     {
         HitRst rst;
 
-        if (bvh_accel_)
+        if (_bvh_accel)
         {
-            rst = bvh_accel_->RayCast(r);
+            rst = _bvh_accel->RayCast(r);
         }
         return rst;
         // Intersection rec;

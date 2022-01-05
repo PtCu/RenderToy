@@ -39,8 +39,8 @@ namespace platinum
             {
                 for (int dz = 0; dz < 2; dz++)
                 {
-                    size_t idx = perm_x_[(pi.x + dx) & 255] ^ perm_y_[(pi.y + dy) & 255] ^ perm_z_[(pi.z + dz) & 255];
-                    c[dx][dy][dz] = rand_vec_[idx];
+                    size_t idx = _perm_x[(pi.x + dx) & 255] ^ _perm_y[(pi.y + dy) & 255] ^ _perm_z[(pi.z + dz) & 255];
+                    c[dx][dy][dz] = _rand_vec[idx];
                 }
             }
         }
@@ -109,9 +109,9 @@ namespace platinum
         return rst;
     }
 
-    std::vector<glm::vec3> Perlin::rand_vec_ = Perlin::GenRandVec(256);
-    std::vector<size_t> Perlin::perm_x_ = Perlin::GenPermute(256);
-    std::vector<size_t> Perlin::perm_y_ = Perlin::GenPermute(256);
-    std::vector<size_t> Perlin::perm_z_ = Perlin::GenPermute(256);
+    std::vector<glm::vec3> Perlin::_rand_vec = Perlin::GenRandVec(256);
+    std::vector<size_t> Perlin::_perm_x = Perlin::GenPermute(256);
+    std::vector<size_t> Perlin::_perm_y = Perlin::GenPermute(256);
+    std::vector<size_t> Perlin::_perm_z = Perlin::GenPermute(256);
 
 }

@@ -38,9 +38,9 @@ namespace platinum
 
     private:
         void UpdateProgress(float progress);
-        Image img_;
-        std::string filename_;
-        int spp_;
+        Image _img;
+        std::string _filename;
+        int _spp;
     };
 }
 

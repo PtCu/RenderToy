@@ -12,7 +12,6 @@
 #include "../src/texture/noise_texture.h"
 #include "../src/geometry/triangle_mesh.h"
 #include "../src/material/isotropic.h"
-#include "../src/geometry/instance.h"
 #include "../src/geometry/volume.h"
 #include <glm/gtc/matrix_transform.hpp>
 #include "box.h"

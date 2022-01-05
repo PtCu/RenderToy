@@ -27,7 +27,7 @@ namespace platinum
     std::shared_ptr<Ray> TCamera::GetRay(float s, float t) const
     {
         auto tray = std::make_shared<TRay>();
-        float time = time0_ + Random::RandomInUnitFloat() * (time1_ - time0_);
+        float time = _t0 + Random::RandomInUnitFloat() * (_t1 - _t0);
         Camera::GetRay(s, t, tray);
         // glm::vec3 rd = lens_radius * Random::RandomInUnitDisk();
         // glm::vec3 offset = u * rd.x + v * rd.y;

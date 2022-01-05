@@ -25,26 +25,26 @@
 namespace platinum
 {
     Light::Light(const glm::vec3 &color_, float linear, float quadratic)
-        : texure_(std::make_shared<ConstTexture>(color_)), linear_(linear), quadratic_(quadratic) {}
+        : _texture(std::make_shared<ConstTexture>(color_)), _linear(linear), _quadratic(quadratic) {}
 
     Light::Light(std::shared_ptr<Texture> lightTex, float linear, float quadratic)
-        : texure_(lightTex), linear_(linear), quadratic_(quadratic) {}
+        : _texture(lightTex), _linear(linear), _quadratic(quadratic) {}
 
     bool Light::Scatter(HitRst &rst) const
     {
         float d = rst.record.ray->GetMaxTime() * glm::length(rst.record.ray->GetDirection());
         float attDis;
-        if (linear_ == 0.0 && quadratic_ == 0.0)
+        if (_linear == 0.0 && _quadratic == 0.0)
             attDis = 1;
         else
         {
             if (isnan(d))
                 attDis = 0;
             else
-                attDis = 1.0f / (1.0f + d * (linear_ + quadratic_ * d));
+                attDis = 1.0f / (1.0f + d * (_linear + _quadratic * d));
         }
-        float attAngle = abs(glm::dot(glm::normalize(rst.record.ray->GetDirection()), rst.record.vert.normal_));
-        rst.record.ray->SetColor(attDis * attAngle * texure_->GetValue(rst.record.vert.u_, rst.record.vert.v_, rst.record.vert.position_));
+        float attAngle = abs(glm::dot(glm::normalize(rst.record.ray->GetDirection()), rst.record.vert._normal));
+        rst.record.ray->SetColor(attDis * attAngle * _texture->GetValue(rst.record.vert._u, rst.record.vert._v, rst.record.vert._position));
         return false;
     }
     glm::vec3 Light::ScatterPdf(const glm::vec3 &wi, const glm::vec3 &wo, HitRst &rst) const
@@ -64,7 +64,7 @@ namespace platinum
     //The material_ itself emits light.
     glm::vec3 Light::Emit() const
     {
-        return texure_->GetValue(0, 0, glm::vec3(0));
+        return _texture->GetValue(0, 0, glm::vec3(0));
     }
     bool Light::IsEmit() const
     {

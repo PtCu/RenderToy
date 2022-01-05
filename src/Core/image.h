@@ -34,14 +34,12 @@ namespace platinum
 		Image(size_t width, size_t height, size_t channel);
 		Image(const char *fileName, bool flip = false);
 		~Image();
-		//------------
 		bool IsValid() const;
 		unsigned char *GetData();
 		const unsigned char *GetConstData() const;
 		size_t GetWidth() const;
 		size_t GetHeight() const;
 		size_t GetChannel() const;
-		//------------
 		bool SetPixel(size_t x, size_t y, const Pixel<unsigned char> &pixel);
 		bool SetPixel(size_t x, size_t y, const Pixel<float> &pixel);
 		bool SetPixel(size_t x, size_t y, const Pixel<double> &pixel);
@@ -51,17 +49,14 @@ namespace platinum
 		Pixel<double> GetPixel_D(size_t x, size_t y) const;
 		unsigned char &At(size_t x, size_t y, size_t channel);
 		const unsigned char &At(size_t x, size_t y, size_t channel) const;
-		//------------
 		bool Load(const std::string &fileName, bool flip = false);
 		void GenBuffer(size_t width, size_t height, size_t channel);
 		void Free();
 		bool SaveAsPNG(const std::string &fileName, bool flip = false) const;
-		//------------
 		static Pixel<unsigned char> Pixel_F2UB(const Pixel<float> &pixel);
 		static Pixel<unsigned char> Pixel_D2UB(const Pixel<double> &pixel);
 		static Pixel<float> Pixel_UB2F(const Pixel<unsigned char> &pixel);
 		static Pixel<double> Pixel_UB2D(const Pixel<unsigned char> &pixel);
-		//------------
 		Image &operator=(const Image &img_) = delete;
 
 	private:
@@ -73,9 +68,9 @@ namespace platinum
 		};
 
 		unsigned char *data;
-		size_t width_;
-		size_t height_;
-		size_t channel;
+		size_t _width;
+		size_t _height;
+		size_t _channel;
 		ENUM_SRC_TYPE type;
 	};
 

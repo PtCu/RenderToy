@@ -48,10 +48,10 @@ namespace platinum
         void getSphereUV(const glm::vec3 &p, float &u, float &v) const;
 
     private:
-        float area_;
-        glm::vec3 center_;
-        float radius_;
-        AABB bounding_box_;
+        float _area;
+        glm::vec3 _center;
+        float _radius;
+        AABB _bounding_box;
     };
 
 } // namespace platinum

@@ -40,12 +40,12 @@ namespace platinum
 
     protected:
         void GetRay(float s, float t, std::shared_ptr<Ray> ray) const;
-        glm::vec3 origin_;
-        glm::vec3 lower_left_corner;
-        glm::vec3 horizontal;
-        glm::vec3 vertical;
-        glm::vec3 front, up, right; //A set of orthonormal basis, to describe orentation of camera.
-        float lens_radius;
+        glm::vec3 _origin;
+        glm::vec3 _lower_left_corner;
+        glm::vec3 _horizontal;
+        glm::vec3 _vertical;
+        glm::vec3 _front, _up, _right; //A set of orthonormal basis, to describe orentation of camera.
+        float _lens_radius;
     };
 
 } // namespace platinum

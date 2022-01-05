@@ -44,9 +44,9 @@ namespace platinum
       virtual bool IsEmit() const;
 
    private:
-      std::shared_ptr<Texture> albedo_;
+      std::shared_ptr<Texture> _albedo;
       //ref_idx: 物体外部介质的折射率η和物体内部折射率η'之比：η/η'。
-      float ref_idx_;
+      float _ref_idx;
    };
 
 } // namespace platinum

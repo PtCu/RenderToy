@@ -26,26 +26,26 @@ namespace platinum
 {
     void Volume::Sample(HitRst &inter, float &pdf) const
     {
-        boundary_->Sample(inter, pdf);
+        _boundary->Sample(inter, pdf);
     }
     float Volume::GetArea() const
     {
-        return boundary_->GetArea();
+        return _boundary->GetArea();
     }
     HitRst Volume::Intersect(std::shared_ptr<Ray> &r)
     {
 
-        if (boundary_ == NULL)
+        if (_boundary == NULL)
             return HitRst::InValid;
 
         float origin_t_max = r->GetMaxTime();
 
-        auto bound_rst = boundary_->Intersect(r);
+        auto bound_rst = _boundary->Intersect(r);
         if (!bound_rst.is_hit)
             return HitRst::InValid;
 
         auto reverse_ray = std::make_shared<Ray>(r->PointAt(r->GetMinTime() * 1.5f), -r->GetDirection());
-        auto reverse_rec = boundary_->Intersect(reverse_ray);
+        auto reverse_rec = _boundary->Intersect(reverse_ray);
 
         float t0;
         float t_max_from_t0;
@@ -63,7 +63,7 @@ namespace platinum
             // 此时以该起点的撞击结果需计算
             t0 = bound_rst.record.ray->GetMaxTime();
             auto t0Ray = std::make_shared<Ray>(r->PointAt(t0), r->GetDirection());
-            HitRst t0_rec = boundary_->Intersect(t0Ray);
+            HitRst t0_rec = _boundary->Intersect(t0Ray);
 
             //太薄
             if (!t0_rec.is_hit)
@@ -82,7 +82,7 @@ namespace platinum
         // p = C * dL
         // p(L) = lim(n->inf, (1 - CL/n)^n) = exp(-CL)
         // L = -(1/C)ln(pL)
-        float hit_dis = -(1.0f / density_) * log(Random::RandomInUnitFloat());
+        float hit_dis = -(1.0f / _density) * log(Random::RandomInUnitFloat());
 
         if (hit_dis >= dis_in_vol)
         {
