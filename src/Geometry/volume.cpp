@@ -55,7 +55,6 @@ namespace platinum
             // 此时以该起点的撞击结果即为前边的 bound_rst
             t0 = 0;
             t_max_from_t0 = bound_rst.record.ray->GetMaxTime();
-            //t0_rec = bound_rst;
         }
         else
         {

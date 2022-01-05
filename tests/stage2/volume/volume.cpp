@@ -48,7 +48,7 @@ int main()
     float aperture = 0.05f;
 
     Camera cam(lookfrom, lookat, vec3(0, -1, 0), 45, static_cast<float>(nx) / static_cast<float>(ny), aperture, dist_to_focus);
-    Renderer render(nx, ny, 3, "metal_cornell.png", ns);
+    Renderer render(nx, ny, 3, "volume.png", ns);
     render.Render(world, cam);
 
     world.Reset();
