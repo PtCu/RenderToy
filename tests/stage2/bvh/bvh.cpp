@@ -1,20 +1,11 @@
-#include "../src/core/image.h"
-#include "../src/core/ray.h"
-#include "../src/core/camera.h"
-#include "../src/core/object.h"
-#include "../src/material/dielectric.h"
-#include "../src/material/lambertian.h"
-#include "../src/material/metal.h"
-#include "../src/math/rand.h"
-#include "../src/geometry/sphere.h"
-#include "../src/geometry/moving_sphere.h"
-#include "../src/core/renderer.h"
+#include <render_toy.h>
+#include <ROOT_PATH.h>
 #include <fstream>
 using namespace platinum;
 using namespace glm;
 using namespace std;
 
-void random_scene(Scene &world)
+void random_scene(Scene& world)
 {
     int n = 500;
     shared_ptr<Object> sph;
@@ -32,23 +23,23 @@ void random_scene(Scene &world)
                 if (choose_mat < 0.8)
                 { // diffuse
                     sph = make_shared<Sphere>(center,
-                                              0.2,
-                                              make_shared<Lambertian>(vec3(Random::RandomInUnitFloat() * Random::RandomInUnitFloat(),
-                                                                           Random::RandomInUnitFloat() * Random::RandomInUnitFloat(),
-                                                                           Random::RandomInUnitFloat() * Random::RandomInUnitFloat())));
+                        0.2,
+                        make_shared<Lambertian>(vec3(Random::RandomInUnitFloat() * Random::RandomInUnitFloat(),
+                            Random::RandomInUnitFloat() * Random::RandomInUnitFloat(),
+                            Random::RandomInUnitFloat() * Random::RandomInUnitFloat())));
                 }
                 else if (choose_mat < 0.95)
                 { // metal
                     sph = make_shared<Sphere>(center, 0.2f,
-                                              make_shared<Metal>(vec3(0.5 * (1 + Random::RandomInUnitFloat()),
-                                                                      0.5 * (1 + Random::RandomInUnitFloat()),
-                                                                      0.5 * (1 + Random::RandomInUnitFloat())),
-                                                                 0.5 * Random::RandomInUnitFloat()));
+                        make_shared<Metal>(vec3(0.5 * (1 + Random::RandomInUnitFloat()),
+                            0.5 * (1 + Random::RandomInUnitFloat()),
+                            0.5 * (1 + Random::RandomInUnitFloat())),
+                            0.5 * Random::RandomInUnitFloat()));
                 }
                 else
                 { // glass
                     sph = make_shared<Sphere>(center, 0.2f,
-                                              make_shared<Dielectric>(1.5));
+                        make_shared<Dielectric>(1.5));
                 }
 
                 world.AddObject(sph);
@@ -67,7 +58,7 @@ int main()
     int ny = 800;
     int ns = 10;
 
-    Scene world(true);
+    Scene world(true,false);
     random_scene(world);
 
     vec3 lookfrom(13, 2, 3);
@@ -75,8 +66,8 @@ int main()
     float dist_to_focus = 10.0f;
     float aperture = 0.1f;
 
-    auto cam = make_shared<Camera>(lookfrom, lookat, vec3(0, -1, 0), 20, float(nx) / float(ny), aperture, dist_to_focus);
-
+    Camera cam(lookfrom, lookat, vec3(0, -1, 0), 45, static_cast<float>(nx) / static_cast<float>(ny), aperture, dist_to_focus);
+    
     Renderer render(nx, ny, 3, "bvh.png", ns);
 
     render.Render(world, cam);

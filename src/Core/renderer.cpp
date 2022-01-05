@@ -61,9 +61,10 @@ namespace platinum
         int img_size = ny * nx;
 
         std::vector<glm::vec3> framebuffer(img_size);
-#pragma omp parallel for schedule(dynamic, 1024)
+
         for (int cnt = 1; cnt <= _spp; ++cnt)
         {
+#pragma omp parallel for schedule(dynamic, 1024)
             for (int px_id = 0; px_id < img_size; ++px_id)
             {
                 int i = px_id % nx;

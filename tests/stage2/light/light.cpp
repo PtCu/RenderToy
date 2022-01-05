@@ -1,28 +1,22 @@
-#include "../src/core/image.h"
-#include "../src/core/ray.h"
-#include "../src/core/t_camera.h"
-#include "../src/core/object.h"
-#include "../src/material/lambertian.h"
-#include "../src/math/rand.h"
-#include "../src/geometry/sphere.h"
-#include "../src/core/scene.h"
-#include "../src/core/renderer.h"
-#include "../src/material/light.h"
-#include "../src/core/vertex.h"
-#include "../src/texture/noise_texture.h"
-#include "../src/geometry/triangle_mesh.h"
+
+#include <render_toy.h>
+#include <ROOT_PATH.h>
 
 using namespace platinum;
 using namespace glm;
 using namespace std;
+
+const static string root_path(ROOT_PATH);
+const static string assets_path = root_path + "/assets/";
+
 const float pos[] = {
     0.9, 0.7, -0.5,
     0.9, 0.1, -0.5,
     1, 0.1, 0.5,
     1, 0.1, 0.5,
     1, 0.7, 0.5,
-    0.9, 0.7, -0.5};
-void some_spheres(Scene &world)
+    0.9, 0.7, -0.5 };
+void some_spheres(Scene& world)
 {
     float scale = 5;
     auto light_tex = make_shared<ConstTexture>(vec3(1.5, 1, 1));
@@ -45,14 +39,14 @@ int main()
     int nx = 500;
     int ny = 400;
     int ns = 10;
-    Scene world(false);
+    Scene world(false, false);
     some_spheres(world);
     vec3 lookfrom(13, 2, 3);
     vec3 lookat(0, 0, 0);
     float dist_to_focus = 10.0f;
     float aperture = 0.f;
 
-    shared_ptr<Camera> cam = make_shared<Camera>();
+    Camera cam{};
     Renderer render(nx, ny, 3, "light.png", ns);
     render.Render(world, cam);
 

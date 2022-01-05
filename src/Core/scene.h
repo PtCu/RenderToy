@@ -37,7 +37,7 @@ namespace platinum
     {
     public:
         Scene() : _max_depth(10), _use_default_light(true), _RussianRoulette(0.8f) {}
-        Scene(bool use_default_light, bool use_path_tracer = 0) : _max_depth(10), _use_default_light(use_default_light), _use_path_tracer(use_path_tracer), _RussianRoulette(0.8f) {}
+        Scene(bool use_default_light, bool use_path_tracer) : _max_depth(10), _use_default_light(use_default_light), _use_path_tracer(use_path_tracer), _RussianRoulette(0.8f) {}
         ~Scene();
         void AddObject(const std::shared_ptr<Object>& obj);
         void AddObject(const std::vector<std::shared_ptr<Object>>& obj);

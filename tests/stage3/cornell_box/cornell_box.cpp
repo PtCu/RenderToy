@@ -7,7 +7,7 @@ using namespace glm;
 using namespace std;
 
 const static string root_path(ROOT_PATH);
-const static string assets_root_path = root_path + "/assets/";
+const static string assets_path = root_path + "/assets/";
 
 void createWorld(Scene& world)
 {
@@ -19,12 +19,12 @@ void createWorld(Scene& world)
     auto lightMat = make_shared<Light>(make_shared<ConstTexture>(8.0f * glm::vec3(0.747f + 0.058f, 0.747f + 0.258f, 0.747f) + 15.6f * glm::vec3(0.740f + 0.287f, 0.740f + 0.160f, 0.740f) + 18.4f * glm::vec3(0.737f + 0.642f, 0.737f + 0.159f, 0.737f)));
     auto cubeMat = make_shared<Lambertian>(make_shared<ConstTexture>(vec3(1.0f, 1.0f, 1.0f)));
 
-    auto floor = make_shared<TriMesh>(assets_root_path + "cornellbox/floor.obj", grayMat);
-    auto shortbox = make_shared<TriMesh>(assets_root_path + "cornellbox/shortbox.obj", cubeMat);
-    auto tallbox = make_shared<TriMesh>(assets_root_path + "cornellbox/tallbox.obj", cubeMat);
-    auto left = make_shared<TriMesh>(assets_root_path + "cornellbox/left.obj", redMat);
-    auto right = make_shared<TriMesh>(assets_root_path + "cornellbox/right.obj", greenMat);
-    auto light_ = make_shared<TriMesh>(assets_root_path + "cornellbox/light.obj", lightMat);
+    auto floor = make_shared<TriMesh>(assets_path + "cornellbox/floor.obj", grayMat);
+    auto shortbox = make_shared<TriMesh>(assets_path + "cornellbox/shortbox.obj", cubeMat);
+    auto tallbox = make_shared<TriMesh>(assets_path + "cornellbox/tallbox.obj", cubeMat);
+    auto left = make_shared<TriMesh>(assets_path + "cornellbox/left.obj", redMat);
+    auto right = make_shared<TriMesh>(assets_path + "cornellbox/right.obj", greenMat);
+    auto light_ = make_shared<TriMesh>(assets_path + "cornellbox/light.obj", lightMat);
 
     world.AddObject(floor);
     world.AddObject(shortbox);
