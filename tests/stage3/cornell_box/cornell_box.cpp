@@ -1,20 +1,15 @@
-#include "../src/core/image.h"
-#include "../src/core/ray.h"
-#include "../src/core/object.h"
-#include "../src/material/lambertian.h"
-#include "../src/math/rand.h"
-#include "../src/geometry/sphere.h"
-#include "../src/core/scene.h"
-#include "../src/core/renderer.h"
-#include "../src/material/light.h"
-#include "../src/core/vertex.h"
-#include "../src/geometry/triangle_mesh.h"
+
+#include <render_toy.h>
+#include <ROOT_PATH.h>
 
 using namespace platinum;
 using namespace glm;
 using namespace std;
 
-void createWorld(Scene &world)
+const static string root_path(ROOT_PATH);
+const static string assets_root_path = root_path + "/assets/";
+
+void createWorld(Scene& world)
 {
     // Mat
     auto redMat = make_shared<Lambertian>(make_shared<ConstTexture>(vec3(0.63f, 0.065f, 0.05f)));
@@ -24,12 +19,12 @@ void createWorld(Scene &world)
     auto lightMat = make_shared<Light>(make_shared<ConstTexture>(8.0f * glm::vec3(0.747f + 0.058f, 0.747f + 0.258f, 0.747f) + 15.6f * glm::vec3(0.740f + 0.287f, 0.740f + 0.160f, 0.740f) + 18.4f * glm::vec3(0.737f + 0.642f, 0.737f + 0.159f, 0.737f)));
     auto cubeMat = make_shared<Lambertian>(make_shared<ConstTexture>(vec3(1.0f, 1.0f, 1.0f)));
 
-    auto floor = make_shared<TriMesh>("../../../../../assets/cornellbox/floor.obj", grayMat);
-    auto shortbox = make_shared<TriMesh>("../../../../../assets/cornellbox/shortbox.obj", cubeMat);
-    auto tallbox = make_shared<TriMesh>("../../../../../assets/cornellbox/tallbox.obj", cubeMat);
-    auto left = make_shared<TriMesh>("../../../../../assets/cornellbox/left.obj", redMat);
-    auto right = make_shared<TriMesh>("../../../../../assets/cornellbox/right.obj", greenMat);
-    auto light_ = make_shared<TriMesh>("../../../../../assets/cornellbox/light.obj", lightMat);
+    auto floor = make_shared<TriMesh>(assets_root_path + "cornellbox/floor.obj", grayMat);
+    auto shortbox = make_shared<TriMesh>(assets_root_path + "cornellbox/shortbox.obj", cubeMat);
+    auto tallbox = make_shared<TriMesh>(assets_root_path + "cornellbox/tallbox.obj", cubeMat);
+    auto left = make_shared<TriMesh>(assets_root_path + "cornellbox/left.obj", redMat);
+    auto right = make_shared<TriMesh>(assets_root_path + "cornellbox/right.obj", greenMat);
+    auto light_ = make_shared<TriMesh>(assets_root_path + "cornellbox/light.obj", lightMat);
 
     world.AddObject(floor);
     world.AddObject(shortbox);
@@ -44,14 +39,14 @@ int main()
     int nx = 784;
     int ny = 784;
     int ns = 16;
-    Scene world(false, 1);
+    Scene world(false, true);
     createWorld(world);
     vec3 lookfrom(278, 273, -800);
     vec3 lookat(278, 273, 0);
     float dist_to_focus = 10.0f;
     float aperture = 0.05f;
 
-    shared_ptr<Camera> cam = make_shared<Camera>(lookfrom, lookat, vec3(0, -1, 0), 45, float(nx) / float(ny), aperture, dist_to_focus);
+    Camera cam(lookfrom, lookat, vec3(0, -1, 0), 45, static_cast<float>(nx) / static_cast<float>(ny), aperture, dist_to_focus);
     Renderer render(nx, ny, 3, "cornell.png", ns);
     render.Render(world, cam);
 

@@ -34,7 +34,7 @@ namespace platinum
     public:
         Renderer(int img_w, int img_h, int channel, const std::string &fname, int spp);
         ~Renderer() = default;
-        void Render(Scene &scene, const std::shared_ptr<Camera> &cam);
+        void Render(Scene &scene, Camera &cam);
 
     private:
         void UpdateProgress(float progress);

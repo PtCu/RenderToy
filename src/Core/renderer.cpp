@@ -52,7 +52,7 @@ namespace platinum
         std::cout << "] " << int(progress * 100.0) << " %\r";
         std::cout.flush();
     };
-    void Renderer::Render(Scene& scene, const std::shared_ptr<Camera>& cam)
+    void Renderer::Render(Scene& scene, Camera& cam)
     {
         scene.BuildBVH();
         int nx = _img.GetWidth();
@@ -71,7 +71,7 @@ namespace platinum
                 u = static_cast<float>(i + Random::RandomInUnitFloat()) / static_cast<float>(nx);
                 v = static_cast<float>(j + Random::RandomInUnitFloat()) / static_cast<float>(ny);
 
-                auto r = cam->GetRay(u, v);
+                auto r = cam.GetRay(u, v);
                 auto rst = scene.CastRay(r);
 
                 framebuffer[px_id] += (rst / static_cast<float>(_spp));

@@ -59,17 +59,19 @@ set_property(GLOBAL PROPERTY USE_FOLDERS ON)
 cmake_minimum_required (VERSION 3.2)
 cmake_policy(VERSION 3.2)
 project (${PROJECT_NAME})
-# 往工程中添加spdlog库，这个库是一个interface类型的库
-add_library(spdlog INTERFACE)
+
 
 include_directories (
 	${PROJECT_SOURCE_DIR}/include
-	# $ENV{XXX_INCLUDE_PATH}
-	# ...
+	${CMAKE_BINARY_DIR}/config
+	${PROJECT_SOURCE_DIR}/src
 )
-# spdlog会用到pthread库
+
+
+configure_file(config/ROOT_PATH.h.in config/ROOT_PATH.h)
+
 find_package(Threads)
-# The version number.
+
 set (${PROJECT_NAME}_VERSION_MAJOR 1)
 set (${PROJECT_NAME}_VERSION_MINOR 0)
 
@@ -86,10 +88,3 @@ endif()
 
 add_subdirectory (src)
 add_subdirectory (tests)
-
-# include (InstallRequiredSystemLibraries)
-# set (CPACK_RESOURCE_FILE_LICENSE "${CMAKE_CURRENT_SOURCE_DIR}/License")
-# set (CPACK_PACKAGE_VERSION_MAJOR "${${PROJECT_NAME}_VERSION_MAJOR}")
-# set (CPACK_PACKAGE_VERSION_MINOR "${${PROJECT_NAME}_VERSION_MINOR}")
-# set (CPACK_PACKAGE_CONTACT       "1365699009@qq.com")
-# include (CPack)
