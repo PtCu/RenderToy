@@ -101,11 +101,10 @@ namespace platinum
 
         if (rst.is_hit)
         {
-            if (rst.material_ == NULL)
-                return glm::vec3(0, 1, 0);
-            //正常情况下，对于漫反射物质继续反射追踪，直到遇到光源则更新颜色并返回
+            //如果反射就继续追踪
             if (rst.material_->Scatter(rst))
                 return castRayWhitted(ray, dep - 1);
+            //遇到发光物
             else
                 return ray->GetColor();
         }

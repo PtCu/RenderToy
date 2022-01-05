@@ -22,26 +22,26 @@
 
 #ifndef METAL_H
 #define METAL_H
-#include "../math/rand.h"
-#include "../core/material.h"
-#include "../core/texture.h"
-#include "../texture/const_texture.h"
+#include "math/rand.h"
+#include "core/material.h"
+#include "core/texture.h"
+#include "texture/const_texture.h"
 
 namespace platinum
 {
    class Metal : public Material
    {
    public:
-      Metal(const std::shared_ptr<Texture> &a, float f);
-      Metal(const glm::vec3 &a, float f);
+      Metal(const std::shared_ptr<Texture>& a, float f);
+      Metal(const glm::vec3& a, float f);
 
-      bool Scatter(HitRst &rst) const final;
+      bool Scatter(HitRst& rst) const final;
       // Sample a ray by Material properties
-      glm::vec3 Sample(const glm::vec3 &d, HitRst &rst) const override;
+      glm::vec3 Sample(const glm::vec3& d, HitRst& rst) const override;
       //Given a ray, calculate the PdF of this ray
-      float Pdf(const glm::vec3 &wi, const glm::vec3 &wo, HitRst &rst) const override;
+      float Pdf(const glm::vec3& wi, const glm::vec3& wo, HitRst& rst) const override;
       // brdf. Given a ray, calculate the contribution of this ray
-      glm::vec3 ScatterPdf(const glm::vec3 &wi, const glm::vec3 &wo, HitRst &rst) const override;
+      glm::vec3 ScatterPdf(const glm::vec3& wi, const glm::vec3& wo, HitRst& rst) const override;
       //The material_ itself emits light.
       glm::vec3 Emit() const override;
       bool IsEmit() const override;

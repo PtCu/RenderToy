@@ -16,13 +16,13 @@ void createWorld(Scene& world)
     auto grayMat = make_shared<Lambertian>(make_shared<ConstTexture>(vec3(0.73f, 0.73f, 0.73f)));
     auto blueMat = make_shared<Lambertian>(make_shared<ConstTexture>(vec3(0.1f, 0.1f, 0.73f)));
     auto lightMat = make_shared<Light>(8.0f * vec3(0.747f + 0.058f, 0.747f + 0.258f, 0.747f) + 15.6f * vec3(0.740f + 0.287f, 0.740f + 0.160f, 0.740f) + 18.4f * vec3(0.737f + 0.642f, 0.737f + 0.159f, 0.737f));
-    auto cubeMat = make_shared<Lambertian>(make_shared<ConstTexture>(vec3(0.5f, 0.6f, 0.8f)));
+    auto cubeMat = make_shared<Metal>(make_shared<ConstTexture>(vec3(0.5f, 0.6f, 0.8f)),0.5);
 
-    auto volMat = make_shared<Isotropic>(make_shared<ConstTexture>(vec3(1.0f)));
+    auto volMat = make_shared<Metal>(make_shared<ConstTexture>(vec3(1.0f, 0.8f, 1.0f)),0.8);
 
     auto floor = make_shared<TriMesh>(assets_path + "cornellbox/floor.obj", grayMat);
-    auto shortbox = make_shared<Volume>(make_shared<TriMesh>(assets_path + "cornellbox/shortbox.obj"),1.65f,volMat);
-    auto tallbox = make_shared<TriMesh>(assets_path + "cornellbox/tallbox.obj", cubeMat);
+    auto tallbox = make_shared<TriMesh>(assets_path + "cornellbox/tallbox.obj",volMat);
+    auto shortbox = make_shared<TriMesh>(assets_path + "cornellbox/shortbox.obj", cubeMat);
     auto left = make_shared<TriMesh>(assets_path + "cornellbox/left.obj", redMat);
     auto right = make_shared<TriMesh>(assets_path + "cornellbox/right.obj", greenMat);
     auto light_ = make_shared<TriMesh>(assets_path + "cornellbox/light.obj", lightMat);
@@ -39,7 +39,7 @@ int main()
 {
     int nx = 784;
     int ny = 784;
-    int ns = 512;
+    int ns = 256;
     Scene world(false,false);
     createWorld(world);
     vec3 lookfrom(278, 273, -800);

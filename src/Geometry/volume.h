@@ -23,12 +23,12 @@
 #ifndef GEOMETRY_VOLUME_H_
 #define GEOMETRY_VOLUME_H_
 
-#include "../core/object.h"
-#include "../core/ray.h"
-#include "../core/intersection.h"
-#include "../core/aabb.h"
-#include "../math/rand.h"
-#include "../math/rand.h"
+#include "core/object.h"
+#include "core/ray.h"
+#include "core/intersection.h"
+#include "core/aabb.h"
+#include "math/rand.h"
+#include "math/rand.h"
 
 namespace platinum
 {
@@ -40,8 +40,8 @@ namespace platinum
 
         ~Volume() = default;
         virtual float GetArea() const;
-        virtual void Sample(HitRst &inter, float &pdf) const;
-        virtual HitRst Intersect(std::shared_ptr<Ray> &r);
+        virtual void Sample(HitRst& inter, float& pdf) const;
+        virtual HitRst Intersect(std::shared_ptr<Ray>& r);
         virtual AABB GetBoundingBox() const { return _boundary->GetBoundingBox(); }
 
     private:

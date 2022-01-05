@@ -25,7 +25,7 @@
 namespace platinum
 {
 
-    void Triangle::Sample(HitRst &rst, float &pdf) const
+    void Triangle::Sample(HitRst& rst, float& pdf) const
     {
         float x = std::sqrt(Random::RandomInUnitFloat()), y = Random::RandomInUnitFloat();
         rst.record.vert._position = A._position * (1.0f - x) + B._position * (x * (1.0f - y)) + C._position * (x * y);
@@ -40,7 +40,7 @@ namespace platinum
     {
         return _area;
     }
-    Triangle::Triangle(const glm::vec3 &a, const glm::vec3 &b, const glm::vec3 &c, const std::shared_ptr<Material> &material_)
+    Triangle::Triangle(const glm::vec3& a, const glm::vec3& b, const glm::vec3& c, const std::shared_ptr<Material>& material_)
         : A(a), B(b), C(c), Object(material_)
     {
         e1 = B._position - A._position;
@@ -50,7 +50,7 @@ namespace platinum
         _bounding_box = AABB(A._position, B._position);
         _bounding_box.Expand(C._position);
     }
-    Triangle::Triangle(const Vertex &a, const Vertex &b, const Vertex &c, const std::shared_ptr<Material> &material_)
+    Triangle::Triangle(const Vertex& a, const Vertex& b, const Vertex& c, const std::shared_ptr<Material>& material_)
         : A(a), B(b), C(c), Object(material_)
     {
         e1 = B._position - A._position;
@@ -60,7 +60,7 @@ namespace platinum
         _bounding_box = AABB(A._position, B._position);
         _bounding_box.Expand(C._position);
     }
-    glm::vec4 Triangle::intersectRay(const glm::vec3 &o, const glm::vec3 &d)
+    glm::vec4 Triangle::intersectRay(const glm::vec3& o, const glm::vec3& d)
     {
         glm::mat3 equation_A(glm::vec3(A._position - B._position), glm::vec3(A._position - C._position), d);
 
@@ -73,44 +73,8 @@ namespace platinum
         return glm::vec4(alpha, equation_X);
     }
 
-    HitRst Triangle::Intersect(std::shared_ptr<Ray> &r)
+    HitRst Triangle::Intersect(std::shared_ptr<Ray>& r)
     {
-        // //moller trumbore algorithm
-        // Intersection rst;
-
-        // if (glm::dot(r->GetDirection(), normal_) > 0)
-        //     return rst;
-        // float u, v, t_tmp = 0;
-        // glm::vec3 pvec = glm::cross(r->GetDirection(), e2);
-        // float det = glm::dot(e1, pvec);
-        // // This r is parallel to this triangle.
-        // if (fabs(det) < EPSILON)
-        //     return rst;
-
-        // float det_inv = 1. / det;
-        // glm::vec3 tvec = r->GetOrigin() - A.pos;
-        // u = glm::dot(tvec, pvec) * det_inv;
-        // if (u < 0 || u > 1)
-        //     return rst;
-        // glm::vec3 qvec = glm::cross(tvec, e1);
-        // v = glm::dot(r->GetDirection(), qvec) * det_inv;
-        // if (v < 0 || u + v > 1)
-        //     return rst;
-        // // At this stage we can compute t to find out where the intersection point is on the line.
-        // t_tmp = glm::dot(e2, qvec) * det_inv;
-
-        // // This means that there is a line intersection but not a ray intersection.
-        // if (t_tmp < EPSILON)
-        // {
-        //     return rst;
-        // }
-        // rst.ray = r;
-        // r->SetTMax(t_tmp);
-        // rst.vert = r->GetOrigin() + r->GetDirection() * t_tmp;
-        // rst.happened = true;
-        // rst.material_ = GetMaterial(); //材料
-        // return rst;
-
         HitRst rst;
         glm::vec4 abgt = this->intersectRay(r->GetOrigin(), r->GetDirection());
         if (abgt == glm::vec4(0) || abgt[0] < 0 || abgt[0] > 1 || abgt[1] < 0 || abgt[1] > 1 || abgt[2] < 0 || abgt[2] > 1 || abgt[3] < r->GetMinTime() || abgt[3] > r->GetMaxTime())

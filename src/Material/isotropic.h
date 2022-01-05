@@ -23,24 +23,24 @@
 #ifndef MATERIAL_ISOTROPIC_H_
 #define MATERIAL_ISOTROPIC_H_
 
-#include "../core/material.h"
-#include "../math/rand.h"
-#include "../core/texture.h"
-#include "../texture/const_texture.h"
+#include "core/material.h"
+#include "math/rand.h"
+#include "core/texture.h"
+#include "texture/const_texture.h"
 
 namespace platinum
 {
     class Isotropic : public Material
     {
     public:
-        Isotropic(const std::shared_ptr<Texture> &a);
-        virtual bool Scatter(HitRst &rst) const;
+        Isotropic(const std::shared_ptr<Texture>& a);
+        virtual bool Scatter(HitRst& rst) const;
         // Sample a ray by Material properties
-        virtual glm::vec3 Sample(const glm::vec3 &d, HitRst &rst) const;
+        virtual glm::vec3 Sample(const glm::vec3& d, HitRst& rst) const;
         //Given a ray, calculate the PdF of this ray
-        virtual float Pdf(const glm::vec3 &wi, const glm::vec3 &wo, HitRst &rst) const;
+        virtual float Pdf(const glm::vec3& wi, const glm::vec3& wo, HitRst& rst) const;
         // brdf. Given a ray, calculate the contribution of this ray
-        virtual glm::vec3 ScatterPdf(const glm::vec3 &wi, const glm::vec3 &wo, HitRst &rst) const;
+        virtual glm::vec3 ScatterPdf(const glm::vec3& wi, const glm::vec3& wo, HitRst& rst) const;
         //The material_ itself emits light.
         virtual glm::vec3 Emit() const;
         virtual bool IsEmit() const;

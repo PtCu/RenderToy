@@ -23,8 +23,8 @@
 #ifndef GEOMETRY_TRIMESH_H_
 #define GEOMETRY_TRIMESH_H_
 
-#include "../core/bvh.h"
-#include "../core/vertex.h"
+#include "core/bvh.h"
+#include "core/vertex.h"
 // #include <OBJ_Loader.hpp>
 #include "triangle.h"
 
@@ -38,14 +38,14 @@ namespace platinum
     class TriMesh : public Object
     {
     public:
-        TriMesh(const std::string &filename_, std::shared_ptr<Material> m = NULL);
-        TriMesh(const std::vector<Vertex> &vertexs, std::shared_ptr<Material> m = NULL);
-        virtual HitRst Intersect(std::shared_ptr<Ray> &r);
+        TriMesh(const std::string& filename_, std::shared_ptr<Material> m = NULL);
+        TriMesh(const std::vector<Vertex>& vertexs, std::shared_ptr<Material> m = NULL);
+        virtual HitRst Intersect(std::shared_ptr<Ray>& r);
         virtual AABB GetBoundingBox() const { return _bounding_box; }
         virtual float GetArea() const;
-        virtual void Sample(HitRst &inter, float &pdf) const;
+        virtual void Sample(HitRst& inter, float& pdf) const;
         inline bool IsValid() const { return _valid; };
-        std::vector<std::shared_ptr<Object>> &GetTriangles() { return _triangles; }
+        std::vector<std::shared_ptr<Object>>& GetTriangles() { return _triangles; }
 
     protected:
         float _area;
@@ -53,7 +53,7 @@ namespace platinum
         std::vector<std::shared_ptr<Object>> _triangles;
         AABB _bounding_box;
         std::unique_ptr<BVHAccel> _bvh_accel;
-        objl::Loader *_loader;
+        objl::Loader* _loader;
     };
 }
 

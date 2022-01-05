@@ -30,7 +30,7 @@
 #include "intersection.h"
 #include "bvh.h"
 #include <functional>
-#include "../math/rand.h"
+#include "math/rand.h"
 namespace platinum
 {
     class Scene

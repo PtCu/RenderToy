@@ -24,7 +24,7 @@
 #define CORE_CAMERA_H_
 
 #include "defines.h"
-#include "../math/rand.h"
+#include "math/rand.h"
 #include "material.h"
 
 namespace platinum
@@ -34,7 +34,7 @@ namespace platinum
     public:
         //For test
         Camera();
-        Camera(const glm::vec3 &lookfrom, const glm::vec3 &lookat, const glm::vec3 &vup, float vfov, float aspect, float aperture, float focusDist);
+        Camera(const glm::vec3& lookfrom, const glm::vec3& lookat, const glm::vec3& vup, float vfov, float aspect, float aperture, float focusDist);
         virtual ~Camera() = default;
         virtual std::shared_ptr<Ray> GetRay(float s, float t) const;
 
